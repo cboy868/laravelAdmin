@@ -1,0 +1,64 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\Log;
+use App\Common\ApiStatus;
+
+class ApiController extends BaseController
+{
+    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
+    use \App\Traits\ApiResponse;
+
+    const SESSION_ERR_KEY = 'fk.error';
+
+    protected $appid;
+
+    protected $authToken;
+
+    protected $version;
+
+    protected $method;
+
+    protected $params;
+
+
+    protected function _dealParams($rules=[])
+    {
+        $params = request()->input();
+
+        if (isset($params['params'])) {
+            if (is_string($params['params'])) {
+                $param = json_decode($params['params'], true);
+            } else if (is_array($params['params'])) {
+                $param = $params['params'];
+            }
+
+            $validator = app('validator')->make($param, $rules);
+
+
+            if ($validator->fails()) {
+				Log::error('api-params-deal-error',['param'=>$param,'rules'=>$rules]);
+                session()->flash(self::SESSION_ERR_KEY, $validator->errors()->first());
+
+                return false;
+                // return [];
+                // return $this->failed(ApiStatus::CODE_1001,session()->get(self::SESSION_ERR_KEY));
+            }
+        }
+
+        $this->appid = $params['appid'];
+        $this->authToken = isset($params['auth_token']) ?? $params['auth_token'];
+        $this->version = isset($params['version']) ? $params['version'] : '1.0';
+        $this->method = $params['method'];
+
+        $this->params = $param;
+
+        return true;
+    }
+}

@@ -17,7 +17,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-axios.get('/oauth/clients')
-    .then(response => {
-        console.log(response.data);
-    });
+Route::group(['namespace' => 'api\admin'], function () {
+    Route::post('/login', 'UserController@login');
+});
