@@ -22,23 +22,38 @@ class UserController extends ApiController
             return $this->failed(ApiStatus::CODE_1001,session()->get(self::SESSION_ERR_KEY));
         }
 
-
         if(Auth::attempt(['name' => $this->params['name'], 'password' => $this->params['password']]))
         {
             $user = Auth::user();
-            $this->content['token'] =  $user->createToken('Pi App')->accessToken;
-            $status = 200;
+            $token = $user->createToken('admin')->accessToken;
+            return $this->respond(['token'=>$token]);
         } else {
-
-            $this->content['error'] = "未授权";
-             $status = 401;
+            return $this->failed(ApiStatus::CODE_1501, '登录失败');
         }
-         return response()->json($this->content, $status);
+
     }
 
+
+    /**
+     * 退出登录
+     */
+    public function logout()
+    {
+        if (\Auth::guard('api')->check()) {
+            \Auth::guard('api')->user()->token()->delete();
+        }
+        return response()->json(['message' => '登出成功', 'status_code' => 200, 'data' => null]);
+    }
+
+
+
+    /**
+    * 请求时header 中带着 Authorization: 'Bearer '. $accessToken,
+    */
     public function passport()
     {
-        return response()->json(['user' => Auth::user()]);
+        $userInfo = Auth::user();
+        return $this->respond(['user_info'=>$userInfo]);
     }
 
 }

@@ -19,4 +19,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::group(['namespace' => 'api\admin'], function () {
     Route::post('/login', 'UserController@login');
+    Route::post('/logout', 'UserController@logout');
+    // Route::post('/passport', 'UserController@passport');
+});
+
+
+Route::group(['middleware' => 'auth:api'], function(){
+	Route::post('passport', 'Api\Admin\UserController@passport');
 });
