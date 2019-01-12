@@ -15,7 +15,6 @@ class AuthController extends ApiController
      */
     public function __construct()
     {
-
         $this->middleware('auth:api', ['except' => ['login']]);
     }
 
@@ -31,20 +30,20 @@ class AuthController extends ApiController
             'password' => 'required'
         ];
         if (!$this->_dealParams($rules)) {
-            return $this->setCodeMsg(session()->get(self::SESSION_ERR_KEY))->failed(ApiStatus::CODE_1001);
+            return $this->setCodeMsg(session()->get(self::SESSION_ERR_KEY))->failed(ApiStatus::CODE_2002);
         }
 
         try {
             if (! $token = auth('api')->attempt($this->params)) {
-                return $this->failed(ApiStatus::CODE_1051);
+                return $this->failed(ApiStatus::CODE_2001);
             }
             return $this->respondWithToken($token);
         } catch (JWTException $e) {
-            Log::error(ApiStatus::CODE_1051 . __METHOD__ . __LINE__,[
+            Log::error(ApiStatus::CODE_2001 . __METHOD__ . __LINE__,[
                 'code' => $e->getCode(),
                 'msg' => $e->getMessage()
             ]);
-            return $this->failed(ApiStatus::CODE_1051, "登录名或密码不匹配", 401);
+            return $this->failed(ApiStatus::CODE_2001, "登录名或密码不匹配", 401);
         }
     }
 
@@ -69,7 +68,7 @@ class AuthController extends ApiController
             auth('api')->logout();
             return $this->setCodeMsg("Successfully logged out")->success();
         } catch (\Exception $e) {
-            return $this->failed(ApiStatus::CODE_2001);
+            return $this->failed(ApiStatus::CODE_1001);
         }
     }
 
