@@ -14,6 +14,8 @@ class ApiStatus {
     //-+----------------------------------------------------------------------
     const CODE_1001 = '1001';//缺少参数
 
+    const CODE_1002 = '1002';//方法错误
+
     const CODE_1011 = '1011';//操作失败
     //-+----------------------------------------------------------------------
     // | 业务参数错误
@@ -30,8 +32,9 @@ class ApiStatus {
     //-+----------------------------------------------------------------------
 
     public static $errCodes = [
-        self::CODE_0     => 'success',
-        self::CODE_1001 => 'Unauthorized',
+        self::CODE_0    => 'success',
+        self::CODE_1001 => 'params required',
+        self::CODE_1002 => 'method wrong',
         self::CODE_1011 => 'operation failed',
 
         self::CODE_2001 => 'login failed',
