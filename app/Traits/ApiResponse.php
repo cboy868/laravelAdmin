@@ -13,82 +13,15 @@ use Response;
 
 trait ApiResponse
 {
-    protected $statusCode = FoundationResponse::HTTP_OK; //http状态码
+    private $code = ApiStatus::CODE_0; //程序内部码
 
-    protected $code = ApiStatus::CODE_0; //程序内部码
+    private $codeMsg;
 
-    protected $status = 'ok';
+    private $status = FoundationResponse::HTTP_OK; //http状态码
 
+    private $statusMsg = 'ok';//第三方、等使用的一些错误标识
 
-    protected $msg;
-
-    /**
-     * @param $data
-     * @param array $header
-     * @return mixed
-     */
-    public function respond($data=[], $header = [])
-    {
-        $data = [
-            'code' => $this->code,
-            'msg'  => $this->getCodeMsg(),
-            'status' => $this->status,
-            'data' => $data
-        ];
-        return Response::json($data,$this->getStatusCode(),$header);
-    }
-
-    /**
-     * @param $code
-     * @param string $msg
-     * @return mixed
-     * 失败返回
-     */
-    public function failed($code, $msg='', $statusCode=200){
-        return $this->setCode($code)
-            ->setCodeMsg($msg)
-            ->setStatusCode($statusCode)
-            ->setStatus('error')
-            ->respond([]);
-    }
-
-    /**
-     * @return int
-     * http状态码
-     */
-    private function getStatusCode()
-    {
-        return $this->statusCode;
-    }
-
-    /**
-     * @return string
-     * 获取错误信息
-     */
-    private function getCodeMsg()
-    {
-        if ($this->msg) {
-//            if (isset(ApiStatus::$errCodes[$this->code])) {
-//                return ApiStatus::$errCodes[$this->code] . ': ' . $this->msg;
-//            }
-            return $this->msg;
-        }
-
-        if (isset(ApiStatus::$errCodes[$this->code])) {
-            return ApiStatus::$errCodes[$this->code];
-        }
-
-        return '';
-    }
-    /**
-     * @param $statusCode
-     * @return $this
-     */
-    public function setStatusCode($statusCode)
-    {
-        $this->statusCode = $statusCode;
-        return $this;
-    }
+    private $header=[];
 
     /**
      * @param $code
@@ -101,10 +34,55 @@ trait ApiResponse
         return $this;
     }
 
+    /**
+     * 获取系统内部码
+     * @return string
+     */
+    public function getCode()
+    {
+        return $this->code;
+    }
+
+    /**
+     * 设置http状态码
+     * @param $status
+     * @return $this
+     */
     public function setStatus($status)
     {
         $this->status = $status;
         return $this;
+    }
+
+    /**
+     * 获取http码
+     * @param $status
+     * @return $this
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * 设置程序状态码
+     * @param $status
+     * @return $this
+     */
+    public function setStatusMsg($statusMsg)
+    {
+        $this->statusMsg = $statusMsg;
+        return $this;
+    }
+
+    /**
+     * 取程序状态码
+     * @param $status
+     * @return $this
+     */
+    public function getStatusMsg()
+    {
+        return $this->statusMsg;
     }
 
     /**
@@ -114,8 +92,77 @@ trait ApiResponse
      */
     public function setCodeMsg($msg)
     {
-        $this->msg = $this->msg ?? $msg;
-
+        $this->codeMsg = $msg;
         return $this;
     }
+
+    /**
+     * 获取错误信息
+     * @return string
+     */
+    public function getCodeMsg()
+    {
+        if (!empty($this->codeMsg)) {
+            return $this->codeMsg;
+        }
+
+        return isset(ApiStatus::$errCodes[$this->code]) ?
+            ApiStatus::$errCodes[$this->code]:'';
+    }
+
+    /**
+     * 设置反回header
+     * @param $header
+     * @return $this
+     */
+    public function setHeader($header)
+    {
+        $this->header = $header;
+        return $this;
+    }
+
+    /**
+     * 获取header
+     * @return array
+     */
+    public function getHeader()
+    {
+        return $this->header;
+    }
+
+    /**
+     * @param $data
+     * @param array $header
+     * @return mixed
+     */
+    public function respond($data=[])
+    {
+        $data = [
+            'code' => $this->getCode(),
+            'msg'  => $this->getCodeMsg(),
+            'status' => $this->getStatusMsg(),
+            'data' => $data
+        ];
+        return Response::json($data,$this->getStatus(),$this->getHeader());
+    }
+
+    /**
+     * 失败返回
+     * @param $code
+     * @param string $msg
+     * @return mixed
+     */
+    public function failed($code){
+        return $this->setCode($code)->respond([]);
+    }
+
+    /**
+     * 成功返回
+     * @param array $data
+     * @return mixed
+     */
+    public function success($data=[]){
+        return $this->respond($data);
+    }
+
 }
