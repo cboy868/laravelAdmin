@@ -3,7 +3,8 @@ namespace App\Http\Controllers\Api\Admin\V1;
 
 
 use App\Http\Controllers\ApiController;
-use JWTAuth;
+//use JWTAuth;
+use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Support\Facades\Request;
 use App\Common\ApiStatus;
@@ -12,7 +13,7 @@ use App\Common\ApiStatus;
 class UserController extends ApiController
 {
 	
-	public function index(Request $request){
+	public function index(){
 
 		$rules = [
 			'name' => 'required',
@@ -27,13 +28,13 @@ class UserController extends ApiController
 
         try {
             if (! $token = JWTAuth::attempt($this->params)) {
-                return $this->failed(ApiStatus::CODE_1051);
+                return $this->failed(ApiStatus::CODE_1051 );
             }
 
             return $this->respond(['token'=>$token]);
         } catch (JWTException $e) {
             // something went wrong whilst attempting to encode the token
-            return $this->failed(ApiStatus::CODE_1051);
+            return $this->failed(ApiStatus::CODE_1051, $e->getMessage());
         }
 	}
 }

@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers\Api\Admin\V1;
 
+use App\Common\ApiStatus;
 use App\Http\Controllers\ApiController;
+use Illuminate\Support\Facades\Log;
+use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -32,13 +35,26 @@ class AuthController extends ApiController
      */
     public function login()
     {
-        $credentials = request(['name', 'password']);
-
-        if (! $token = auth('api')->attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+        $rules = [
+            'name' => 'required',
+            'password' => 'required'
+        ];
+        if (!$this->_dealParams($rules)) {
+            return $this->failed(ApiStatus::CODE_1001, session()->get(self::SESSION_ERR_KEY));
         }
 
-        return $this->respondWithToken($token);
+        try {
+            if (! $token = auth('api')->attempt($this->params)) {
+                return $this->failed(ApiStatus::CODE_1051);
+            }
+            return $this->respondWithToken($token);
+        } catch (JWTException $e) {
+            Log::error(ApiStatus::CODE_1051 . __METHOD__ . __LINE__,[
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage()
+            ]);
+            return $this->failed(ApiStatus::CODE_1051, "登录名或密码不匹配", 401);
+        }
     }
 
     /**
@@ -48,7 +64,7 @@ class AuthController extends ApiController
      */
     public function me()
     {
-        return response()->json(auth('api')->user());
+        return $this->respond(['info'=>auth('api')->user()]);
     }
 
     /**
@@ -58,9 +74,12 @@ class AuthController extends ApiController
      */
     public function logout()
     {
-        auth('api')->logout();
-
-        return response()->json(['message' => 'Successfully logged out']);
+        try{
+            auth('api')->logout();
+            return $this->setCodeMsg("Successfully logged out")->respond();
+        } catch (\Exception $e) {
+            return $this->failed('Successfully logged out');
+        }
     }
 
     /**
@@ -83,7 +102,7 @@ class AuthController extends ApiController
      */
     protected function respondWithToken($token)
     {
-        return response()->json([
+        return $this->respond([
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth('api')->factory()->getTTL() * 60

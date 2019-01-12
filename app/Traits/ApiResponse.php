@@ -44,8 +44,12 @@ trait ApiResponse
      * @return mixed
      * 失败返回
      */
-    public function failed($code, $msg=''){
-        return $this->setCode($code)->setCodeMsg($msg)->setStatus('error')->respond([]);
+    public function failed($code, $msg='', $statusCode=200){
+        return $this->setCode($code)
+            ->setCodeMsg($msg)
+            ->setStatusCode($statusCode)
+            ->setStatus('error')
+            ->respond([]);
     }
 
     /**

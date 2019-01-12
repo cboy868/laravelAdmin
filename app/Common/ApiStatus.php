@@ -18,7 +18,11 @@ class ApiStatus {
     const CODE_1001 = '1001';//缺少参数
 
 
+    //授权部分
     const CODE_1051 = '1051';//授权失败
+
+    //用户部分
+    const CODE_2001 = '2001';//登录失败
 
 	/**
 	 * @var string 接口请求出错：空请求
@@ -123,6 +127,12 @@ class ApiStatus {
 
     public static $errCodes = [
         self::CODE_0     => '成功',
+
+        self::CODE_1051 => 'Unauthorized',
+
+        self::CODE_2001 => 'logout failed',
+
+
         self::CODE_10100 => '空请求',
         self::CODE_10101 => '请求格式错误',
         self::CODE_10102 => '渠道错误',//[appid]

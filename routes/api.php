@@ -21,7 +21,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::group([
 	'namespace' => 'api\admin\V1',
 ], function ($router) {
-	Route::post('/test', 'UserController@index');
+	Route::post('test', 'UserController@index');
     Route::post('login', 'AuthController@login');
     Route::post('logout', 'AuthController@logout');
     Route::post('refresh', 'AuthController@refresh');
