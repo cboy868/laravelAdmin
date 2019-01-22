@@ -8,6 +8,7 @@
 namespace App\Traits;
 
 use App\Common\ApiStatus;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 use Symfony\Component\HttpFoundation\Response as FoundationResponse;
 use Response;
 
@@ -135,15 +136,23 @@ trait ApiResponse
      * @param array $header
      * @return mixed
      */
-    public function respond($data=[])
+    public function respond($data)
     {
-        $data = [
+        //如果是资源类型，则再添加code、msg、status
+        if ($data instanceof ResourceCollection) {
+            return $data->additional([
+                'code' => $this->getCode(),
+                'msg'  => $this->getCodeMsg(),
+                'status' => $this->getStatusMsg(),
+            ]);
+        }
+
+        return Response::json([
             'code' => $this->getCode(),
             'msg'  => $this->getCodeMsg(),
             'status' => $this->getStatusMsg(),
             'data' => $data
-        ];
-        return Response::json($data,$this->getStatus(),$this->getHeader());
+        ],$this->getStatus(),$this->getHeader());
     }
 
     /**

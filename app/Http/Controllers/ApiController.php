@@ -18,6 +18,10 @@ class ApiController extends BaseController
 
     const SESSION_ERR_KEY = 'fk.error';
 
+    const PAGE_SIZE_ONE = 'page_size_one';
+    const PAGE_SIZE_TWO = 'page_size_two';
+    const PAGE_SIZE_FIVE= 'page_size_five';
+
     protected $appid;
 
     protected $authToken;
@@ -27,6 +31,12 @@ class ApiController extends BaseController
     protected $method;
 
     protected $params;
+
+    static $pageSize = [
+        self::PAGE_SIZE_ONE => 10,
+        self::PAGE_SIZE_TWO => 20,
+        self::PAGE_SIZE_FIVE => 50
+    ];
 
 
     protected function _dealParams($rules=[])
@@ -51,6 +61,8 @@ class ApiController extends BaseController
                 // return [];
                 // return $this->failed(ApiStatus::CODE_1001,session()->get(self::SESSION_ERR_KEY));
             }
+        } else {
+            $param = [];
         }
 
         $this->appid = $params['appid'];

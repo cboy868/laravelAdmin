@@ -17,6 +17,8 @@ class ApiStatus {
     const CODE_1002 = '1002';//方法错误
 
     const CODE_1011 = '1011';//操作失败
+
+    const CODE_1021 = '1021';//资源不存在
     //-+----------------------------------------------------------------------
     // | 业务参数错误
     // | 用户部分
@@ -36,6 +38,7 @@ class ApiStatus {
         self::CODE_1001 => 'params required',
         self::CODE_1002 => 'method wrong',
         self::CODE_1011 => 'operation failed',
+        self::CODE_1021 => 'resource not existed',
 
         self::CODE_2001 => 'login failed',
         self::CODE_2002 => 'Unauthorized'

@@ -36,7 +36,7 @@ Route::group([
     }
 
     //其它后台操作均需要授权
-    Route::middleware('auth:api')->group(function ($router)use($version, $action) {
+//    Route::middleware('auth:api')->group(function ($router)use($version, $action) {
         $router->post('/', $version .'\\'. $action);
-    });
+//    });
 });
