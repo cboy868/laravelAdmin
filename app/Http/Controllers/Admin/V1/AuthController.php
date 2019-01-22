@@ -1,8 +1,6 @@
 <?php
-/**
- * 这是个测试文件
- */
-namespace App\Http\Controllers\Api\Admin\V1\User;
+
+namespace App\Http\Controllers\Admin\V1;
 
 use App\Common\ApiStatus;
 use App\Http\Controllers\ApiController;

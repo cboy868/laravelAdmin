@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\Admin\V1;
+namespace App\Http\Controllers\Admin\V1;
 
 use App\Common\ApiStatus;
 use App\Http\Controllers\ApiController;

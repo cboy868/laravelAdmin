@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
 */
 //方法一，通过读取配置获取路由
 Route::group([
-    'namespace' => 'api\admin',
+    'namespace' => 'admin',
     'prefix' => 'admin'
 ], function ($router) {
     //确定版本
