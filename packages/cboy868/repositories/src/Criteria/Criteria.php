@@ -1,7 +1,6 @@
 <?php
 namespace Cboy868\Repositories\Criteria;
 
-
 use Cboy868\Repositories\Contracts\RepositoryInterface as Repository;
 /**
  *

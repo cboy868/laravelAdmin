@@ -1,5 +1,5 @@
 <?php
-namespace Cboy868\Repositories\Eloquent;
+namespace Cboy868\Repositories\Exceptions;
 /**
  *
  * @author: wansq

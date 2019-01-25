@@ -4,8 +4,43 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "601581c20c19786f148ec509af184d4a",
+    "content-hash": "e3565addabe4a3da1236150f9d501ba4",
     "packages": [
+        {
+            "name": "cboy868/repositories",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cboy868/repository.git",
+                "reference": "14fe6ea68bc3971bafc489c64190f97ef3f9c2af"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cboy868/repository/zipball/14fe6ea68bc3971bafc489c64190f97ef3f9c2af",
+                "reference": "14fe6ea68bc3971bafc489c64190f97ef3f9c2af",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/database": "5.*",
+                "illuminate/support": "5.*",
+                "php": ">=5.4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Cboy868\\Repositories\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "wansq",
+                    "email": "cboy868@163.com"
+                }
+            ],
+            "description": "Laravel Repositories",
+            "time": "2019-01-25T10:01:47+00:00"
+        },
         {
             "name": "dnoegel/php-xdg-base-dir",
             "version": "0.1",
@@ -5178,6 +5213,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
+        "cboy868/repositories": 20,
         "tymon/jwt-auth": 20
     },
     "prefer-stable": true,
