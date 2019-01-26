@@ -7,13 +7,13 @@ Run the following command from you terminal:
 
 
  ```bash
- composer require "cboy868/repositories: 0.*"
+ composer require "cboy868/repositories: dev-master"
  ```
 
 or add this to require section in your composer.json file:
 
  ```
- "cboy868/repositories": "0.*"
+ "cboy868/repositories": "dev-master"
  ```
 
 then run ```composer update```
