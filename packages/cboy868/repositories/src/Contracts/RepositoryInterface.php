@@ -2,13 +2,9 @@
 namespace Cboy868\Repositories\Contracts;
 
 /**
- *
- * @author: wansq
- * @since: 1.0
- * Date: 2019/1/25
- * Time: 16:48
+ * Interface RepositoryInterface
+ * @package Cboy868\Repositories\Contracts
  */
-
 interface RepositoryInterface
 {
     /**
@@ -16,39 +12,46 @@ interface RepositoryInterface
      * @return mixed
      */
     public function all($columns = array('*'));
+
     /**
      * @param $perPage
      * @param array $columns
      * @return mixed
      */
     public function paginate($perPage = 1, $columns = array('*'));
+
     /**
      * @param array $data
      * @return mixed
      */
     public function create(array $data);
+
     /**
      * @param array $data
      * @return bool
      */
     public function saveModel(array $data);
+
     /**
      * @param array $data
      * @param $id
      * @return mixed
      */
     public function update(array $data, $id);
+
     /**
      * @param $id
      * @return mixed
      */
     public function delete($id);
+
     /**
      * @param $id
      * @param array $columns
      * @return mixed
      */
     public function find($id, $columns = array('*'));
+
     /**
      * @param $field
      * @param $value
@@ -56,6 +59,7 @@ interface RepositoryInterface
      * @return mixed
      */
     public function findBy($field, $value, $columns = array('*'));
+
     /**
      * @param $field
      * @param $value
@@ -63,10 +67,19 @@ interface RepositoryInterface
      * @return mixed
      */
     public function findAllBy($field, $value, $columns = array('*'));
+
     /**
+     * 增加查找条件 并返回自身  链式调用
      * @param $where
-     * @param array $columns
      * @return mixed
      */
-    public function findWhere($where, $columns = array('*'));
+    public function where(array $where, $or=false);
+
+    /**
+     * 排序 并返回自身  链式调用
+     * @param $field
+     * @param $sort
+     * @return mixed
+     */
+    public function orderBy($field, $sort);
 }

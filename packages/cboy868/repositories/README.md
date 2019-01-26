@@ -20,13 +20,13 @@ then run ```composer update```
 
 ## Usage
 
-First, create your repository class. Note that your repository class MUST extend ```Bosnadev\Repositories\Eloquent\Repository``` and implement model() method
+First, create your repository class. Note that your repository class MUST extend ```Cboy868\Repositories\Eloquent\Repository``` and implement model() method
 
 ```php
 <?php namespace App\Repositories;
 
-use Bosnadev\Repositories\Contracts\RepositoryInterface;
-use Bosnadev\Repositories\Eloquent\Repository;
+use Cboy868\Repositories\Contracts\RepositoryInterface;
+use Cboy868\Repositories\Eloquent\Repository;
 
 class FilmsRepository extends Repository {
 

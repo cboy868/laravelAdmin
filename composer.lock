@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e3565addabe4a3da1236150f9d501ba4",
+    "content-hash": "f0a8c312496128ac9c0e89667373d484",
     "packages": [
         {
             "name": "cboy868/repositories",

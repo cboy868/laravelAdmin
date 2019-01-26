@@ -9,24 +9,16 @@ use Cboy868\Repositories\Criteria\Criteria;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 /**
- *
- * @author: wansq
- * @since: 1.0
- * Date: 2019/1/25
- * Time: 16:57
+ * Class Repository
+ * @package Cboy868\Repositories\Eloquent
  */
-
 abstract class Repository implements RepositoryInterface, CriteriaInterface
 {
-    /**
-     * @var App
-     */
     private $app;
-    /**
-     * @var
-     */
     protected $model;
     protected $newModel;
+
+
     /**
      * @var Collection
      */
@@ -182,18 +174,15 @@ abstract class Repository implements RepositoryInterface, CriteriaInterface
         $this->applyCriteria();
         return $this->model->where($attribute, '=', $value)->get($columns);
     }
+
     /**
-     * Find a collection of models by the given query conditions.
-     *
+     * make a collection of models by the given query conditions and return self.
      * @param array $where
-     * @param array $columns
      * @param bool $or
-     *
-     * @return \Illuminate\Database\Eloquent\Collection|null
+     * @return $this
      */
-    public function findWhere($where, $columns = ['*'], $or = false)
+    public function where(array $where, $or = false)
     {
-        $this->applyCriteria();
         $model = $this->model;
         foreach ($where as $field => $value) {
             if ($value instanceof \Closure) {
@@ -218,8 +207,24 @@ abstract class Repository implements RepositoryInterface, CriteriaInterface
                     : $model->orWhere($field, '=', $value);
             }
         }
-        return $model->get($columns);
+
+        $this->model = $model;
+        return $this;
     }
+
+    /**
+     * 为查询结果排序
+     * @param $field
+     * @param $sort
+     * @return $this
+     */
+    public function orderBy($field, $sort)
+    {
+        $this->model = $this->model->orderBy($field, $sort);
+
+        return $this;
+    }
+
     /**
      * @return \Illuminate\Database\Eloquent\Builder
      * @throws RepositoryException
@@ -228,6 +233,7 @@ abstract class Repository implements RepositoryInterface, CriteriaInterface
     {
         return $this->setModel($this->model());
     }
+
     /**
      * Set Eloquent Model to instantiate
      *
@@ -243,6 +249,7 @@ abstract class Repository implements RepositoryInterface, CriteriaInterface
             throw new RepositoryException("Class {$this->newModel} must be an instance of Illuminate\\Database\\Eloquent\\Model");
         return $this->model = $this->newModel;
     }
+
     /**
      * @return $this
      */
@@ -251,6 +258,7 @@ abstract class Repository implements RepositoryInterface, CriteriaInterface
         $this->skipCriteria(false);
         return $this;
     }
+
     /**
      * @param bool $status
      * @return $this
@@ -260,6 +268,7 @@ abstract class Repository implements RepositoryInterface, CriteriaInterface
         $this->skipCriteria = $status;
         return $this;
     }
+
     /**
      * @return mixed
      */
@@ -267,6 +276,7 @@ abstract class Repository implements RepositoryInterface, CriteriaInterface
     {
         return $this->criteria;
     }
+
     /**
      * @param Criteria $criteria
      * @return $this
@@ -276,6 +286,7 @@ abstract class Repository implements RepositoryInterface, CriteriaInterface
         $this->model = $criteria->apply($this->model, $this);
         return $this;
     }
+
     /**
      * @param Criteria $criteria
      * @return $this
@@ -295,6 +306,7 @@ abstract class Repository implements RepositoryInterface, CriteriaInterface
         $this->criteria->push($criteria);
         return $this;
     }
+
     /**
      * @return $this
      */

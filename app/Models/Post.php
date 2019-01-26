@@ -19,7 +19,16 @@ class Post extends Model
 {
     use Likeable;
 
+    /**
+     * 状态
+     */
+    const STATUS_ACTIVE = 1;
+    const STATUS_DELETE = -1;
+    const STATUS_VERIFYING = 0;
+
     protected $table = 'post';
+
+    protected $primaryKey = 'id';
 
     /**
      * The attributes that are mass assignable.

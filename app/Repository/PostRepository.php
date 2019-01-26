@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Repository;
+
 use Cboy868\Repositories\Eloquent\Repository;
 
 /**

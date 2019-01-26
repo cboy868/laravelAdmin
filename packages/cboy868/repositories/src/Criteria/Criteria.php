@@ -2,14 +2,13 @@
 namespace Cboy868\Repositories\Criteria;
 
 use Cboy868\Repositories\Contracts\RepositoryInterface as Repository;
+
 /**
- *
- * @author: wansq
- * @since: 1.0
- * Date: 2019/1/25
- * Time: 17:06
+ * Class Criteria
+ * @package Cboy868\Repositories\Criteria
  */
 abstract class Criteria {
+
     /**
      * @param $model
      * @param Repository $repository

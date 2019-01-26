@@ -12,14 +12,22 @@ namespace App\Http\Controllers\Admin\V1;
 
 use App\Common\ApiStatus;
 use App\Http\Controllers\ApiController;
+use App\Repository\Criteria\Status;
 use App\Http\Resources\PostCollection;
-use App\Models\Post;
 use App\Http\Resources\PostResource;
 use Illuminate\Http\Request;
 use Response;
+use App\Repository\PostRepository as Post;
 
 class PostController extends ApiController
 {
+    protected $post;
+
+    public function __construct(Post $post)
+    {
+        $this->post = $post;
+    }
+
     /**
      * 文章列表
      * @return mixed
@@ -27,18 +35,31 @@ class PostController extends ApiController
      */
     public function index(Request $request)
     {
-        $pageLevel = $request->input('params.page_size', self::PAGE_SIZE_TWO);
-        $pageSize = isset(self::$pageSize[$pageLevel]) ? self::$pageSize[$pageLevel] : 20;
 
-        $result = PostResource::collection(
-            Post::search($request->input("params.title"))
-                ->withCount('likes')
-                ->with('author')
-                ->latest()
-                ->paginate($pageSize)
-        );
+//        $model = $this->post->model();
+//
+//        $this->post->pushCriteria(new Status($model::STATUS_ACTIVE));
 
-        return $this->respond($result);
+
+
+
+        return $this->respond($this->post->where([
+            ['title', 'like', 'the-%']
+        ])->orderBy('id', 'DESC')->paginate(25, ['title']));
+
+
+//        $pageLevel = $request->input('params.page_size', self::PAGE_SIZE_TWO);
+//        $pageSize = isset(self::$pageSize[$pageLevel]) ? self::$pageSize[$pageLevel] : 20;
+//
+//        $result = PostResource::collection(
+//            Post::search($request->input("params.title"))
+//                ->withCount('likes')
+//                ->with('author')
+//                ->latest()
+//                ->paginate($pageSize)
+//        );
+//
+//        return $this->respond($result);
     }
 
     /**
