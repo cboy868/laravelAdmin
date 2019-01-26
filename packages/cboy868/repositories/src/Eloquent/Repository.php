@@ -62,10 +62,21 @@ abstract class Repository implements RepositoryInterface, CriteriaInterface
      * @param array $relations
      * @return $this
      */
-    public function with(array $relations)
+    public function with($relations)
     {
         $this->model = $this->model->with($relations);
         return $this;
+    }
+
+    /**
+     * 取固定字段
+     * @param $relations
+     * @param array $columns
+     * @return mixed
+     */
+    public function withOnly($relations, Array $columns)
+    {
+        return $this->model->withOnly($relations, $columns);
     }
     /**
      * @param  string $value

@@ -53,6 +53,13 @@ class Post extends Model
         'posted_at'
     ];
 
+    public function scopeWithOnly(Builder $query, $relation, Array $columns)
+    {
+        return $query->with([$relation => function ($query) use ($columns){
+            $query->select(array_merge(['id'], $columns));
+        }]);
+    }
+
     /**
      * Return the post's author
      */

@@ -35,31 +35,20 @@ class PostController extends ApiController
      */
     public function index(Request $request)
     {
+        $model = $this->post->model();
+        $this->post->pushCriteria(new Status($model::STATUS_ACTIVE));
 
-//        $model = $this->post->model();
-//
-//        $this->post->pushCriteria(new Status($model::STATUS_ACTIVE));
+        $pageLevel = $request->input('params.page_size', self::PAGE_SIZE_TWO);
+        $pageSize = isset(self::$pageSize[$pageLevel]) ? self::$pageSize[$pageLevel] : 25;
 
+        $result = PostResource::collection(
+            $this->post->where([
+                ['title', 'like', 'the-%']
+            ])->orderBy('id', 'DESC')->with('author')
+                ->paginate($pageSize)
+        );
 
-
-
-        return $this->respond($this->post->where([
-            ['title', 'like', 'the-%']
-        ])->orderBy('id', 'DESC')->paginate(25, ['title']));
-
-
-//        $pageLevel = $request->input('params.page_size', self::PAGE_SIZE_TWO);
-//        $pageSize = isset(self::$pageSize[$pageLevel]) ? self::$pageSize[$pageLevel] : 20;
-//
-//        $result = PostResource::collection(
-//            Post::search($request->input("params.title"))
-//                ->withCount('likes')
-//                ->with('author')
-//                ->latest()
-//                ->paginate($pageSize)
-//        );
-//
-//        return $this->respond($result);
+        return $this->respond($result);
     }
 
     /**
