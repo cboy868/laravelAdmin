@@ -73,7 +73,7 @@ interface RepositoryInterface
      * @param $where
      * @return mixed
      */
-    public function where(array $where, $or=false);
+    public function where(Array $where, $or=false);
 
     /**
      * 排序 并返回自身  链式调用

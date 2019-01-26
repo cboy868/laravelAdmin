@@ -192,7 +192,7 @@ abstract class Repository implements RepositoryInterface, CriteriaInterface
      * @param bool $or
      * @return $this
      */
-    public function where(array $where, $or = false)
+    public function where(Array $where, $or = false)
     {
         $model = $this->model;
         foreach ($where as $field => $value) {

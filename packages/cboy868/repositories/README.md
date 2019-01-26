@@ -23,56 +23,129 @@ then run ```composer update```
 First, create your repository class. Note that your repository class MUST extend ```Cboy868\Repositories\Eloquent\Repository``` and implement model() method
 
 ```php
-<?php namespace App\Repositories;
+<?php 
 
-use Cboy868\Repositories\Contracts\RepositoryInterface;
+namespace App\Repository;
 use Cboy868\Repositories\Eloquent\Repository;
 
-class FilmsRepository extends Repository {
-
-    public function model() {
-        return 'App\Film';
+class PostRepository extends Repository
+{
+    function model()
+    {
+        return 'App\Models\Post';
     }
 }
 ```
 
-By implementing ```model()``` method you telling repository what model class you want to use. Now, create ```App\Film``` model:
+By implementing ```model()``` method you telling repository what model class you want to use. Now, create ```App\post``` model:
 
 ```php
-<?php namespace App;
+<?php 
+namespace App\Models;
 
+use App\Concern\Likeable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Film extends Model {
+class Post extends Model
+{
+    use Likeable;
 
-    protected $primaryKey = 'film_id';
+    /**
+     * 状态
+     */
+    const STATUS_ACTIVE = 1;
+    const STATUS_DELETE = -1;
+    const STATUS_VERIFYING = 0;
 
-    protected $table = 'film';
-
-    protected $casts = [
-        "rental_rate"       => 'float'
+    protected $table = 'post';
+    protected $primaryKey = 'id';
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'author_id',
+        'title',
+        'content',
+        'posted_at',
+        'thumbnail_id',
+        'status'
     ];
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = [
+        'posted_at'
+    ];
+
+    public function scopeWithOnly(Builder $query, $relation, Array $columns)
+    {
+        return $query->with([$relation => function ($query) use ($columns){
+            $query->select(array_merge(['id'], $columns));
+        }]);
+    }
+
+    /**
+     * Return the post's author
+     */
+    public function author(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'author_id');
+    }
 }
 ```
 
 And finally, use the repository in the controller:
 
 ```php
-<?php namespace App\Http\Controllers;
+<?php
+namespace App\Http\Controllers\Admin\V1;
 
-use App\Repositories\FilmsRepository as Film;
+use App\Common\ApiStatus;
+use App\Http\Controllers\ApiController;
+use App\Repository\Criteria\Status;
+use App\Http\Resources\PostCollection;
+use App\Http\Resources\PostResource;
+use Illuminate\Http\Request;
+use Response;
+use App\Repository\PostRepository as Post;
 
-class FilmsController extends Controller {
+class PostController extends ApiController
+{
+    protected $post;
 
-    private $film;
-
-    public function __construct(Film $film) {
-
-        $this->film = $film;
+    public function __construct(Post $post)
+    {
+        $this->post = $post;
     }
 
-    public function index() {
-        return \Response::json($this->film->all());
+    public function index(Request $request)
+    {
+        
+        $pageLevel = $request->input('params.page_size', self::PAGE_SIZE_TWO);
+        $pageSize = isset(self::$pageSize[$pageLevel]) ? self::$pageSize[$pageLevel] : 25;
+
+        // $result = PostResource::collection(
+        //     $this->post->where([
+        //         ['title', 'like', 'the-%']
+        //     ])->orderBy('id', 'DESC')->with('author')
+        //         ->paginate($pageSize)
+        // );
+
+        //或者
+        $result = $this->post->where([
+                ['title', 'like', 'the-%']
+            ])
+        ->orderBy('id', 'DESC')
+        ->with('author')
+        ->paginate($pageSize);
+
+        return $this->respond($result);
     }
 }
 ```
@@ -94,7 +167,12 @@ public function delete($id)
 public function find($id, $columns = array('*'))
 public function findBy($field, $value, $columns = array('*'))
 public function findAllBy($field, $value, $columns = array('*'))
-public function findWhere($where, $columns = array('*'))
+//chaining call
+public function where($where, $or=false)
+public function with($relations)
+//定义要取的字段
+public function withOnly($relations, Array $columns)
+
 ```
 
 ##### Cboy868\Repositories\Contracts\CriteriaInterface
@@ -106,54 +184,45 @@ public function apply($model, Repository $repository)
 ### Example usage
 
 
-Create a new film in repository:
+Create a new post in repository:
 
 ```php
-$this->film->create(Input::all());
+$this->post->create(Input::all());
 ```
 
-Update existing film:
+Update existing post:
 
 ```php
-$this->film->update(Input::all(), $film_id);
+$this->post->update(Input::all(), $post_id);
 ```
 
-Delete film:
+Delete post:
 
 ```php
-$this->film->delete($id);
+$this->post->delete($id);
 ```
 
-Find film by film_id;
+Find post by post_id;
 
 ```php
-$this->film->find($id);
+$this->post->find($id);
 ```
 
 you can also chose what columns to fetch:
 
 ```php
-$this->film->find($id, ['title', 'description', 'release_date']);
+$this->post->find($id, ['title', 'description', 'release_date']);
 ```
 
 Get a single row by a single column criteria.
 
 ```php
-$this->film->findBy('title', $title);
+$this->post->findBy('title', $title);
 ```
 
 Or you can get all rows by a single column criteria.
 ```php
-$this->film->findAllBy('author_id', $author_id);
-```
-
-Get all results by multiple fields
-
-```php
-$this->film->findWhere([
-    'author_id' => $author_id,
-    ['year','>',$year]
-]);
+$this->post->findAllBy('author_id', $author_id);
 ```
 
 ## Criteria
@@ -163,21 +232,25 @@ Criteria is a simple way to apply specific condition, or set of conditions to th
 Here is a simple criteria:
 
 ```php
-<?php namespace App\Repositories\Criteria\Films;
+<?php 
+namespace App\Repository\Criteria;
 
+use App\Models\Post;
 use Cboy868\Repositories\Criteria\Criteria;
 use Cboy868\Repositories\Contracts\RepositoryInterface as Repository;
 
-class LengthOverTwoHours extends Criteria {
+class Status extends Criteria
+{
+    protected $status;
 
-    /**
-     * @param $model
-     * @param RepositoryInterface $repository
-     * @return mixed
-     */
+    public function __construct($status)
+    {
+        $this->status = $status;
+    }
+
     public function apply($model, Repository $repository)
     {
-        $model = $model->where('length', '>', 120);
+        $model = $model->where('status', '=', $this->status);
         return $model;
     }
 }
@@ -188,29 +261,27 @@ Now, inside you controller class you call pushCriteria method:
 ```php
 <?php namespace App\Http\Controllers;
 
-use App\Repositories\Criteria\Films\LengthOverTwoHours;
-use App\Repositories\FilmsRepository as Film;
+use App\Repositories\Criteria\posts\LengthOverTwoHours;
+use App\Repositories\postsRepository as post;
 
-class FilmsController extends Controller {
+class postsController extends Controller {
 
     /**
-     * @var Film
+     * @var post
      */
-    private $film;
+    private $post;
 
-    public function __construct(Film $film) {
+    public function __construct(post $post) {
 
-        $this->film = $film;
+        $this->post = $post;
     }
 
     public function index() {
-        $this->film->pushCriteria(new LengthOverTwoHours());
-        return \Response::json($this->film->all());
+        $model = $this->post->model();
+        //$model::STATUS_ACTIVE active posts
+        $this->post->pushCriteria(new Status($model::STATUS_ACTIVE));
+
+        return \Response::json($this->post->all());
     }
 }
 ```
-
-
-## Credits
-
-This package is largely inspired by [this](https://github.com/prettus/l5-repository) great package by @andersao. [Here](https://github.com/anlutro/laravel-repository/) is another package I used as reference.

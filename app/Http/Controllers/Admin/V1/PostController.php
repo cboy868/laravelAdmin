@@ -41,12 +41,19 @@ class PostController extends ApiController
         $pageLevel = $request->input('params.page_size', self::PAGE_SIZE_TWO);
         $pageSize = isset(self::$pageSize[$pageLevel]) ? self::$pageSize[$pageLevel] : 25;
 
-        $result = PostResource::collection(
-            $this->post->where([
+        // $result = PostResource::collection(
+        //     $this->post->where([
+        //         ['title', 'like', 'the-%']
+        //     ])->orderBy('id', 'DESC')->with('author')
+        //         ->paginate($pageSize)
+        // );
+
+        $result = $this->post->where([
                 ['title', 'like', 'the-%']
-            ])->orderBy('id', 'DESC')->with('author')
-                ->paginate($pageSize)
-        );
+            ])
+        ->orderBy('id', 'DESC')
+        ->with('author')
+        ->paginate($pageSize);
 
         return $this->respond($result);
     }
