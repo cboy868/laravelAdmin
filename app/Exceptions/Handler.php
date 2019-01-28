@@ -6,7 +6,6 @@ use App\Traits\ApiResponse;
 use Exception;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use Illuminate\Support\Facades\Log;
 use Response;
 use App\Common\ApiStatus;
 use Psr\Log\LoggerInterface;
@@ -67,6 +66,23 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        $requestUri = $request->getRequestUri();
+
+        //如果是接口访问
+        if (strstr($requestUri, 'api')) {
+
+            $code = $exception->getCode();
+            $msg = $exception->getMessage();
+
+            return Response::json(
+                [
+                    'code' => $code ? $code : ApiStatus::CODE_1099,
+                    'msg'  => $msg,
+                    'status' => 'error',
+                    'data' => []
+                ]);
+        }
+
         return parent::render($request, $exception);
     }
 

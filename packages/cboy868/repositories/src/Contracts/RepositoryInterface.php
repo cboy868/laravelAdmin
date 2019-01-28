@@ -82,4 +82,35 @@ interface RepositoryInterface
      * @return mixed
      */
     public function orderBy($field, $sort);
+
+
+    ///////////////////////////////////////////////////////
+    /// 软删除相应方法
+    /// ///////////////////////////////////////////////////
+
+    /**
+     * 软删除
+     * @param $id
+     * @return mixed
+     */
+    public function trash($id);
+
+    /**
+     * 获取软删除的数据
+     * @return mixed
+     */
+    public function onlyTrashed();
+
+    /**
+     * 包括软删除和未删除的所有符合条件数据
+     * @return mixed
+     */
+    public function withTrashed();
+
+    /**
+     * 数据恢复有效
+     * @return mixed
+     */
+    public function restore($id);
+
 }

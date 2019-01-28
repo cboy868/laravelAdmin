@@ -9,5 +9,9 @@ return [
 
         'post_list' => 'PostController@index',
         'post_show' => 'PostController@show',
+        'post_create' => 'PostController@create',
+        'post_edit' => 'PostController@edit',
+        'post_delete' => 'PostController@delete',
+        'post_restore' => 'PostController@restore',
     ]
 ];

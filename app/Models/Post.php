@@ -14,10 +14,11 @@ use App\Concern\Likeable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Post extends Model
 {
-    use Likeable;
+    use Likeable,SoftDeletes;
 
     /**
      * 状态
@@ -25,6 +26,8 @@ class Post extends Model
     const STATUS_ACTIVE = 1;
     const STATUS_DELETE = -1;
     const STATUS_VERIFYING = 0;
+
+    const DELETED_AT = 'deleted_at';
 
     protected $table = 'post';
 

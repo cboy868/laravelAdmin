@@ -15,8 +15,10 @@ use App\Http\Controllers\ApiController;
 use App\Repository\Criteria\Status;
 use App\Http\Resources\PostCollection;
 use App\Http\Resources\PostResource;
+use Cboy868\Repositories\Exceptions\RepositoryException;
 use Illuminate\Http\Request;
 use App\Repository\PostRepository as Post;
+use Auth;
 
 class PostController extends ApiController
 {
@@ -34,8 +36,8 @@ class PostController extends ApiController
      */
     public function index(Request $request)
     {
-        $model = $this->post->model();
-        $this->post->pushCriteria(new Status($model::STATUS_ACTIVE));
+//        $model = $this->post->model();
+//        $this->post->pushCriteria(new Status($model::STATUS_ACTIVE));
 
         $pageLevel = $request->input('params.page_size', self::PAGE_SIZE_TWO);
         $pageSize = isset(self::$pageSize[$pageLevel]) ? self::$pageSize[$pageLevel] : 25;
@@ -59,7 +61,7 @@ class PostController extends ApiController
     /**
      * Return the specified resource.
      */
-    public function show(Request $request)
+    public function show()
     {
         $rules = [
             'id' => 'required|integer'
@@ -76,5 +78,100 @@ class PostController extends ApiController
         }
 
         return $this->failed(ApiStatus::CODE_1021);
+    }
+
+
+    /**
+     * 创建新model
+     */
+    public function create()
+    {
+        $rules = [
+            'title' => 'required',
+            'content' => 'required'
+        ];
+
+        if (!$this->_dealParams($rules)) {
+            return $this->failed(ApiStatus::CODE_1001, session()->get(self::SESSION_ERR_KEY));
+        }
+
+        try {
+            $params = $this->params;
+            $params['posted_at'] = $params['posted_at'] ?? date("Y-m-d H:i:s");
+            $params['author_id'] = $this->user->id;
+
+            $model = $this->post->create($params);
+        } catch (RepositoryException $e) {
+            throw new \Exception($e->getMessage(), $e->getCode());
+        }
+        return $this->respond($model->toArray());
+    }
+
+    /**
+     * 修改
+     */
+    public function edit()
+    {
+        $rules = [
+            'id' => 'required|integer',
+        ];
+
+        if (!$this->_dealParams($rules)) {
+            return $this->failed(ApiStatus::CODE_1001, session()->get(self::SESSION_ERR_KEY));
+        }
+
+        try {
+            $params = $this->params;
+            $model = $this->post->update($params, $params['id']);
+        } catch (RepositoryException $e) {
+            throw new \Exception($e->getMessage(), $e->getCode());
+        }
+        return $this->respond($model->toArray());
+    }
+
+    /**
+     * 软删除
+     * @return mixed
+     * @throws \Exception
+     */
+    public function delete()
+    {
+        $rules = [
+            'id' => 'required|integer',
+        ];
+
+        if (!$this->_dealParams($rules)) {
+            return $this->failed(ApiStatus::CODE_1001, session()->get(self::SESSION_ERR_KEY));
+        }
+
+        try {
+            $result = $this->post->trash($this->params['id']);
+        } catch (RepositoryException $e) {
+            throw new \Exception($e->getMessage(), $e->getCode());
+        }
+        return $this->respond($result);
+    }
+
+    /**
+     * 恢复软删除数据
+     * @return mixed
+     * @throws \Exception
+     */
+    public function restore()
+    {
+        $rules = [
+            'id' => 'required|integer',
+        ];
+
+        if (!$this->_dealParams($rules)) {
+            return $this->failed(ApiStatus::CODE_1001, session()->get(self::SESSION_ERR_KEY));
+        }
+
+        try {
+            $result = $this->post->restore($this->params['id']);
+        } catch (RepositoryException $e) {
+            throw new \Exception($e->getMessage(), $e->getCode());
+        }
+        return $this->respond($result);
     }
 }

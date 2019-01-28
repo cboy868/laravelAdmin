@@ -32,12 +32,13 @@ class ApiController extends BaseController
 
     protected $params;
 
+    protected $user;
+
     static $pageSize = [
         self::PAGE_SIZE_ONE => 10,
         self::PAGE_SIZE_TWO => 20,
         self::PAGE_SIZE_FIVE => 50
     ];
-
 
     protected function _dealParams($rules=[])
     {
@@ -71,6 +72,8 @@ class ApiController extends BaseController
         $this->method = $params['method'];
 
         $this->params = $param;
+
+        $this->user = auth('api')->user();
 
         return true;
     }

@@ -1,6 +1,7 @@
 <?php
 namespace Cboy868\Repositories\Eloquent;
 
+use App\Common\ApiStatus;
 use Illuminate\Container\Container as App;
 use Cboy868\Repositories\Contracts\RepositoryInterface;
 use Cboy868\Repositories\Exceptions\RepositoryException;
@@ -8,6 +9,9 @@ use Cboy868\Repositories\Contracts\CriteriaInterface;
 use Cboy868\Repositories\Criteria\Criteria;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Log;
+
 /**
  * Class Repository
  * @package Cboy868\Repositories\Eloquent
@@ -108,7 +112,20 @@ abstract class Repository implements RepositoryInterface, CriteriaInterface
      */
     public function create(array $data)
     {
-        return $this->model->create($data);
+        try {
+            $model = $this->model->create($data);
+        } catch (QueryException $e) {
+
+            Log::error(__METHOD__,[
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+                'file' => $e->getFile()
+            ]);
+
+            throw new RepositoryException("Create failure");
+        }
+
+        return $model;
     }
     /**
      * save a model without massive assignment
@@ -121,7 +138,21 @@ abstract class Repository implements RepositoryInterface, CriteriaInterface
         foreach ($data as $k => $v) {
             $this->model->$k = $v;
         }
-        return $this->model->save();
+
+        try {
+            $result = $this->model->save();
+        } catch (QueryException $e) {
+
+            Log::error(__METHOD__,[
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+                'file' => $e->getFile()
+            ]);
+
+            throw new RepositoryException("SaveModel failure");
+        }
+
+        return $result;
     }
     /**
      * @param array $data
@@ -131,7 +162,20 @@ abstract class Repository implements RepositoryInterface, CriteriaInterface
      */
     public function update(array $data, $id, $attribute = "id")
     {
-        return $this->model->where($attribute, '=', $id)->update($data);
+        try {
+            $result = $this->model->where($attribute, '=', $id)->update($data);
+        } catch (QueryException $e) {
+
+            Log::error(__METHOD__,[
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+                'file' => $e->getFile()
+            ]);
+
+            throw new RepositoryException("update failure");
+        }
+
+        return $result;
     }
     /**
      * @param  array $data
@@ -143,7 +187,21 @@ abstract class Repository implements RepositoryInterface, CriteriaInterface
         if (!($model = $this->model->find($id))) {
             return false;
         }
-        return $model->fill($data)->save();
+
+        try {
+            $result = $model->fill($data)->save();
+        } catch (QueryException $e) {
+
+            Log::error(__METHOD__,[
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+                'file' => $e->getFile()
+            ]);
+
+            throw new RepositoryException("updateRich failure");
+        }
+
+        return $result;
     }
     /**
      * @param $id
@@ -151,7 +209,20 @@ abstract class Repository implements RepositoryInterface, CriteriaInterface
      */
     public function delete($id)
     {
-        return $this->model->destroy($id);
+
+        try {
+            $result = $this->model->destroy($id);
+        } catch (QueryException $e) {
+            Log::error(__METHOD__,[
+                'code' => $e->getCode(),
+                'msg' => $e->getMessage(),
+                'file' => $e->getFile()
+            ]);
+
+            throw new RepositoryException("Destroy failure");
+        }
+
+        return $result;
     }
     /**
      * @param $id
@@ -330,5 +401,59 @@ abstract class Repository implements RepositoryInterface, CriteriaInterface
                 $this->model = $criteria->apply($this->model, $this);
         }
         return $this;
+    }
+
+
+    /**
+     * 软删除动作
+     * @param $id
+     * @return mixed|void
+     */
+    public function trash($id)
+    {
+        $model = $this->model->find($id);
+
+        if (!$model) {
+            throw new RepositoryException('data not found', ApiStatus::CODE_1021);
+        }
+
+        return $model->delete();
+    }
+
+    /**
+     * 只包括软删除的数据
+     * @return mixed|void
+     */
+    public function onlyTrashed()
+    {
+        $this->model->onlyTrashed();
+        return $this;
+    }
+
+    /**
+     * 包括所有类型数据
+     * @return mixed|void
+     */
+    public function withTrashed()
+    {
+        $this->model->withTrashed();
+        return $this;
+    }
+
+    /**
+     * 数据恢复
+     * @param $id
+     * @return mixed
+     * @throws RepositoryException
+     */
+    public function restore($id)
+    {
+        $model = $this->model->onlyTrashed()->find($id);
+
+        if (!$model) {
+            throw new RepositoryException('data not found', ApiStatus::CODE_1021);
+        }
+
+        return $model->restore();
     }
 }

@@ -20,7 +20,7 @@ class CreatePostTable extends Migration
             $table->string('title');
             $table->text('content');
             $table->datetime('posted_at');
-            $table->smallInteger('status');//状态
+            $table->smallInteger('status')->default(0);//状态
             $table->timestamps();
         });
     }
