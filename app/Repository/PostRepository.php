@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use Cboy868\Repositories\Eloquent\Repository;
+use Cboy868\Repositories\Eloquent\SoftDeleteRepository;
 
 /**
  *
@@ -12,7 +13,7 @@ use Cboy868\Repositories\Eloquent\Repository;
  * Time: 17:28
  */
 
-class PostRepository extends Repository
+class PostRepository extends SoftDeleteRepository
 {
     function model()
     {
