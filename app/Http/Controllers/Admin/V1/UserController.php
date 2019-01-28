@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Request;
 use App\Common\ApiStatus;
 
 
-class UserController extends ApiController
+class UserController extends AdminController
 {
 	
 	public function index(){

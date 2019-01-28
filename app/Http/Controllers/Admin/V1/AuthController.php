@@ -3,11 +3,10 @@
 namespace App\Http\Controllers\Admin\V1;
 
 use App\Common\ApiStatus;
-use App\Http\Controllers\ApiController;
 use Illuminate\Support\Facades\Log;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
-class AuthController extends ApiController
+class AuthController extends AdminController
 {
     /**
      * Create a new AuthController instance.

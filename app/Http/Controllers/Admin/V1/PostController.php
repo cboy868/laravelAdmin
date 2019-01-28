@@ -11,7 +11,6 @@ namespace App\Http\Controllers\Admin\V1;
 
 
 use App\Common\ApiStatus;
-use App\Http\Controllers\ApiController;
 use App\Repository\Criteria\Status;
 use App\Http\Resources\PostCollection;
 use App\Http\Resources\PostResource;
@@ -20,7 +19,7 @@ use Illuminate\Http\Request;
 use App\Repository\PostRepository as Post;
 use Auth;
 
-class PostController extends ApiController
+class PostController extends AdminController
 {
     protected $post;
 

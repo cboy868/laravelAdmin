@@ -3,9 +3,8 @@
 namespace App\Http\Controllers\Admin\V1;
 
 use App\Common\ApiStatus;
-use App\Http\Controllers\ApiController;
 
-class ErrorController extends ApiController
+class ErrorController extends AdminController
 {
     public function noApi()
     {
