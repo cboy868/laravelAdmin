@@ -16,7 +16,6 @@ use App\Repository\Criteria\Status;
 use App\Http\Resources\PostCollection;
 use App\Http\Resources\PostResource;
 use Illuminate\Http\Request;
-use Response;
 use App\Repository\PostRepository as Post;
 
 class PostController extends ApiController
@@ -41,19 +40,18 @@ class PostController extends ApiController
         $pageLevel = $request->input('params.page_size', self::PAGE_SIZE_TWO);
         $pageSize = isset(self::$pageSize[$pageLevel]) ? self::$pageSize[$pageLevel] : 25;
 
-        // $result = PostResource::collection(
-        //     $this->post->where([
-        //         ['title', 'like', 'the-%']
-        //     ])->orderBy('id', 'DESC')->with('author')
-        //         ->paginate($pageSize)
-        // );
+        //查询条件
+        $where = [];
+        if ($title = $request->input('params.title')) {
+            array_push($where, ['title', 'like', '%'.$title.'%']);
+        }
 
-        $result = $this->post->where([
-                ['title', 'like', 'the-%']
-            ])
-        ->orderBy('id', 'DESC')
-        ->with('author')
-        ->paginate($pageSize);
+         $result = PostResource::collection(
+             $this->post->where($where)
+                 ->orderBy('id', 'DESC')
+                 ->with('author')
+                 ->paginate($pageSize)
+         );
 
         return $this->respond($result);
     }
@@ -71,7 +69,7 @@ class PostController extends ApiController
             return $this->failed(ApiStatus::CODE_1001, session()->get(self::SESSION_ERR_KEY));
         }
 
-        $model = Post::find($this->params['id']);
+        $model = $this->post->find($this->params['id']);
 
         if ($model) {
             return $this->respond($model->toArray());
