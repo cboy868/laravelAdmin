@@ -180,6 +180,9 @@ return [
         //微信
         Overtrue\LaravelWeChat\ServiceProvider::class,
 
+        //图片处理
+        Intervention\Image\ImageServiceProvider::class
+
     ],
 
     /*
@@ -235,6 +238,9 @@ return [
 
         //微信
         'EasyWeChat' => Overtrue\LaravelWeChat\Facade::class,
+
+        //图片处理
+        'Image' => Intervention\Image\Facades\Image::class
 
     ],
 
