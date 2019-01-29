@@ -47,12 +47,10 @@ class PostController extends AdminController
             array_push($where, ['title', 'like', '%'.$title.'%']);
         }
 
-         $result = PostResource::collection(
-             $this->post->where($where)
+        $result = $this->post->where($where)
                  ->orderBy('id', 'DESC')
                  ->with('author')
-                 ->paginate($pageSize)
-         );
+                 ->paginate($pageSize);
 
         return $this->respond($result);
     }
