@@ -175,7 +175,10 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
-        Tymon\JWTAuth\Providers\LaravelServiceProvider::class
+        Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
+
+        //微信
+        Overtrue\LaravelWeChat\ServiceProvider::class,
 
     ],
 
@@ -228,7 +231,10 @@ return [
 
 
         'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
-        'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class
+        'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
+
+        //微信
+        'EasyWeChat' => Overtrue\LaravelWeChat\Facade::class,
 
     ],
 
