@@ -55,7 +55,11 @@ class ApiController extends BaseController
 
 
             if ($validator->fails()) {
-                Log::error('api-params-deal-error',['param'=>$param,'rules'=>$rules]);
+                Log::error('api-params-deal-error',[
+                    'param'=>$param,
+                    'rules'=>$rules,
+                    'errors' => $validator->errors()
+                ]);
                 session()->flash(self::SESSION_ERR_KEY, $validator->errors()->first());
 
                 return false;

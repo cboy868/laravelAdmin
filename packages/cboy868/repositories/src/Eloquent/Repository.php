@@ -294,6 +294,12 @@ abstract class Repository implements RepositoryInterface, CriteriaInterface
         return $this;
     }
 
+
+    public function getTable()
+    {
+        return $this->model->getTable();
+    }
+
     /**
      * 为查询结果排序
      * @param $field

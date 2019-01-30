@@ -82,13 +82,15 @@ class PostController extends AdminController
      */
     public function create()
     {
+        $table = $this->post->getTable();
+
         $rules = [
-            'title' => 'required',
+            'title' => 'required|min:3|max:255|unique:' . $table,
             'content' => 'required'
         ];
 
         if (!$this->_dealParams($rules)) {
-            return $this->failed(ApiStatus::CODE_1001, session()->get(self::SESSION_ERR_KEY));
+            return $this->setCodeMsg(session()->get(self::SESSION_ERR_KEY))->failed(ApiStatus::CODE_1001);
         }
 
         try {
