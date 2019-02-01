@@ -181,7 +181,10 @@ return [
         Overtrue\LaravelWeChat\ServiceProvider::class,
 
         //图片处理
-        Intervention\Image\ImageServiceProvider::class
+        Intervention\Image\ImageServiceProvider::class,
+
+        //rbac权限管理
+        Spatie\Permission\PermissionServiceProvider::class,
 
     ],
 
