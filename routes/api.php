@@ -31,14 +31,14 @@ Route::group([
     }
 
     //登录无需授权
-    if ($method == 'auth_user_login') {
+    if ($method == 'auth_admin_login') {
         return $router->post('/', $version .'\\'. $action);
     }
 
     //其它后台操作均需要授权
-//    Route::middleware('auth:admin')->group(function ($router)use($version, $action) {
+    Route::middleware(['auth:admin', 'auth.token'])->group(function ($router)use($version, $action) {
         $router->post('/', $version .'\\'. $action);
-//    });
+    });
 });
 
 //会员
@@ -66,7 +66,7 @@ Route::group([
     }
 
     //其它后台操作均需要授权
-//    Route::middleware('auth:api')->group(function ($router)use($version, $action) {
-    $router->post('/', $version .'\\'. $action);
-//    });
+    Route::middleware(['auth:member', 'auth.token'])->group(function ($router)use($version, $action) {
+        $router->post('/', $version .'\\'. $action);
+    });
 });

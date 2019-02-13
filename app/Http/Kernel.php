@@ -21,7 +21,7 @@ class Kernel extends HttpKernel
         \App\Http\Middleware\TrustProxies::class,
 
         //跨域中间件
-        \App\Http\Middleware\CrossHttp::class
+        \App\Http\Middleware\CrossHttp::class,
     ];
 
     /**
@@ -44,7 +44,7 @@ class Kernel extends HttpKernel
             'throttle:60,1',
             'bindings',
             'apirequest',
-            'cross'
+            'cross',
         ],
     ];
 
@@ -68,7 +68,10 @@ class Kernel extends HttpKernel
 
         'apirequest' => \App\Http\Middleware\ApiRequest::class,
 
-        'cross' => \App\Http\Middleware\CrossHttp::class
+        'cross' => \App\Http\Middleware\CrossHttp::class,
+
+        //jwt auth中间件
+        'auth.token' => \App\Http\Middleware\AuthToken::class
 
         //微信oauth中间件
 //        'wechat.oauth' => \Overtrue\LaravelWeChat\Middleware\OAuthAuthenticate::class,

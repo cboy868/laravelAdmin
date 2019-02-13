@@ -29,7 +29,10 @@ class ApiStatus {
     const CODE_2001 = '2001';//登录失败
     //用户授权部分
     const CODE_2002 = '2002';//授权失败
-
+    //授权过期
+    const CODE_2003 = '2003';//授权过期
+    //授权过期
+    const CODE_2004 = '2004';//缺少token
     //-+----------------------------------------------------------------------
     // | 业务参数错误
     // | 文章部分
@@ -46,6 +49,8 @@ class ApiStatus {
 
         self::CODE_2001 => 'login failed',
         self::CODE_2002 => 'Unauthorized',
+        self::CODE_2003 => 'Token Expired',
+        self::CODE_2004 => 'Token Required',
 
         self::CODE_3001 => 'Add failure'
     ];
