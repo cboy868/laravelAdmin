@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Admin\V1;
+namespace App\Http\Controllers\Member\V1;
 
 use App\Common\ApiStatus;
 use Illuminate\Support\Facades\Log;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
-class AuthController extends AdminController
+class AuthController extends MemberController
 {
     /**
      * Create a new AuthController instance.
@@ -14,7 +14,7 @@ class AuthController extends AdminController
      */
     public function __construct()
     {
-        $this->middleware('auth:admin', ['except' => ['login']]);
+        $this->middleware('auth:api', ['except' => ['login']]);
     }
 
     /**
@@ -28,7 +28,7 @@ class AuthController extends AdminController
         $params = $authRequest->input('params');
 
         try {
-            if (! $token = auth('admin')->attempt($params)) {
+            if (! $token = auth('api')->attempt($params)) {
                 return $this->failed(ApiStatus::CODE_2001);
             }
             return $this->respondWithToken($token);
@@ -48,7 +48,7 @@ class AuthController extends AdminController
      */
     public function me()
     {
-        return $this->success(['info'=>auth('admin')->user()]);
+        return $this->success(['info'=>auth('api')->user()]);
     }
 
     /**
@@ -59,7 +59,7 @@ class AuthController extends AdminController
     public function logout()
     {
         try{
-            auth('admin')->logout();
+            auth('api')->logout();
             return $this->setCodeMsg("Successfully logged out")->success();
         } catch (\Exception $e) {
             return $this->failed(ApiStatus::CODE_1001);
@@ -74,7 +74,7 @@ class AuthController extends AdminController
      */
     public function refresh()
     {
-        return $this->respondWithToken(auth('admin')->refresh());
+        return $this->respondWithToken(auth('api')->refresh());
     }
 
     /**
@@ -89,7 +89,7 @@ class AuthController extends AdminController
         return $this->success([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth('admin')->factory()->getTTL() * 60
+            'expires_in' => auth('api')->factory()->getTTL() * 60
         ]);
     }
 }

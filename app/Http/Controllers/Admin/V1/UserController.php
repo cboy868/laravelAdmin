@@ -2,11 +2,8 @@
 namespace App\Http\Controllers\Admin\V1;
 
 
-use App\Http\Controllers\ApiController;
-//use JWTAuth;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
-use Illuminate\Support\Facades\Request;
 use App\Common\ApiStatus;
 
 

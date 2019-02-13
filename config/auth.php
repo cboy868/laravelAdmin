@@ -36,19 +36,21 @@ return [
     */
 
     'guards' => [
-        'admin' => [
-            'driver' => 'session',
+        'admin' => [//后台管理员登录
+            'driver' => 'jwt',
             'provider' => 'admins',
         ],
 
+        //全用接口，这里没用
         'web' => [
             'driver' => 'session',
-            'provider' => 'users',
+            'provider' => 'members',
         ],
 
+        //会员登录
         'api' => [
             'driver' => 'jwt',
-            'provider' => 'users',
+            'provider' => 'members',
         ],
     ],
 
@@ -73,6 +75,16 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => App\User::class,
+        ],
+
+        'members' => [
+            'driver' => 'eloquent',
+            'model' => App\Member::class,
+        ],
+
+        'admins' => [
+            'driver' => 'eloquent',
+            'model' => App\Admin::class,
         ],
 
         // 'users' => [
