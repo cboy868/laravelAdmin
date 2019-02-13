@@ -11,7 +11,6 @@ namespace App\Http\Controllers\Admin\V1;
 
 
 use App\Common\ApiStatus;
-use App\Repository\Criteria\Status;
 use App\Http\Resources\PostCollection;
 use Cboy868\Repositories\Exceptions\RepositoryException;
 use Illuminate\Http\Request;
@@ -57,17 +56,9 @@ class PostController extends AdminController
     /**
      * Return the specified resource.
      */
-    public function show()
+    public function show(\App\Http\Requests\PostRequest $postRequest)
     {
-        $rules = [
-            'id' => 'required|integer'
-        ];
-
-        if (!$this->_dealParams($rules)) {
-            return $this->failed(ApiStatus::CODE_1001, session()->get(self::SESSION_ERR_KEY));
-        }
-
-        $model = $this->post->find($this->params['id']);
+        $model = $this->post->find($postRequest->input('params.id'));
 
         if ($model) {
             return $this->respond($model->toArray());
@@ -80,21 +71,11 @@ class PostController extends AdminController
     /**
      * 创建新model
      */
-    public function create()
+    public function create(\App\Http\Requests\PostRequest $postRequest)
     {
-        $table = $this->post->getTable();
-
-        $rules = [
-            'title' => 'required|min:3|max:255|unique:' . $table,
-            'content' => 'required'
-        ];
-
-        if (!$this->_dealParams($rules)) {
-            return $this->setCodeMsg(session()->get(self::SESSION_ERR_KEY))->failed(ApiStatus::CODE_1001);
-        }
+        $params = $postRequest->input('params');
 
         try {
-            $params = $this->params;
             $params['posted_at'] = $params['posted_at'] ?? date("Y-m-d H:i:s");
             $params['author_id'] = $this->user->id;
 
@@ -102,29 +83,23 @@ class PostController extends AdminController
         } catch (RepositoryException $e) {
             throw new \Exception($e->getMessage(), $e->getCode());
         }
+
         return $this->respond($model->toArray());
     }
 
     /**
      * 修改
      */
-    public function edit()
+    public function edit(\App\Http\Requests\PostRequest $postRequest)
     {
-        $rules = [
-            'id' => 'required|integer',
-        ];
-
-        if (!$this->_dealParams($rules)) {
-            return $this->failed(ApiStatus::CODE_1001, session()->get(self::SESSION_ERR_KEY));
-        }
+        $params = $postRequest->input('params');
 
         try {
-            $params = $this->params;
-            $model = $this->post->update($params, $params['id']);
+            $this->post->update($params, $params['id']);
         } catch (RepositoryException $e) {
             throw new \Exception($e->getMessage(), $e->getCode());
         }
-        return $this->respond($model->toArray());
+        return $this->respond([]);
     }
 
     /**
@@ -132,18 +107,10 @@ class PostController extends AdminController
      * @return mixed
      * @throws \Exception
      */
-    public function delete()
+    public function delete(\App\Http\Requests\PostRequest $postRequest)
     {
-        $rules = [
-            'id' => 'required|integer',
-        ];
-
-        if (!$this->_dealParams($rules)) {
-            return $this->failed(ApiStatus::CODE_1001, session()->get(self::SESSION_ERR_KEY));
-        }
-
         try {
-            $result = $this->post->trash($this->params['id']);
+            $result = $this->post->trash($postRequest->input('params.id'));
         } catch (RepositoryException $e) {
             throw new \Exception($e->getMessage(), $e->getCode());
         }
@@ -155,18 +122,10 @@ class PostController extends AdminController
      * @return mixed
      * @throws \Exception
      */
-    public function restore()
+    public function restore(\App\Http\Requests\PostRequest $postRequest)
     {
-        $rules = [
-            'id' => 'required|integer',
-        ];
-
-        if (!$this->_dealParams($rules)) {
-            return $this->failed(ApiStatus::CODE_1001, session()->get(self::SESSION_ERR_KEY));
-        }
-
         try {
-            $result = $this->post->restore($this->params['id']);
+            $result = $this->post->restore($postRequest->input('params.id'));
         } catch (RepositoryException $e) {
             throw new \Exception($e->getMessage(), $e->getCode());
         }

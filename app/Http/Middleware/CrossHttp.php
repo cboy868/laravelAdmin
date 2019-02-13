@@ -18,7 +18,6 @@ class CrossHttp
     {
         $response = $next($request);
 
-        Log::error('kuayu!');
         //todo 这的ip里要写成配置
         $response->header('Access-Control-Allow-Origin', '*');
         $response->header('Access-Control-Allow-Headers', 'Origin, Content-Type, Cookie, Accept');
