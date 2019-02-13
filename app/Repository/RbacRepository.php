@@ -105,6 +105,6 @@ class RbacRepository
 
     public function userRoles()
     {
-        
+
     }
 }
