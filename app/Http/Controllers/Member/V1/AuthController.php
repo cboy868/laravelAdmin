@@ -14,7 +14,7 @@ class AuthController extends MemberController
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login']]);
+        $this->middleware('auth:member', ['except' => ['login']]);
     }
 
     /**
@@ -28,7 +28,7 @@ class AuthController extends MemberController
         $params = $authRequest->input('params');
 
         try {
-            if (! $token = auth('api')->attempt($params)) {
+            if (! $token = auth('member')->attempt($params)) {
                 return $this->failed(ApiStatus::CODE_2001);
             }
             return $this->respondWithToken($token);
@@ -48,7 +48,7 @@ class AuthController extends MemberController
      */
     public function me()
     {
-        return $this->success(['info'=>auth('api')->user()]);
+        return $this->success(['info'=>auth('member')->user()]);
     }
 
     /**
@@ -59,7 +59,7 @@ class AuthController extends MemberController
     public function logout()
     {
         try{
-            auth('api')->logout();
+            auth('member')->logout();
             return $this->setCodeMsg("Successfully logged out")->success();
         } catch (\Exception $e) {
             return $this->failed(ApiStatus::CODE_1001);
@@ -74,7 +74,7 @@ class AuthController extends MemberController
      */
     public function refresh()
     {
-        return $this->respondWithToken(auth('api')->refresh());
+        return $this->respondWithToken(auth('member')->refresh());
     }
 
     /**
@@ -89,7 +89,7 @@ class AuthController extends MemberController
         return $this->success([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth('api')->factory()->getTTL() * 60
+            'expires_in' => auth('member')->factory()->getTTL() * 60
         ]);
     }
 }

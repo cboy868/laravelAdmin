@@ -48,7 +48,7 @@ return [
         ],
 
         //会员登录
-        'api' => [
+        'member' => [
             'driver' => 'jwt',
             'provider' => 'members',
         ],
