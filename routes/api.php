@@ -36,9 +36,9 @@ Route::group([
     }
 
     //其它后台操作均需要授权
-    Route::middleware(['auth:admin', 'auth.token'])->group(function ($router)use($version, $action) {
+//    Route::middleware(['auth:admin', 'auth.token'])->group(function ($router)use($version, $action) {
         $router->post('/', $version .'\\'. $action);
-    });
+//    });
 });
 
 //会员
