@@ -15,7 +15,8 @@
         "laravel/tinker": "^1.0",
         "overtrue/laravel-wechat": "~4.0",
         "spatie/laravel-permission": "^2.30",
-        "tymon/jwt-auth": "dev-develop"
+        "tymon/jwt-auth": "dev-develop",
+        "cboy868/repositories":"dev-master"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",
@@ -37,8 +38,7 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "app/",
-            "Cboy868\\Repositories\\" : "packages/cboy868/repositories/src/"
+            "App\\": "app/"
         },
         "classmap": [
             "database/seeds",
