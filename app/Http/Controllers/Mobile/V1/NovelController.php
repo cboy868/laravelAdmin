@@ -11,10 +11,7 @@ namespace App\Http\Controllers\Mobile\V1;
 
 
 use App\Common\ApiStatus;
-use App\Http\Resources\PostCollection;
-use Cboy868\Repositories\Exceptions\RepositoryException;
 use Illuminate\Http\Request;
-use Auth;
 use App\Entities\Novel\Repository\NovelRepository;
 use App\Entities\Novel\Requests\NovelRequest;
 
@@ -47,14 +44,14 @@ class NovelController extends MobileController
                  ->orderBy('id', 'DESC')
                  ->with('author')
                  ->paginate($pageSize);
-
-//        ->with(['contents'=>function($query) use ($request){
-//        dd($request->input('params.page', 1));
-//    }])
-
         return $this->respond($result);
     }
 
+    /**
+     * 单页信息,用户请求
+     * @param NovelRequest $novelRequest
+     * @return mixed
+     */
     public function show(NovelRequest $novelRequest)
     {
         $model = $this->model->with('author')
