@@ -18,7 +18,6 @@ class UserAccountsWechat extends Migration
             $table->unsignedInteger('user_id');
             $table->string('unionid', 255);
             $table->string('openid', 255);
-            $table->unsignedInteger('user_id');
             $table->string('nickname');
             $table->string('remark');
             $table->tinyInteger('sex');
