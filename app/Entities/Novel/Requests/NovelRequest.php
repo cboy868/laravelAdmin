@@ -13,13 +13,19 @@ class NovelRequest extends FormRequest
 {
 
     protected $rules = [
+        'title' => 'required|min:1|max:255|unique:novel',
+        'type' => 'required',
+        'summary' => 'max:500',
+        'category_id' => 'integer',
+        'author_id' => 'integer',
+        'rate' => 'integer',
+        'like' => 'integer',
+        'words' => 'integer',
+        'type' => 'integer'
     ];
 
     public function rules()
     {
-        $method = $this->input('method');
-        $rules = $this->rules;
-
-        return $rules;
+        return $this->rules;
     }
 }

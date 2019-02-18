@@ -7,7 +7,7 @@
  * Time: 10:38
  */
 
-namespace App\Models\Novel;
+namespace App\Entities\Novel;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;

@@ -29,9 +29,9 @@ class CreateNovel extends Migration
             $table->increments('id');
 
             $table->string('title', 255);//标题
-            $table->unsignedSmallInteger('category_id');//分类
-            $table->unsignedInteger('author_id');//作者
-            $table->string('summary');//内容简介
+            $table->unsignedSmallInteger('category_id')->default(0);//分类 默认值0默认分类
+            $table->unsignedInteger('author_id')->default(0);//作者 默认0
+            $table->text('summary');//内容简介
             $table->unsignedSmallInteger('rate');//推荐指数
             $table->unsignedInteger('like');//点赞数
             $table->unsignedInteger('words');//字数

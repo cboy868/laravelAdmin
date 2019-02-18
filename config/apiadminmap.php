@@ -13,5 +13,8 @@ return [
         'post_edit' => 'PostController@edit',
         'post_delete' => 'PostController@delete',
         'post_restore' => 'PostController@restore',
+
+
+        'novel_list' => 'NovelController@index',
     ]
 ];
