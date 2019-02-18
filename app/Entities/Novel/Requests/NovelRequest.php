@@ -26,6 +26,17 @@ class NovelRequest extends FormRequest
 
     public function rules()
     {
-        return $this->rules;
+        $method = $this->input('method');
+        $rules = $this->rules;
+
+        if (in_array($method, ['novel.show']))//如果是show方法
+        {
+            //只有这一个条件
+            $rules = [
+                'id' => 'required|integer'
+            ];
+        }
+
+        return $rules;
     }
 }
