@@ -10,11 +10,6 @@ class PostRequest extends FormRequest
         'content' => 'required',
     ];
 
-    protected function validationData()
-    {
-        return $this->input('params');
-    }
-
     public function rules()
     {
         $method = $this->input('method');

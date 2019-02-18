@@ -4,8 +4,49 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e6123e027229640569239a981162e921",
+    "content-hash": "99e89cb38bf0b141a2acd1468c64d057",
     "packages": [
+        {
+            "name": "cboy868/repositories",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cboy868/laravel-repository.git",
+                "reference": "9ef9874a10fce27ea2aa2abf6eda33ed2dcdb531"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cboy868/laravel-repository/zipball/9ef9874a10fce27ea2aa2abf6eda33ed2dcdb531",
+                "reference": "9ef9874a10fce27ea2aa2abf6eda33ed2dcdb531",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "illuminate/database": "5.*",
+                "illuminate/support": "5.*",
+                "php": ">=5.4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Cboy868\\Repositories\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "wansq",
+                    "email": "cboy868@163.com"
+                }
+            ],
+            "description": "Laravel Repositories",
+            "time": "2019-01-30T09:57:16+00:00"
+        },
         {
             "name": "dnoegel/php-xdg-base-dir",
             "version": "0.1",
@@ -4531,47 +4572,6 @@
             "time": "2018-10-04T07:22:24+00:00"
         },
         {
-            "name": "cboy868/repositories",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/cboy868/repository.git",
-                "reference": "88ff759d31e38454be4725fff2a660f1803cb51f"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/cboy868/repository/zipball/88ff759d31e38454be4725fff2a660f1803cb51f",
-                "reference": "88ff759d31e38454be4725fff2a660f1803cb51f",
-                "shasum": "",
-                "mirrors": [
-                    {
-                        "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
-                        "preferred": true
-                    }
-                ]
-            },
-            "require": {
-                "illuminate/database": "5.*",
-                "illuminate/support": "5.*",
-                "php": ">=5.4.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Cboy868\\Repositories\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "authors": [
-                {
-                    "name": "wansq",
-                    "email": "cboy868@163.com"
-                }
-            ],
-            "description": "Laravel Repositories",
-            "time": "2019-01-26T07:16:27+00:00"
-        },
-        {
             "name": "doctrine/instantiator",
             "version": "1.1.0",
             "source": {
@@ -6464,6 +6464,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
+        "cboy868/repositories": 20,
         "tymon/jwt-auth": 20
     },
     "prefer-stable": true,
