@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 */
 
 require_once 'apiAdmin.php';
+
 //会员
 Route::group([
     'namespace' => 'member',

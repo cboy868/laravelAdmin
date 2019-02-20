@@ -11,7 +11,6 @@ namespace App\Http\Controllers\Admin\V1;
 
 
 use App\Common\ApiStatus;
-use App\Http\Resources\PostCollection;
 use Cboy868\Repositories\Exceptions\RepositoryException;
 use Illuminate\Http\Request;
 use Auth;
@@ -54,9 +53,9 @@ class NovelController extends AdminController
     /**
      * Return the specified resource.
      */
-    public function show(\App\Http\Requests\PostRequest $postRequest)
+    public function show($id)
     {
-        $model = $this->post->find($postRequest->input('params.id'));
+        $model = $this->post->find($id);
 
         if ($model) {
             return $this->respond($model->toArray());
@@ -69,7 +68,7 @@ class NovelController extends AdminController
     /**
      * 创建新model
      */
-    public function create(\App\Http\Requests\PostRequest $postRequest)
+    public function store(\App\Http\Requests\PostRequest $postRequest)
     {
         $params = $postRequest->input('params');
 
@@ -85,10 +84,25 @@ class NovelController extends AdminController
         return $this->respond($model->toArray());
     }
 
+
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function edit($id)
+    {
+        $model = $this->post->withTrashed()->find($id);
+
+        if ($model) {
+            return $this->respond($model->toArray());
+        }
+        return $this->failed(ApiStatus::CODE_1021);
+    }
+
     /**
      * 修改
      */
-    public function edit(\App\Http\Requests\PostRequest $postRequest)
+    public function update(\App\Http\Requests\PostRequest $postRequest)
     {
         $params = $postRequest->input('params');
 

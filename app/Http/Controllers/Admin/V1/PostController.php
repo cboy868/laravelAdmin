@@ -53,17 +53,33 @@ class PostController extends AdminController
         return $this->respond($result);
     }
 
+
     /**
      * Return the specified resource.
      */
-    public function show(\App\Http\Requests\PostRequest $postRequest)
+    public function show($id)
     {
-        $model = $this->post->find($postRequest->input('params.id'));
+        $model = $this->post->find($id);
 
         if ($model) {
             return $this->respond($model->toArray());
         }
+        return $this->failed(ApiStatus::CODE_1021);
+    }
 
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        $model = $this->post->withTrashed()->find($id);
+
+        if ($model) {
+            return $this->respond($model->toArray());
+        }
         return $this->failed(ApiStatus::CODE_1021);
     }
 
@@ -71,7 +87,7 @@ class PostController extends AdminController
     /**
      * 创建新model
      */
-    public function create(\App\Http\Requests\PostRequest $postRequest)
+    public function store(\App\Http\Requests\StorePostRequest $postRequest)
     {
         $params = $postRequest->input('params');
 
@@ -90,12 +106,20 @@ class PostController extends AdminController
     /**
      * 修改
      */
-    public function edit(\App\Http\Requests\PostRequest $postRequest)
+    public function update(\App\Http\Requests\UpdatePostRequest $postRequest)
     {
         $params = $postRequest->input('params');
-
         try {
-            $this->post->update($params, $params['id']);
+            if (isset($params['type']) && $params['type'] == 'restore') { //数据恢复
+                $this->post->restore($params['id']);
+            } else {
+                $this->post->update($params, $params['id']);
+            }
+
+
+
+
+
         } catch (RepositoryException $e) {
             throw new \Exception($e->getMessage(), $e->getCode());
         }
@@ -107,10 +131,10 @@ class PostController extends AdminController
      * @return mixed
      * @throws \Exception
      */
-    public function delete(\App\Http\Requests\PostRequest $postRequest)
+    public function destroy($id)
     {
         try {
-            $result = $this->post->trash($postRequest->input('params.id'));
+            $result = $this->post->trash($id);
         } catch (RepositoryException $e) {
             throw new \Exception($e->getMessage(), $e->getCode());
         }
@@ -122,13 +146,13 @@ class PostController extends AdminController
      * @return mixed
      * @throws \Exception
      */
-    public function restore(\App\Http\Requests\PostRequest $postRequest)
-    {
-        try {
-            $result = $this->post->restore($postRequest->input('params.id'));
-        } catch (RepositoryException $e) {
-            throw new \Exception($e->getMessage(), $e->getCode());
-        }
-        return $this->respond($result);
-    }
+//    public function restore(\App\Http\Requests\UpdatePostRequest $postRequest)
+//    {
+//        try {
+//            $result = $this->post->restore($postRequest->input('params.id'));
+//        } catch (RepositoryException $e) {
+//            throw new \Exception($e->getMessage(), $e->getCode());
+//        }
+//        return $this->respond($result);
+//    }
 }
