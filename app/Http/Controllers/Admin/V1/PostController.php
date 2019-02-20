@@ -106,20 +106,16 @@ class PostController extends AdminController
     /**
      * 修改
      */
-    public function update(\App\Http\Requests\UpdatePostRequest $postRequest)
+    public function update(\App\Http\Requests\UpdatePostRequest $postRequest, $id)
     {
+
         $params = $postRequest->input('params');
         try {
             if (isset($params['type']) && $params['type'] == 'restore') { //数据恢复
-                $this->post->restore($params['id']);
+                $this->post->withTrashed()->restore($id);
             } else {
-                $this->post->update($params, $params['id']);
+                $this->post->withTrashed()->update($params, $id);
             }
-
-
-
-
-
         } catch (RepositoryException $e) {
             throw new \Exception($e->getMessage(), $e->getCode());
         }

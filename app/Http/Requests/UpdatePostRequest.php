@@ -7,7 +7,7 @@ class UpdatePostRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'min:3|max:255|unique:post,title,'. $this->input('params.id'),
+            'title' => 'min:3|max:255|unique:post,title,'. $this->route('post'),
         ];
     }
 }
