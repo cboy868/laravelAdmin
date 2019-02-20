@@ -35,8 +35,9 @@ class CreateNovel extends Migration
             $table->unsignedSmallInteger('rate');//推荐指数
             $table->unsignedInteger('like');//点赞数
             $table->unsignedInteger('words');//字数
-            $table->unsignedSmallInteger('type');//类型 精品、历史、都市、玄幻等
-
+            $table->unsignedSmallInteger('type');//类型 精品1、历史2、都市3、玄幻4 等
+            $table->tinyInteger('status');//状态 1 正常 -1下架与软删除的区别是：这个在后台显示，但置灰
+            $table->softDeletes();
             $table->timestamps();
 
             $table->foreign('author_id')
