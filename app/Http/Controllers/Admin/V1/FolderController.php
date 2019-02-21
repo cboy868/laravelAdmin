@@ -41,23 +41,16 @@ class FolderController extends AdminController
         $new_folder = $request->get('new_folder');
         $folder = $request->get('folder').'/'.$new_folder;
 
-        $result = $this->manager->createDirectory($folder);
-
-        if ($result === true) {
-            return $this->respond();
+        try {
+            $result = $this->manager->createDirectory($folder);
+            if ($result === true) {
+                return $this->respond();
+            }
+        } catch (\Exception $e) {
+            return $this->failed(ApiStatus::CODE_3051);
         }
-        return $this->failed(ApiStatus::CODE_3051);
-    }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+        return $this->failed(ApiStatus::CODE_3051);
     }
 
     /**

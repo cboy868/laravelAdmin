@@ -41,12 +41,17 @@ class ApiStatus {
 
     //-+----------------------------------------------------------------------
     // | 业务参数错误
-    // | 文件目录
+    // | 文件及目录
     //-+----------------------------------------------------------------------
 
     const CODE_3051 = '3051';//创建目录失败
     const CODE_3052 = '3052';//目录删除失败
-
+    const CODE_3053 = '3053';//文件上传失败
+    const CODE_3054 = '3054';//文件删除失败
+    const CODE_3055 = '3055';//目录已存在
+    const CODE_3056 = '3056';//目录非空
+    const CODE_3057 = '3057';//文件未找到
+    const CODE_3058 = '3058';//文件已存在
 
 
     public static $errCodes = [
@@ -64,6 +69,9 @@ class ApiStatus {
 
         self::CODE_3001 => 'Add failure',
         self::CODE_3051 => 'Create folder error',
-        self::CODE_3052 => 'Delete folder error'
+        self::CODE_3052 => 'Delete folder error',
+        self::CODE_3053 => 'upload file error',
+        self::CODE_3055 => 'folder already exists',
+        self::CODE_3056 => 'folder not empty'
     ];
 }

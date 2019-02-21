@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin\V1;
 
+use App\Common\ApiStatus;
 use App\Http\Requests\UploadFileRequest;
 use App\Services\UploadsManager;
 use Illuminate\Http\Request;
@@ -47,49 +48,12 @@ class PictureController extends AdminController
         $result = $this->manager->saveFile($path, $content);
 
         if ($result === true) {
-            return redirect()
-                ->back()
-                ->withSuccess("File '$fileName' uploaded.");
+            return $this->respond([
+                'file' => $fileName
+            ]);
         }
 
-        $error = $result ? : "An error occurred uploading file.";
-        return redirect()
-            ->back()
-            ->withErrors([$error]);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
+        return $this->failed(ApiStatus::CODE_3053);
     }
 
     /**
@@ -106,14 +70,8 @@ class PictureController extends AdminController
         $result = $this->manager->deleteFile($path);
 
         if ($result === true) {
-            return redirect()
-                ->back()
-                ->withSuccess("File '$del_file' deleted.");
+            return $this->respond();
         }
-
-        $error = $result ? : "An error occurred deleting file.";
-        return redirect()
-            ->back()
-            ->withErrors([$error]);
+        return $this->failed(ApiStatus::CODE_3054);
     }
 }

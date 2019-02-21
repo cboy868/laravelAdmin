@@ -10,6 +10,7 @@
 
 namespace App\Services;
 
+use App\Common\ApiStatus;
 use Carbon\Carbon;
 use Dflydev\ApacheMimeTypes\PhpRepository;
 use Illuminate\Support\Facades\Storage;
@@ -65,6 +66,11 @@ class UploadsManager
         );
     }
 
+    /**
+     * 列出所有目录结构
+     * @param $folder
+     * @return array
+     */
     public function folders($folder)
     {
         $folder = $this->cleanFolder($folder);
@@ -79,16 +85,19 @@ class UploadsManager
             $subfolders["/$subfolder"] = basename($subfolder);
         }
 
-
         return compact(
             'folder',
             'folderName',
             'breadcrumbs',
             'subfolders'
-//            'files'
         );
     }
 
+    /**
+     * 列出目录下文件
+     * @param $folder
+     * @return array
+     */
     public function files($folder)
     {
         $folder = $this->cleanFolder($folder);
@@ -192,5 +201,70 @@ class UploadsManager
         return Carbon::createFromTimestamp(
             $this->disk->lastModified($path)
         );
+    }
+
+    /**
+     * 创建目录
+     * @param $folder
+     * @return bool
+     * @throws \Exception
+     */
+    public function createDirectory($folder)
+    {
+        $folder = $this->cleanFolder($folder);
+
+        if ($this->disk->exists($folder)) {
+            throw new \Exception("Folder '$folder' already exists.", ApiStatus::CODE_3055);
+        }
+
+        return $this->disk->makeDirectory($folder);
+    }
+
+    /**
+     * 删除目录
+     */
+    public function deleteDirectory($folder)
+    {
+        $folder = $this->cleanFolder($folder);
+
+        $filesFolders = array_merge(
+            $this->disk->directories($folder),
+            $this->disk->files($folder)
+        );
+
+
+        if (! empty($filesFolders)) {
+            throw new \Exception('Directory must be empty to delete it.', ApiStatus::CODE_3056);
+        }
+
+        return $this->disk->deleteDirectory($folder);
+    }
+
+    /**
+     * 删除文件
+     */
+    public function deleteFile($path)
+    {
+        $path = $this->cleanFolder($path);
+
+        if (! $this->disk->exists($path)) {
+            return new \Exception('File does not exist.', ApiStatus::CODE_3057);
+        }
+
+        return $this->disk->delete($path);
+    }
+
+    /**
+     * 保存文件
+     */
+    public function saveFile($path, $content)
+    {
+        $path = $this->cleanFolder($path);
+
+        if ($this->disk->exists($path)) {
+            return new \Exception('File already exists', ApiStatus::CODE_3058);
+        }
+
+        return $this->disk->put($path, $content);
     }
 }
