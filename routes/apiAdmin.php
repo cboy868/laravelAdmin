@@ -12,13 +12,13 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::resource('novels', 'NovelController');
+//Route::apiResource('novels', 'NovelController');
 
 
 Route::group([
     'prefix' => 'admin'
 ], function ($router){
-    Route::resource('posts', 'Admin\V1\PostController');
+    Route::apiResource('posts', 'Admin\V1\PostController');
 });
 
 //方法一，通过读取配置获取路由
