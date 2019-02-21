@@ -19,6 +19,8 @@ Route::group([
     'prefix' => 'admin'
 ], function ($router){
     Route::apiResource('posts', 'Admin\V1\PostController');
+    Route::apiResource('folders', 'Admin\V1\FolderController');
+    Route::apiResource('files', 'Admin\V1\PictureController');
 });
 
 //方法一，通过读取配置获取路由

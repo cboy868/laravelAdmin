@@ -6,7 +6,7 @@
  * Date: 2019/2/21
  * Time: 15:23
  */
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin\V1;
 
 use App\Http\Requests\UploadFileRequest;
 use App\Http\Requests\UploadNewFolderRequest;
@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\File;
 use App\Services\UploadsManager;
 use Illuminate\Http\Request;
 
-class UploadController extends ApiController
+class UploadController extends AdminController
 {
     protected $manager;
 
@@ -26,36 +26,36 @@ class UploadController extends ApiController
     /**
      * Show page of files / subfolders
      */
-    public function index(Request $request)
-    {
-        $folder = $request->get('folder');
-        $data = $this->manager->folderInfo($folder);
-
-        return view('admin.upload.index', $data);
-    }
+//    public function index(Request $request)
+//    {
+//        $folder = $request->get('folder');
+//        $data = $this->manager->folderInfo($folder);
+//
+//        return view('admin.upload.index', $data);
+//    }
 
 
     /**
      * 创建新目录
      */
-    public function createFolder(UploadNewFolderRequest $request)
-    {
-        $new_folder = $request->get('new_folder');
-        $folder = $request->get('folder').'/'.$new_folder;
-
-        $result = $this->manager->createDirectory($folder);
-
-        if ($result === true) {
-            return redirect()
-                ->back()
-                ->withSuccess("Folder '$new_folder' created.");
-        }
-
-        $error = $result ? : "An error occurred creating directory.";
-        return redirect()
-            ->back()
-            ->withErrors([$error]);
-    }
+//    public function createFolder(UploadNewFolderRequest $request)
+//    {
+//        $new_folder = $request->get('new_folder');
+//        $folder = $request->get('folder').'/'.$new_folder;
+//
+//        $result = $this->manager->createDirectory($folder);
+//
+//        if ($result === true) {
+//            return redirect()
+//                ->back()
+//                ->withSuccess("Folder '$new_folder' created.");
+//        }
+//
+//        $error = $result ? : "An error occurred creating directory.";
+//        return redirect()
+//            ->back()
+//            ->withErrors([$error]);
+//    }
 
     /**
      * 删除文件
@@ -82,24 +82,24 @@ class UploadController extends ApiController
     /**
      * 删除目录
      */
-    public function deleteFolder(Request $request)
-    {
-        $del_folder = $request->get('del_folder');
-        $folder = $request->get('folder').'/'.$del_folder;
-
-        $result = $this->manager->deleteDirectory($folder);
-
-        if ($result === true) {
-            return redirect()
-                ->back()
-                ->withSuccess("Folder '$del_folder' deleted.");
-        }
-
-        $error = $result ? : "An error occurred deleting directory.";
-        return redirect()
-            ->back()
-            ->withErrors([$error]);
-    }
+//    public function deleteFolder(Request $request)
+//    {
+//        $del_folder = $request->get('del_folder');
+//        $folder = $request->get('folder').'/'.$del_folder;
+//
+//        $result = $this->manager->deleteDirectory($folder);
+//
+//        if ($result === true) {
+//            return redirect()
+//                ->back()
+//                ->withSuccess("Folder '$del_folder' deleted.");
+//        }
+//
+//        $error = $result ? : "An error occurred deleting directory.";
+//        return redirect()
+//            ->back()
+//            ->withErrors([$error]);
+//    }
 
     /**
      * 上传文件

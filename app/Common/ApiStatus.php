@@ -39,6 +39,16 @@ class ApiStatus {
     //-+----------------------------------------------------------------------
     const CODE_3001 = '3001';//添加失败
 
+    //-+----------------------------------------------------------------------
+    // | 业务参数错误
+    // | 文件目录
+    //-+----------------------------------------------------------------------
+
+    const CODE_3051 = '3051';//创建目录失败
+    const CODE_3052 = '3052';//目录删除失败
+
+
+
     public static $errCodes = [
         self::CODE_0    => 'success',
         self::CODE_1001 => 'params required',
@@ -52,6 +62,8 @@ class ApiStatus {
         self::CODE_2003 => 'Token Expired',
         self::CODE_2004 => 'Token Required',
 
-        self::CODE_3001 => 'Add failure'
+        self::CODE_3001 => 'Add failure',
+        self::CODE_3051 => 'Create folder error',
+        self::CODE_3052 => 'Delete folder error'
     ];
 }

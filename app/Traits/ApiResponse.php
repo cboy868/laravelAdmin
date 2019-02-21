@@ -136,7 +136,7 @@ trait ApiResponse
      * @param array $header
      * @return mixed
      */
-    public function respond($data)
+    public function respond(array $data=[])
     {
         //如果是资源类型，则再添加code、msg、status
         if ($data instanceof ResourceCollection) {

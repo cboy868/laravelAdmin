@@ -1,6 +1,7 @@
 <?php
 
 //图片上传  参考https://laravelacademy.org/post/2333.html
+//需要建立软连接 php artisan storage:link
 
 /**
  *
@@ -13,7 +14,7 @@ return [
     'title' => 'My Blog',
     'posts_per_page' => 5,
     'uploads' => [
-        'storage' => 'local',
+        'storage' => 'picture',
         'webpath' => '/uploads',
     ],
 ];
