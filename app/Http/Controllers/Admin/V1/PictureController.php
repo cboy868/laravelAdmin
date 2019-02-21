@@ -5,10 +5,9 @@ namespace App\Http\Controllers\Admin\V1;
 use App\Http\Requests\UploadFileRequest;
 use App\Services\UploadsManager;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
 
-class PictureController extends Controller
+class PictureController extends AdminController
 {
     protected $manager;
 
@@ -22,9 +21,12 @@ class PictureController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $folder = $request->get('folder');
+        $data = $this->manager->files($folder);
+
+        return $this->respond($data);
     }
 
 

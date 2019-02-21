@@ -25,7 +25,7 @@ class FolderController extends AdminController
     public function index(Request $request)
     {
         $folder = $request->get('folder');
-        $data = $this->manager->folderInfo($folder);
+        $data = $this->manager->folders($folder);
 
         return $this->respond($data);
     }
