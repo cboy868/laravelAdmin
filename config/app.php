@@ -186,6 +186,9 @@ return [
         //rbac权限管理
         Spatie\Permission\PermissionServiceProvider::class,
 
+        //captcha
+        Mews\Captcha\CaptchaServiceProvider::class,
+
     ],
 
     /*
@@ -243,7 +246,10 @@ return [
         'EasyWeChat' => Overtrue\LaravelWeChat\Facade::class,
 
         //图片处理
-        'Image' => Intervention\Image\Facades\Image::class
+        'Image' => Intervention\Image\Facades\Image::class,
+
+        //验证码
+        'Captcha' => Mews\Captcha\Facades\Captcha::class
 
     ],
 
