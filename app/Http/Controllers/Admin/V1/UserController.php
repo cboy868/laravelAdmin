@@ -25,13 +25,13 @@ class UserController extends AdminController
 
         try {
             if (! $token = JWTAuth::attempt($this->params)) {
-                return $this->failed(ApiStatus::CODE_1051 );
+                return $this->failed(ApiStatus::CODE_2001 );
             }
 
             return $this->respond(['token'=>$token]);
         } catch (JWTException $e) {
             // something went wrong whilst attempting to encode the token
-            return $this->failed(ApiStatus::CODE_1051, $e->getMessage());
+            return $this->failed(ApiStatus::CODE_2001, $e->getMessage());
         }
 	}
 }
