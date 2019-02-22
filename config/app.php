@@ -250,7 +250,6 @@ return [
 
         //验证码
         'Captcha' => Mews\Captcha\Facades\Captcha::class
-
     ],
 
 ];
