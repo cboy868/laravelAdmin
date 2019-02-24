@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
 */
 
 require_once 'apiAdmin.php';
-
+\Illuminate\Support\Facades\Log::error(__METHOD__, \request()->input());
 //会员
 Route::group([
     'namespace' => 'member',

@@ -12,8 +12,8 @@ class FormRequest extends Request
         return true;
     }
 
-    protected function validationData()
-    {
-        return $this->input('params');
-    }
+//    protected function validationData()
+//    {
+//        return $this->input('params');
+//    }
 }

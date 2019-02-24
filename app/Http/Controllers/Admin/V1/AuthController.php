@@ -25,7 +25,9 @@ class AuthController extends AdminController
     public function login(\App\Http\Requests\AuthRequest $authRequest)
     {
 
-        $params = $authRequest->input('params');
+        $params = $authRequest->input();
+
+        Log::error(__METHOD__, $params);
 
         try {
             if (! $token = auth('admin')->attempt($params)) {
@@ -48,7 +50,7 @@ class AuthController extends AdminController
      */
     public function me()
     {
-        return $this->success(['info'=>auth('admin')->user()]);
+        return $this->success(auth('admin')->user());
     }
 
     /**
@@ -86,7 +88,7 @@ class AuthController extends AdminController
      */
     protected function respondWithToken($token)
     {
-        return $this->success([
+        return $this->setHeader(['Authorization'=>'Bearer ' . $token])->success([
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth('admin')->factory()->getTTL() * 60

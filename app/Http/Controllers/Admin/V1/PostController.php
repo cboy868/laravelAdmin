@@ -36,12 +36,12 @@ class PostController extends AdminController
 //        $model = $this->post->model();
 //        $this->post->pushCriteria(new Status($model::STATUS_ACTIVE));
 
-        $pageLevel = $request->input('params.page_size', self::PAGE_SIZE_TWO);
+        $pageLevel = $request->input('page_size', self::PAGE_SIZE_TWO);
         $pageSize = isset(self::$pageSize[$pageLevel]) ? self::$pageSize[$pageLevel] : 25;
 
         //查询条件
         $where = [];
-        if ($title = $request->input('params.title')) {
+        if ($title = $request->input('title')) {
             array_push($where, ['title', 'like', '%'.$title.'%']);
         }
 
@@ -89,11 +89,12 @@ class PostController extends AdminController
      */
     public function store(\App\Http\Requests\StorePostRequest $postRequest)
     {
-        $params = $postRequest->input('params');
+        $params = $postRequest->input();
 
         try {
             $params['posted_at'] = $params['posted_at'] ?? date("Y-m-d H:i:s");
-            $params['author_id'] = $this->user->id;
+//            $params['author_id'] = $this->user->id;
+            $params['author_id'] = auth('admin')->user()->id;
 
             $model = $this->post->create($params);
         } catch (RepositoryException $e) {
@@ -109,7 +110,7 @@ class PostController extends AdminController
     public function update(\App\Http\Requests\UpdatePostRequest $postRequest, $id)
     {
 
-        $params = $postRequest->input('params');
+        $params = $postRequest->input();
         try {
             if (isset($params['type']) && $params['type'] == 'restore') { //数据恢复
                 $this->post->withTrashed()->restore($id);
