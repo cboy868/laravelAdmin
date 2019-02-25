@@ -14,7 +14,10 @@ use Illuminate\Http\Request;
 */
 
 require_once 'apiAdmin.php';
-\Illuminate\Support\Facades\Log::error(__METHOD__, \request()->input());
+
+//取验证码
+Route::get('captcha', 'ShowCaptcha')->middleware('api');
+
 //会员
 Route::group([
     'namespace' => 'member',
