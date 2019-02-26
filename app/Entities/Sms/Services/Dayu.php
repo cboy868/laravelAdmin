@@ -18,6 +18,7 @@ class Dayu implements SmsInterface
 {
     public function sendSms()
     {
+
         AlibabaCloud::accessKeyClient('<accessKeyId>', '<accessSecret>')
             ->regionId('cn-hangzhou') // replace regionId as you need
             ->asGlobalClient();

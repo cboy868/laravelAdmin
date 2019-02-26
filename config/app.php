@@ -189,6 +189,8 @@ return [
         //captcha
         Mews\Captcha\CaptchaServiceProvider::class,
 
+        //短信服务
+        \App\Entities\Sms\DayuSmsServiceProvider::class
     ],
 
     /*
