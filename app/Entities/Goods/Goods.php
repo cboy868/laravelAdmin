@@ -11,6 +11,7 @@ namespace App\Entities\Goods;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Goods extends Model
 {
@@ -60,6 +61,16 @@ class Goods extends Model
     public function brand(): BelongsTo
     {
         return $this->belongsTo(Brand::class, 'brand_id');
+    }
+
+
+    /**
+     * sku
+     * @return HasMany
+     */
+    public function skus(): HasMany
+    {
+        return $this->hasMany(Sku::class, 'goods_id');
     }
 
 }
