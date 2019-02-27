@@ -27,7 +27,7 @@ class CreateGoods extends Migration
             $table->string('name');
             $table->unsignedTinyInteger('is_multi')->default(0);//是否可多选
             $table->unsignedTinyInteger('is_spec')->default(0);//是否是规格
-            $table->text('content');//详细介绍
+            $table->text('content')->nullable();//详细介绍
             $table->softDeletes();//软删除
             $table->foreign('type_id')
                 ->references('id')
@@ -41,7 +41,7 @@ class CreateGoods extends Migration
             $table->unsignedInteger('type_id');
             $table->unsignedInteger('attr_id')->index();
             $table->string('value');
-            $table->string('thumb');//图片
+            $table->string('thumb')->nullable();//图片
             $table->softDeletes();//软删除
             $table->foreign('type_id')
                 ->references('id')
@@ -57,14 +57,14 @@ class CreateGoods extends Migration
             $table->unsignedSmallInteger('level')->default(1);//树级
             $table->string('code', 100);
             $table->string('name', 255);
-            $table->text('intro');//分类介绍
-            $table->unsignedTinyInteger('sort');//排序
-            $table->unsignedTinyInteger('is_leaf');//是否根节点
-            $table->unsignedTinyInteger('is_show');//前台是否展示
-            $table->string('thumb');//分类图片
-            $table->string('seo_title');
-            $table->string('seo_keywords');
-            $table->text('seo_description');
+            $table->text('intro')->nullable();//分类介绍
+            $table->unsignedTinyInteger('sort')->default(0);//排序
+            $table->unsignedTinyInteger('is_leaf')->default(1);//是否根节点
+            $table->unsignedTinyInteger('is_show')->default(1);//前台是否展示
+            $table->string('thumb')->nullable();//分类图片
+            $table->string('seo_title')->nullable();
+            $table->string('seo_keywords')->nullable();
+            $table->text('seo_description')->nullable();
             $table->softDeletes();
             $table->timestamps();
 
@@ -79,9 +79,26 @@ class CreateGoods extends Migration
             $table->increments('id');
             $table->string('name')->index();//品牌名
             $table->string('cn_name')->index();//中文品牌名
-            $table->string('logo');//logo
+            $table->string('logo')->nullable();//logo
             $table->softDeletes();//软删除
             $table->timestamps();
+        });
+
+        //品牌也分类的关系多对多，需要加此中间表
+        Schema::create('goods_category_brand', function (Blueprint $table) {
+            $table->unsignedInteger('cid')->comment('分类id');//分类id
+            $table->unsignedInteger('brand_id');//品牌id
+            $table->softDeletes();//软删除
+
+            $table->foreign('cid')->references('id')->on('goods_category')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+
+            $table->foreign('brand_id')->references('id')->on('goods_brand')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+
+            $table->primary(['cid' , 'brand_id']);
         });
 
         //商品
@@ -92,15 +109,15 @@ class CreateGoods extends Migration
             $table->string('pinyin')->index();
             $table->string('goods_no')->unique();//商品编号
             $table->string('name');//商品名
-            $table->string('subtitle');
-            $table->string('thumb');
-            $table->string('keywords');//关键词
-            $table->text('description');//描述，有利seo
-            $table->text('content');
-            $table->string('unit');//单位
+            $table->string('subtitle')->nullable();
+            $table->string('thumb')->nullable();
+            $table->string('keywords')->nullable();//关键词
+            $table->text('description')->nullable();//描述，有利seo
+            $table->text('content')->nullable();
+            $table->string('unit')->nullable();//单位
             $table->unsignedInteger('sort')->default(0);
-            $table->decimal('min_price', 10, 2);//最低价
-            $table->decimal('max_price', 10, 2);//最高价
+            $table->unsignedInteger('min_price');//最低价单位分
+            $table->unsignedInteger('max_price');//最高价
             $table->tinyInteger('status')->default(1);//上下架 1 上架 -1下架
             $table->unsignedTinyInteger('is_recommend')->default(1);//是否推荐
             $table->unsignedTinyInteger('is_show')->default(1);//是否前台展示
@@ -126,7 +143,7 @@ class CreateGoods extends Migration
             $table->unsignedInteger('goods_id')->index();
             $table->unsignedInteger('attribute_key_id');
             $table->unsignedInteger('attribute_value_id');
-            $table->string('value');//值,此值应该是可以在添加商品时手动添加
+            $table->string('value')->nullable();//值,此值应该是可以在添加商品时手动添加
             $table->softDeletes();//软删除
             $table->foreign('type_id')
                 ->references('id')
@@ -160,7 +177,7 @@ class CreateGoods extends Migration
             $table->increments('id');
             $table->unsignedInteger('goods_id')->index();
             $table->string('sku_no')->unique();//sku编号 不可重复
-            $table->unsignedInteger('quantity');//数量
+            $table->unsignedInteger('quantity')->default(1);//数量
             $table->unsignedInteger('price');
             $table->unsignedInteger('original_price');
             $table->string('title');//标题
@@ -183,8 +200,8 @@ class CreateGoods extends Migration
             $table->string('path');//路径
             $table->string('name');//真实图片名
             $table->string('ext', 64);//扩展
-            $table->unsignedInteger('sort');//排序
-            $table->text('intro');//描述
+            $table->unsignedInteger('sort')->default(0);//排序
+            $table->text('intro')->nullable();//描述
             $table->softDeletes();//软删除
             $table->timestamps();
 
@@ -204,9 +221,11 @@ class CreateGoods extends Migration
         Schema::dropIfExists('goods_attribute_key');
         Schema::dropIfExists('goods_attribute_value');
         Schema::dropIfExists('goods_category');
+        Schema::dropIfExists('goods_brand');
         Schema::dropIfExists('goods');
         Schema::dropIfExists('goods_attribute_rel');
         Schema::dropIfExists('goods_sku');
         Schema::dropIfExists('goods_images');
+        Schema::dropIfExists('goods_category_brand');
     }
 }
