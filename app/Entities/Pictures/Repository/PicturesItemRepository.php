@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entities\Novel\Repository;
+namespace App\Entities\Pictures\Repository;
 
 use Cboy868\Repositories\Eloquent\SoftDeleteRepository;
 

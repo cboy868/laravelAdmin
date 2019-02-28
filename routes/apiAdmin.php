@@ -24,14 +24,17 @@ Route::group([
 
 
 
-    Route::middleware(['auth:admin', 'auth.token'])->group(function ($router){
+//    Route::middleware(['auth:admin', 'auth.token'])->group(function ($router){
         $router->post('/me', 'Admin\V1\AuthController@me');//个人信息
         $router->post('/logout', 'Admin\V1\AuthController@logout');//登出
 
         Route::apiResource('posts', 'Admin\V1\PostController');
         Route::apiResource('folders', 'Admin\V1\FolderController');
         Route::apiResource('files', 'Admin\V1\PictureController');
-    });
+
+        Route::apiResource('pictures-category', 'Admin\V1\PicturesCategoryController');
+        Route::apiResource('pictures', 'Admin\V1\PicturesController');
+//    });
 });
 //
 ////方法一，通过读取配置获取路由

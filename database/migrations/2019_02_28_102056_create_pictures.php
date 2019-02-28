@@ -31,7 +31,7 @@ class CreatePictures extends Migration
             $table->string('name');//图册名
             $table->unsignedInteger('thumb')->nullable();//封面
             $table->unsignedSmallInteger('sort')->default(0);//排序
-            $table->text('intro');//介绍
+            $table->text('intro')->nullable();//介绍
             $table->unsignedSmallInteger('num')->default(0);//数量
             $table->unsignedSmallInteger('views')->default(0);//查看次数
             $table->unsignedSmallInteger('comms')->default(0);//评论次数
@@ -56,7 +56,7 @@ class CreatePictures extends Migration
             $table->string('path');//路径
             $table->string('name');//处理后的真实图片名,加path后为图片地址
             $table->string('ext', 64);
-            $table->unsignedSmallInteger('sort');
+            $table->unsignedSmallInteger('sort')->default(0);
             $table->text('intro')->nullable();//图片介绍
             $table->softDeletes();//软删除
             $table->timestamps();
