@@ -11,6 +11,7 @@ namespace App\Entities\Goods;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Category extends Model
 {
@@ -51,12 +52,12 @@ class Category extends Model
      * 取分类下的品牌
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function brands()
+    public function brands():BelongsToMany
     {
         return $this->belongsToMany(Brand::class ,
             'goods_category_brand' ,
-            'brand_id' ,
-            'cid');
+            'cid' ,
+            'brand_id');
     }
 
 }
