@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Member\V1;
 
 use App\Common\ApiStatus;
+use App\Http\Requests\AuthSmsCodeRequest;
 use Illuminate\Support\Facades\Log;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
@@ -39,6 +40,19 @@ class AuthController extends MemberController
             ]);
             return $this->failed(ApiStatus::CODE_2001, "登录名或密码不匹配", 401);
         }
+    }
+
+
+    /**
+     * 手机验证码登录
+     * @param AuthSmsCodeRequest $authRequest
+     * @return \Illuminate\Http\JsonResponse|mixed
+     */
+    public function loginBySmsCode(AuthSmsCodeRequest $authRequest)
+    {
+        $params = $authRequest->input();
+
+
     }
 
     /**
