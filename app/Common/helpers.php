@@ -25,3 +25,19 @@ function is_image($mimeType)
 {
     return starts_with($mimeType, 'image/');
 }
+
+/**
+ * 生成定长随机数
+ * @param $length 随机数长度
+ * @return bool|string
+ */
+function random_str($length){
+    $str = '2346789abcdefghjmnpqrtuxyzABCDEFGHJMNPQRTUXYZ';//62个字符
+    $strlen = strlen($str);
+    while($length > $strlen){
+        $str .= $str;
+        $strlen += $strlen;
+    }
+    $str = str_shuffle($str);
+    return substr($str,0, $length);
+}

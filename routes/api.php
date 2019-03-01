@@ -17,6 +17,7 @@ require_once 'apiAdmin.php';
 
 //取验证码
 Route::get('captcha', 'ShowCaptcha')->middleware('api');
+Route::get('smscode', 'ShowSmsCode')->middleware('api');
 
 //会员
 Route::group([
