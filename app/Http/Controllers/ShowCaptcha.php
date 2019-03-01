@@ -12,7 +12,7 @@ class ShowCaptcha extends ApiController
     public function __invoke()
     {
         return $this->respond([
-            'captcha' => captcha_src()
+            'captcha' => app('captcha')->create('default', true)
         ]);
     }
 }

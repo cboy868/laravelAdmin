@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SmsCodeRequest;
 use App\Repository\UserRepository;
-use Illuminate\Http\Request;
 use Illuminate\Session\Store as Session;
 use Illuminate\Hashing\BcryptHasher as Hasher;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Cache;
 
 class ShowSmsCode extends ApiController
 {
@@ -28,13 +30,15 @@ class ShowSmsCode extends ApiController
      * @param $id
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function __invoke(Request $request)
+    public function __invoke(SmsCodeRequest $request)
     {
         $mobile = $request->input('mobile');
 
-        return $this->respond([
-            'code' => $this->generateCode($mobile)
-        ]);
+        if ($this->generateCode($mobile)) {
+            return $this->respond();
+        }
+
+        return $this->failed();
     }
 
 
@@ -45,31 +49,28 @@ class ShowSmsCode extends ApiController
      */
     private function generateCode($mobile)
     {
+        try {
+            //根据验证码查找用户,如果没有则新生成
+            $model = $this->model->findBy('mobile', $mobile);
+            if (!$model) {
+                $this->model->create([
+                    'name' => $mobile,
+                    'mobile' => $mobile
+                ]);
+            }
 
+            //生成验证码并存入session
+            $code = random_str(6);
 
-        //根据验证码查找用户,如果没有则新生成
-        $model = $this->model->findBy('mobile', $mobile);
-        if (!$model) {
-            $this->model->create([
-                'name' => $mobile,
-                'mobile' => $mobile
+            //10分钟内有效
+            Cache::put($mobile, $code, 10);
+        } catch (\Exception $e) {
+            Log::error(__METHOD__ . __LINE__, [
+                'msg' => $e->getMessage()
             ]);
+
+            return false;
         }
-
-        //生成验证码并存入session
-        $code = random_str(6);
-
-        $hash = $this->hasher->make($code);
-        $this->session->put('smscode', [
-            'mobile' => $mobile,
-            'code'       => $hash
-        ]);
-
-        return $this->session->get('smscode.mobile');
-
-//            $this->session->remove('captcha');
-
-
-        return $code;
+        return true;
     }
 }

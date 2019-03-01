@@ -33,6 +33,13 @@ class ApiStatus {
     const CODE_2003 = '2003';//授权过期
     //授权过期
     const CODE_2004 = '2004';//缺少token
+
+    //-+----------------------------------------------------------------------
+    // | 业务参数错误
+    // | 短信
+    //-+----------------------------------------------------------------------
+    const CODE_2051 = '2051';//短信验证码发送错误，请重试
+
     //-+----------------------------------------------------------------------
     // | 业务参数错误
     // | 文章部分
@@ -54,6 +61,8 @@ class ApiStatus {
     const CODE_3058 = '3058';//文件已存在
 
 
+
+
     public static $errCodes = [
         self::CODE_0    => 'success',
         self::CODE_1001 => 'params required',
@@ -66,6 +75,7 @@ class ApiStatus {
         self::CODE_2002 => 'Unauthorized',
         self::CODE_2003 => 'Token Expired',
         self::CODE_2004 => 'Token Required',
+        self::CODE_2051 => 'sms code error',
 
         self::CODE_3001 => 'Add failure',
         self::CODE_3051 => 'Create folder error',
