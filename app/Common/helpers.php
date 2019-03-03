@@ -41,3 +41,16 @@ function random_str($length){
     $str = str_shuffle($str);
     return substr($str,0, $length);
 }
+
+/**
+ * 过滤掉数组中值在$filters中的项目
+ * @param $array
+ * @param $filters
+ * @return array
+ */
+function array_filters($array, $filters=['null', ''])
+{
+    return array_filter($array, function($v)use($filters){
+        return in_array($v, $filters) ? false : true;
+    });
+}

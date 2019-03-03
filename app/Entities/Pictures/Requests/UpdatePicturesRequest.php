@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entities\Novel\Requests;
+namespace App\Entities\Pictures\Requests;
 
 use App\Http\Requests\FormRequest;
 

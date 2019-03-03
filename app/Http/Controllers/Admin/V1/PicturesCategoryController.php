@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers\Admin\V1;
 
-use App\Entities\Novel\Requests\StoreCategoryRequest;
-use App\Entities\Novel\Requests\UpdateCategoryRequest;
 use Illuminate\Http\Request;
+use App\Entities\Pictures\Requests\StoreCategoryRequest;
+use App\Entities\Pictures\Requests\UpdateCategoryRequest;
 use Cboy868\Repositories\Exceptions\RepositoryException;
-use App\Entities\Pictures\Repository\CategoryRepository as Category;
+use App\Entities\Pictures\Repository\CategoryRepository;
 
 class PicturesCategoryController extends AdminController
 {
     public $model;
 
-    public function __construct(Category $model)
+    public function __construct(CategoryRepository $model)
     {
         $this->model = $model;
     }
@@ -48,7 +48,7 @@ class PicturesCategoryController extends AdminController
      */
     public function store(StoreCategoryRequest $request)
     {
-        $params = $request->input();
+        $params = array_filter($request->input());
 
         try {
             $model = $this->model->create($params);
@@ -69,9 +69,10 @@ class PicturesCategoryController extends AdminController
      */
     public function update(UpdateCategoryRequest $request, $id)
     {
-        $params = $request->input();
+        $params = array_filters($request->input(), ['null', '']);
 
         try {
+            unset($params['_method']);
             $this->model->withTrashed()->update($params, $id);
         } catch (RepositoryException $e) {
             throw new \Exception($e->getMessage(), $e->getCode());

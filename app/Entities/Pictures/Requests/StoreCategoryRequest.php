@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entities\Novel\Requests;
+namespace App\Entities\Pictures\Requests;
 
 use App\Http\Requests\FormRequest;
 
@@ -11,7 +11,6 @@ use App\Http\Requests\FormRequest;
  */
 class StoreCategoryRequest extends FormRequest
 {
-
     protected $rules = [
         'name' => 'required|min:1|max:255|unique:pictures_category',
     ];
