@@ -40,6 +40,8 @@ class PicturesController extends AdminController
         }
 
         $result = $this->model->where($where)
+            ->with(['category'])
+            ->withOnly('createdby', ['name', 'email'])
             ->orderBy('sort', 'DESC')
             ->paginate($pageSize);
 
