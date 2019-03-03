@@ -48,7 +48,7 @@ class PicturesCategoryController extends AdminController
      */
     public function store(StoreCategoryRequest $request)
     {
-        $params = array_filter($request->input());
+        $params = array_filters($request->input());
 
         try {
             $model = $this->model->create($params);

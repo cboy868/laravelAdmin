@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin\V1;
 
 use App\Common\ApiStatus;
-use App\Entities\Novel\Requests\StorePicturesRequest;
-use App\Entities\Novel\Requests\UpdatePicturesRequest;
+use App\Entities\Pictures\Requests\StorePicturesRequest;
+use App\Entities\Pictures\Requests\UpdatePicturesRequest;
 use Illuminate\Http\Request;
 use App\Entities\Pictures\Repository\PicturesRepository;
 use Cboy868\Repositories\Exceptions\RepositoryException;
@@ -55,9 +55,9 @@ class PicturesController extends AdminController
      */
     public function store(StorePicturesRequest $request)
     {
-        $params = $request->input();
-
+        $params = array_filters($request->input());
         try {
+            $params['created_by'] = auth('admin')->user()->id;
             $model = $this->model->create($params);
         } catch (RepositoryException $e) {
             throw new \Exception($e->getMessage(), $e->getCode());
@@ -92,9 +92,9 @@ class PicturesController extends AdminController
      */
     public function update(UpdatePicturesRequest $request, $id)
     {
-        $params = $request->input();
-
+        $params = array_filters($request->input());
         try {
+            unset($params['_method']);
             $this->model->withTrashed()->update($params, $id);
         } catch (RepositoryException $e) {
             throw new \Exception($e->getMessage(), $e->getCode());
