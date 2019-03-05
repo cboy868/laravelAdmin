@@ -38,7 +38,7 @@ class UploadsManager
      *     'files' => array of file details on each file in folder
      * ]
      */
-    public function folderInfo($folder)
+    public function folderInfo($folder='/')
     {
         $folder = $this->cleanFolder($folder);
 
