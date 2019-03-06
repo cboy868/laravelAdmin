@@ -72,9 +72,7 @@ class CreatePictures extends Migration
         Schema::create('pictures_user_rel', function (Blueprint $table) {
             $table->unsignedInteger('pictures_id');//相册id
             $table->unsignedInteger('user_id');//品牌id
-            $table->softDeletes();//软删除
             $table->timestamps();
-
 
             $table->foreign('pictures_id')->references('id')->on('pictures')
                 ->onDelete('cascade');
