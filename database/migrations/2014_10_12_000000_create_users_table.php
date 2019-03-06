@@ -20,6 +20,7 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
             $table->string('mobile', 64)->nullable();
+            $table->tinyInteger('role')->default(0);//算是冗余字段，默认0，普通用户，其它根据系统定义
             $table->rememberToken();
             $table->timestamps();
         });

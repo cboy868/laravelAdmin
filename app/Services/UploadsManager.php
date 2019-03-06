@@ -17,13 +17,22 @@ use Illuminate\Support\Facades\Storage;
 
 class UploadsManager
 {
-    protected $disk;
+    public $disk;
     protected $mimeDetect;
 
     public function __construct(PhpRepository $mimeDetect)
     {
-        $this->disk = Storage::disk(config('blog.uploads.storage'));
+        $this->setConfig('blog.uploads.storage');
         $this->mimeDetect = $mimeDetect;
+    }
+
+    /**
+     * 设置磁盘
+     * @param $config
+     */
+    public function setConfig($config)
+    {
+        $this->disk = Storage::disk(config($config));
     }
 
     /**
@@ -38,7 +47,7 @@ class UploadsManager
      *     'files' => array of file details on each file in folder
      * ]
      */
-    public function folderInfo($folder)
+    public function folderInfo($folder='/')
     {
         $folder = $this->cleanFolder($folder);
 
