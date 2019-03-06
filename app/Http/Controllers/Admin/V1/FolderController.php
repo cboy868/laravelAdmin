@@ -6,6 +6,7 @@ use App\Common\ApiStatus;
 use App\Entities\Pictures\Repository\CategoryRepository;
 use App\Entities\Pictures\Repository\PicturesItemRepository;
 use App\Entities\Pictures\Repository\PicturesRepository;
+use App\Entities\Pictures\Services\FileService;
 use App\Http\Requests\UploadNewFolderRequest;
 use App\Services\UploadsManager;
 use Illuminate\Http\Request;
@@ -28,8 +29,13 @@ class FolderController extends AdminController
     public function index(Request $request,
                           PicturesRepository $picture,
                           CategoryRepository $category,
-                          PicturesItemRepository $item)
+                          PicturesItemRepository $item, FileService $fileService)
     {
+        $fileService->sync($picture, $item);
+        die;
+
+
+
         $dir = $request->get('folder', '/');
 
         $data = $this->manager->folderInfo($dir);
