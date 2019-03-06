@@ -3,10 +3,6 @@
 namespace App\Http\Controllers\Admin\V1;
 
 use App\Common\ApiStatus;
-use App\Entities\Pictures\Repository\CategoryRepository;
-use App\Entities\Pictures\Repository\PicturesItemRepository;
-use App\Entities\Pictures\Repository\PicturesRepository;
-use App\Entities\Pictures\Services\FileService;
 use App\Http\Requests\UploadNewFolderRequest;
 use App\Services\UploadsManager;
 use Illuminate\Http\Request;
@@ -20,75 +16,12 @@ class FolderController extends AdminController
         $this->manager = $manager;
     }
 
-
-    /**
-     * 初始化目录
-     * @param Request $request
-     * @return mixed
-     */
-    public function index(Request $request,
-                          PicturesRepository $picture,
-                          CategoryRepository $category,
-                          PicturesItemRepository $item, FileService $fileService)
-    {
-        $fileService->sync($picture, $item);
-        die;
-
-
-
-        $dir = $request->get('folder', '/');
-
-        $data = $this->manager->folderInfo($dir);
-
-        $subfolders = $data['subfolders'];
-
-        foreach ($subfolders as $folder) {
-
-            # 目录名
-            $ar = explode('_', $folder);
-            $category_id = 1;
-            $name = $folder;
-            if (count($ar) == 2) {
-                $category_id = $ar[0];
-            }
-
-            # 目录内文件
-            $files = $this->manager->files($folder);
-            $num = count($files);
-
-            $model = $picture->create([
-                'category_id' => $category_id,
-                'author' => 'admin',
-                'name' => $name,
-                "thumb" => 0,
-                "num" => $num,
-                "created_by" => 1
-            ]);
-
-            foreach ($files['files'] as $file) {
-                $arr = explode('.', $file['name']);
-                $item->create([
-                    "pictures_id" => $model->id,
-                    "title" => $file['name'] ,
-                    "path" => $dir,
-                    "name" => $arr[0],
-                    "ext" => $arr[1],
-                ]);
-            }
-
-        }
-
-        return $this->respond($subfolders);
-    }
-
-
-
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index1(Request $request)
+    public function index(Request $request)
     {
         $folder = $request->get('folder');
         $data = $this->manager->folderInfo($folder);
