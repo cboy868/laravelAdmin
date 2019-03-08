@@ -79,7 +79,7 @@ class PicturesController extends AdminController
         $model = $this->model->with('items')->find($id);
 
         if ($model) {
-            return $this->respond($model->toArray());
+            return $this->respond($model->items->toArray());
         }
         return $this->failed(ApiStatus::CODE_1021);
     }
