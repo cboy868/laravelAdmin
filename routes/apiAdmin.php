@@ -33,7 +33,8 @@ Route::group([
         Route::apiResource('files', 'Admin\V1\PictureController');
 
         Route::apiResource('pictures-category', 'Admin\V1\PicturesCategoryController');
-        Route::apiResource('pictures', 'Admin\V1\PicturesController');
+        Route::apiResource('pictures', 'Cms\PicturesController');
+        Route::apiResource('pictures-user', 'Admin\V1\PicturesUserController');
 //    });
 });
 //

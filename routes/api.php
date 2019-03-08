@@ -19,6 +19,11 @@ require_once 'apiAdmin.php';
 Route::get('captcha', 'ShowCaptcha')->middleware('api');
 Route::get('smscode', 'ShowSmsCode')->middleware('api');
 
+
+
+Route::get('wechat', 'Wechat\Controller@index');
+
+
 //会员
 Route::group([
     'namespace' => 'member',

@@ -6,7 +6,6 @@ use App\Common\ApiStatus;
 use App\Http\Requests\UploadNewFolderRequest;
 use App\Services\UploadsManager;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 
 class FolderController extends AdminController
 {
@@ -25,7 +24,7 @@ class FolderController extends AdminController
     public function index(Request $request)
     {
         $folder = $request->get('folder');
-        $data = $this->manager->folders($folder);
+        $data = $this->manager->folderInfo($folder);
 
         return $this->respond($data);
     }
