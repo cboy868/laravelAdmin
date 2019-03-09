@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 */
 
 require_once 'apiAdmin.php';
+require_once 'apiMember.php';
 
 //取验证码
 Route::get('captcha', 'ShowCaptcha')->middleware('api');
