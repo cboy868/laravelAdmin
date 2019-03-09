@@ -21,7 +21,7 @@ Route::group([
 
 //    Route::middleware(['auth:admin', 'auth.token'])->group(function ($router){
 
-        Route::apiResource('pictures', 'Client\PicturesController');
+        Route::apiResource('pictures', 'Cms\PicturesController');
 //    });
 });
 

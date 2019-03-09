@@ -15,6 +15,8 @@ class PicturesCategoryController extends ApiController
 
     public function __construct(CategoryRepository $model)
     {
+        parent::__construct();
+
         $this->model = $model;
     }
 

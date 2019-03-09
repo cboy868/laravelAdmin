@@ -17,6 +17,8 @@ class PicturesController extends ApiController
     public function __construct(PicturesRepository $model)
     {
         $this->model = $model;
+
+        parent::__construct();
     }
 
     /**
@@ -26,6 +28,7 @@ class PicturesController extends ApiController
      */
     public function index(Request $request)
     {
+
         $pageLevel = $request->input('page_size', self::PAGE_SIZE_TWO);
         $pageSize = isset(self::$pageSize[$pageLevel]) ? self::$pageSize[$pageLevel] : 25;
 

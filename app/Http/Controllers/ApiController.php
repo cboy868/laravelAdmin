@@ -40,12 +40,18 @@ class ApiController extends BaseController
         self::PAGE_SIZE_FIVE => 50
     ];
 
-//这里应该没有必要
-//    public function __construct()
-//    {
-//        //加权限
-//        $this->middleware('auth:admin')->except(['index', 'show']);
-//    }
+    public function __construct()
+    {
+        $prefix = request()->route()->getPrefix();
+
+        if ($prefix == "api/client") {
+            //除了 index show 其它方法都需要登录
+            $this->middleware('auth:member')->except(['index', 'show']);
+        } else if ($prefix == 'api/admin') {
+            $this->middleware('auth:admin')->except(['login']);
+        }
+
+    }
 
     protected function _dealParams($rules=[])
     {
