@@ -16,8 +16,6 @@ class PicturesController extends ApiController
 
     public function __construct(PicturesRepository $model)
     {
-        parent::__construct();
-
         $this->model = $model;
     }
 

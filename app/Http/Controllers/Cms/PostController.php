@@ -7,17 +7,18 @@
  * Time: 14:03
  */
 
-namespace App\Http\Controllers\Admin\V1;
+namespace App\Http\Controllers\Cms;
 
 
 use App\Common\ApiStatus;
+use App\Http\Controllers\ApiController;
 use App\Http\Resources\PostCollection;
 use Cboy868\Repositories\Exceptions\RepositoryException;
 use Illuminate\Http\Request;
 use App\Repository\PostRepository as Post;
 use Auth;
 
-class PostController extends AdminController
+class PostController extends ApiController
 {
     protected $post;
 

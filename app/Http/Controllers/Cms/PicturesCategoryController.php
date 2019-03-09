@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Http\Controllers\Admin\V1;
+namespace App\Http\Controllers\Cms;
 
+use App\Http\Controllers\ApiController;
 use Illuminate\Http\Request;
 use App\Entities\Pictures\Requests\StoreCategoryRequest;
 use App\Entities\Pictures\Requests\UpdateCategoryRequest;
 use Cboy868\Repositories\Exceptions\RepositoryException;
 use App\Entities\Pictures\Repository\CategoryRepository;
 
-class PicturesCategoryController extends AdminController
+class PicturesCategoryController extends ApiController
 {
     public $model;
 

@@ -32,9 +32,9 @@ Route::group([
         Route::apiResource('folders', 'Admin\V1\FolderController');
         Route::apiResource('files', 'Admin\V1\PictureController');
 
-        Route::apiResource('pictures-category', 'Admin\V1\PicturesCategoryController');
+        Route::apiResource('pictures-category', 'Cms\PicturesCategoryController');
         Route::apiResource('pictures', 'Cms\PicturesController');
-        Route::apiResource('pictures-user', 'Admin\V1\PicturesUserController');
+        Route::apiResource('pictures-user', 'Cms\PicturesUserController');
 //    });
 });
 //

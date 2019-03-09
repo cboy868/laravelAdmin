@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Admin\V1;
+namespace App\Http\Controllers\Cms;
 
 use App\Common\ApiStatus;
 use App\Entities\Pictures\Pictures;
 use App\Entities\Pictures\Requests\StorePicturesRequest;
 use App\Entities\Pictures\Requests\UpdatePicturesRequest;
 use App\Entities\Pictures\User;
+use App\Http\Controllers\ApiController;
 use Illuminate\Http\Request;
 use App\Entities\Pictures\Repository\PicturesRepository;
 use Cboy868\Repositories\Exceptions\RepositoryException;
@@ -17,7 +18,7 @@ use Cboy868\Repositories\Exceptions\RepositoryException;
  *
  * 关联模型处理  可参考文档：https://learnku.com/docs/laravel/5.5/eloquent-relationships/1333#the-save-method
  */
-class PicturesUserController extends AdminController
+class PicturesUserController extends ApiController
 {
 
     public $model;

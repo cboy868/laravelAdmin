@@ -40,12 +40,12 @@ class ApiController extends BaseController
         self::PAGE_SIZE_FIVE => 50
     ];
 
-
-    public function __construct()
-    {
-        //加权限
-        $this->middleware('auth:admin')->except(['index', 'show']);
-    }
+//这里应该没有必要
+//    public function __construct()
+//    {
+//        //加权限
+//        $this->middleware('auth:admin')->except(['index', 'show']);
+//    }
 
     protected function _dealParams($rules=[])
     {
