@@ -16,10 +16,13 @@ use Illuminate\Http\Request;
 require_once 'apiAdmin.php';
 require_once 'apiMember.php';
 
-//取验证码
+//================================================
+//全平台统一使用
+// 取图片验证码
 Route::get('captcha', 'ShowCaptcha')->middleware('api');
+//取短信验证码
 Route::get('smscode', 'ShowSmsCode')->middleware('api');
-
+//=================================================
 
 
 Route::get('wechat', 'Wechat\Controller@index');
