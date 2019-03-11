@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin\V1;
+namespace App\Http\Controllers\Admin;
 
 use App\Common\ApiStatus;
 use Illuminate\Support\Facades\Log;

@@ -1,11 +1,7 @@
 <?php
-namespace App\Http\Controllers\Admin\V1;
+namespace App\Http\Controllers\Admin;
 
-
-use Tymon\JWTAuth\Facades\JWTAuth;
-use Tymon\JWTAuth\Exceptions\JWTException;
-use App\Common\ApiStatus;
-
+use Illuminate\Support\Facades\DB;
 
 class DbController extends AdminController
 {

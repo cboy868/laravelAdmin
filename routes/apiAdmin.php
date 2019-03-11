@@ -20,21 +20,21 @@ Route::group([
 ], function ($router){
 
 
-    $router->post('/login', 'Admin\V1\AuthController@login');
+    $router->post('/login', 'Admin\AuthController@login');
 
 
 
 //    Route::middleware(['auth:admin', 'auth.token'])->group(function ($router){
-        $router->post('/me', 'Admin\V1\AuthController@me');//个人信息
-        $router->post('/logout', 'Admin\V1\AuthController@logout');//登出
+        $router->post('/me', 'Admin\AuthController@me');//个人信息
+        $router->post('/logout', 'Admin\AuthController@logout');//登出
 
-        Route::apiResource('posts', 'Admin\V1\PostController');
+        Route::apiResource('posts', 'Cms\PostController');
         Route::apiResource('folders', 'Admin\V1\FolderController');
         Route::apiResource('files', 'Admin\V1\PictureController');
 
         Route::apiResource('pictures-category', 'Cms\PicturesCategoryController');
-        Route::apiResource('pictures', 'Cms\PicturesController');
         Route::apiResource('pictures-user', 'Cms\PicturesUserController');
+        Route::apiResource('pictures', 'Cms\PicturesController');
 //    });
 });
 //
