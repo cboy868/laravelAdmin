@@ -4,21 +4,17 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Repository\PostRepository as Post;
-use Intervention\Image\ImageManager;
 
 class HomeController extends Controller
 {
-    public $manager;
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct(ImageManager $manager)
+    public function __construct()
     {
-        $this->manager = $manager;
-
-//        $this->middleware('auth');
+        $this->middleware('auth');
     }
 
     /**
@@ -29,15 +25,6 @@ class HomeController extends Controller
     public function index()
     {
 
-
-        $file = storage_path('app/public/pictures/tmp/2.png');
-
-        $img = $this->manager->make($file);
-
-//        $img->blur();		// 轻微的高斯模糊
-        $img->blur(30);
-        $img->save(storage_path('app/public/pictures/tmp/2blur.png'));
-
-//        return view('home');
+        return view('home');
     }
 }
