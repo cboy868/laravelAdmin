@@ -3,12 +3,13 @@
 namespace App\Http\Controllers\Admin\V1;
 
 use App\Common\ApiStatus;
+use App\Http\Controllers\ApiController;
 use App\Http\Requests\UploadFileRequest;
 use App\Services\UploadsManager;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 
-class PictureController extends AdminController
+class PictureController extends ApiController
 {
     protected $manager;
 

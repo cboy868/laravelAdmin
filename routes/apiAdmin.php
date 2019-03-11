@@ -14,7 +14,6 @@ use Illuminate\Http\Request;
 */
 //Route::apiResource('novels', 'NovelController');
 
-
 Route::group([
     'prefix' => 'admin'
 ], function ($router){
@@ -35,6 +34,8 @@ Route::group([
         Route::apiResource('pictures-category', 'Cms\PicturesCategoryController');
         Route::apiResource('pictures-user', 'Cms\PicturesUserController');
         Route::apiResource('pictures', 'Cms\PicturesController');
+
+        Route::apiResource('brands', 'Goods\BrandController');
 //    });
 });
 //

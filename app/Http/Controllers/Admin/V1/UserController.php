@@ -2,12 +2,13 @@
 namespace App\Http\Controllers\Admin\V1;
 
 
+use App\Http\Controllers\ApiController;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use App\Common\ApiStatus;
 
 
-class UserController extends AdminController
+class UserController extends ApiController
 {
 	
 	public function index(){

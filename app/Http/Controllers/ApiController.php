@@ -18,6 +18,8 @@ class ApiController extends BaseController
 
     const SESSION_ERR_KEY = 'fk.error';
 
+    const DEFAULT_PAGE_SIZE = 25;
+
     const PAGE_SIZE_ONE = 'page_size_one';
     const PAGE_SIZE_TWO = 'page_size_two';
     const PAGE_SIZE_FIVE= 'page_size_five';
@@ -44,7 +46,7 @@ class ApiController extends BaseController
     {
 
         //临时
-        $this->middleware('auth:member')->except(['index', 'show']);
+//        $this->middleware('auth:member')->except(['index', 'show']);
 
 //        $prefix = request()->route()->getPrefix();
 

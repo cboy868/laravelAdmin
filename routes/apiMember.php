@@ -13,17 +13,17 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::group([
-    'prefix' => 'client'
-], function ($router){
-
-    $router->post('/login', 'Client\AuthController@login');
-
-//    Route::middleware(['auth:admin', 'auth.token'])->group(function ($router){
-
-        Route::apiResource('pictures', 'Cms\PicturesController');
-//    });
-});
+//Route::group([
+//    'prefix' => 'client'
+//], function ($router){
+//
+//    $router->post('/login', 'Client\AuthController@login');
+//
+////    Route::middleware(['auth:admin', 'auth.token'])->group(function ($router){
+//
+//        Route::apiResource('pictures', 'Cms\PicturesController');
+////    });
+//});
 
 
 

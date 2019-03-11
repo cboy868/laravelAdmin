@@ -10,7 +10,9 @@
 namespace App\Http\Controllers\Admin\V1;
 
 
-class RbacController extends AdminController
+use App\Http\Controllers\ApiController;
+
+class RbacController extends ApiController
 {
 
     /**

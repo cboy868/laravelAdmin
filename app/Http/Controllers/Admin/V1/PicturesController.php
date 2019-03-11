@@ -5,11 +5,12 @@ namespace App\Http\Controllers\Admin\V1;
 use App\Common\ApiStatus;
 use App\Entities\Pictures\Requests\StorePicturesRequest;
 use App\Entities\Pictures\Requests\UpdatePicturesRequest;
+use App\Http\Controllers\ApiController;
 use Illuminate\Http\Request;
 use App\Entities\Pictures\Repository\PicturesRepository;
 use Cboy868\Repositories\Exceptions\RepositoryException;
 
-class PicturesController extends AdminController
+class PicturesController extends ApiController
 {
 
     public $model;

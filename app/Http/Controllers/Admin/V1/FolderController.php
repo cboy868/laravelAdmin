@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\Admin\V1;
 
 use App\Common\ApiStatus;
+use App\Http\Controllers\ApiController;
 use App\Http\Requests\UploadNewFolderRequest;
 use App\Services\UploadsManager;
 use Illuminate\Http\Request;
 
-class FolderController extends AdminController
+class FolderController extends ApiController
 {
     public $manager;
 
