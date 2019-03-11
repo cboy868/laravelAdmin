@@ -18,7 +18,7 @@ class BrandRequest extends FormRequest
     public function rules()
     {
         if (request()->getMethod() == self::METHOD_PUT) {
-            $this->rules['name'] .= ',name,'.$this->route('brands');
+            $this->rules['name'] .= ',name,'.$this->route('brand');
         }
 
         return $this->rules;

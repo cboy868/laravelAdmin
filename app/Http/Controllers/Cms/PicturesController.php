@@ -63,14 +63,14 @@ class PicturesController extends ApiController
     public function store(StorePicturesRequest $request)
     {
         $params = array_filters($request->input());
-//        try {
-//            $params['created_by'] = auth('admin')->user()->id;
-//            $model = $this->model->create($params);
-//        } catch (RepositoryException $e) {
-//            throw new \Exception($e->getMessage(), $e->getCode());
-//        }
-//
-//        return $this->respond($model->toArray());
+        try {
+            $params['created_by'] = auth('admin')->user()->id;
+            $model = $this->model->create($params);
+        } catch (RepositoryException $e) {
+            throw new \Exception($e->getMessage(), $e->getCode());
+        }
+
+        return $this->respond($model->toArray());
     }
 
     /**
