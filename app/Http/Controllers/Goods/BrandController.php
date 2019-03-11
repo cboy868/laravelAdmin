@@ -11,11 +11,11 @@ use Illuminate\Http\Request;
 class BrandController extends ApiController
 {
 
-    public $model;
+    public $brand;
 
     public function __construct(BrandRepository $model)
     {
-        $this->model = $model;
+        $this->brand = $model;
 
         parent::__construct();
     }
@@ -35,7 +35,7 @@ class BrandController extends ApiController
             array_push($where, ['name', 'like', '%'.$name.'%']);
         }
 
-        $result = $this->model->where($where)
+        $result = $this->brand->where($where)
             ->orderBy('id', 'desc')
             ->paginate($pageSize);
 
@@ -53,7 +53,7 @@ class BrandController extends ApiController
     {
         $params = array_filters($request->input());
         try {
-            $model = $this->model->create($params);
+            $model = $this->brand->create($params);
         } catch (RepositoryException $e) {
             throw new \Exception($e->getMessage(), $e->getCode());
         }
@@ -81,7 +81,17 @@ class BrandController extends ApiController
      */
     public function update(BrandRequest $request, $id)
     {
-        //
+        $params = array_filters($request->input());
+
+        try {
+            unset($params['_method']);
+
+            $this->brand->withTrashed()->update($params, $id);
+
+        } catch (RepositoryException $e) {
+            throw new \Exception($e->getMessage(), $e->getCode());
+        }
+        return $this->respond([]);
     }
 
     /**

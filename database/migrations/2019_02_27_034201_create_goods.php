@@ -78,7 +78,7 @@ class CreateGoods extends Migration
         Schema::create('goods_brand', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->index();//品牌名
-            $table->string('cn_name')->index();//中文品牌名
+            $table->string('cn_name')->index()->nullable();//中文品牌名
             $table->string('logo')->nullable();//logo
             $table->softDeletes();//软删除
             $table->timestamps();
