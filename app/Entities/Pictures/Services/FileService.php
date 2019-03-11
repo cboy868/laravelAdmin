@@ -118,13 +118,18 @@ class FileService
 
             $dir = $baseDir . '/' . $name;
 
+            $tmpDir = $this->temp . '/' .$folder;
             foreach ($files['files'] as $file) {
                 $arr = explode('.', $file['name']);
+                //需要先把文件名改为英文,title 存原名
+                $newName = uniqid();
+                $this->manager->disk->move($tmpDir . '/' . $file['name'], $tmpDir . '/' . $newName . '.' . $arr[1]);
+
                 $picture->create([
                     "pictures_id" => $model->id,
-                    "title" => $file['name'] ,
+                    "title" => $arr[0] ,
                     "path" => $dir,
-                    "name" => $arr[0],
+                    "name" => $newName,
                     "ext" => $arr[1]
                 ]);
             }
