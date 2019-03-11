@@ -43,9 +43,12 @@ class PicturesController extends ApiController
         }
 
         $result = $this->model->where($where)
-            ->with(['category'])
-            ->withOnly('createdby', ['name', 'email'])
-            ->orderBy('sort', 'DESC')
+            ->withOnly('createdby', ['name','email'])
+            ->with('category')
+            ->whereHas('category',function ($query){
+                $query->whereNull('deleted_at');
+            })
+            ->orderBy('id', 'desc')
             ->paginate($pageSize);
 
         return $this->respond($result);
@@ -82,7 +85,10 @@ class PicturesController extends ApiController
         $model = $this->model->with('items')->find($id);
 
         if ($model) {
-            return $this->respond($model->toArray());
+            $result = $model->toArray();
+            $baseUrl = 'http://' . \request()->getHttpHost() . '/storage/';
+            $result['base_url'] = $baseUrl;
+            return $this->respond($result);
         }
         return $this->failed(ApiStatus::CODE_1021);
     }

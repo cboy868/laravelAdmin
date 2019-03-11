@@ -42,14 +42,18 @@ class ApiController extends BaseController
 
     public function __construct()
     {
-        $prefix = request()->route()->getPrefix();
 
-        if ($prefix == "api/client") {
-            //除了 index show 其它方法都需要登录
-            $this->middleware('auth:member')->except(['index', 'show']);
-        } else if ($prefix == 'api/admin') {
-            $this->middleware('auth:admin')->except(['login']);
-        }
+        //临时
+        $this->middleware('auth:member')->except(['index', 'show']);
+
+//        $prefix = request()->route()->getPrefix();
+
+//        if ($prefix == "api/client") {
+//            //除了 index show 其它方法都需要登录
+//            $this->middleware('auth:member')->except(['index', 'show']);
+//        } else if ($prefix == 'api/admin') {
+//            $this->middleware('auth:admin')->except(['login']);
+//        }
 
     }
 
