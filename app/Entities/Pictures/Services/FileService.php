@@ -44,6 +44,19 @@ class FileService
 
 
     /**
+     * 模糊处理
+     */
+    public function blur()
+    {
+        $file = storage_path('app/public/pictures/tmp/2.png');
+
+        $img = $this->manager->make($file);
+        $img->blur(30);//0-100
+        $img->save(storage_path('app/public/pictures/tmp/2blur.png'));
+    }
+
+
+    /**
      * 创建目录
      */
     private function _mkdir()
