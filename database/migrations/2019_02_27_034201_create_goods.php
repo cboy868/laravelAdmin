@@ -17,6 +17,7 @@ class CreateGoods extends Migration
         Schema::create('goods_type', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');//类型名
+            $table->softDeletes();
             $table->timestamps();
         });
 

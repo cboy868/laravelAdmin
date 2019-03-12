@@ -2,29 +2,45 @@
 
 namespace App\Http\Controllers\Goods;
 
+use App\Common\ApiStatus;
+use App\Entities\Goods\Repository\TypeRepository;
+use App\Entities\Goods\Requests\TypeRequest;
 use App\Http\Controllers\ApiController;
+use Cboy868\Repositories\Exceptions\RepositoryException;
 use Illuminate\Http\Request;
 
 class TypeController extends ApiController
 {
+
+    public $model;
+
+    public function __construct(TypeRepository $model)
+    {
+        $this->model = $model;
+
+        parent::__construct();
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
-    }
+        $pageSize = $request->input('page_size', self::DEFAULT_PAGE_SIZE);
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        //查询条件
+        $where = [];
+        if ($name = $request->input('name')) {
+            array_push($where, ['name', 'like', '%'.$name.'%']);
+        }
+
+        $result = $this->model->where($where)
+            ->orderBy('id', 'desc')
+            ->paginate($pageSize);
+
+        return $this->respond($result);
     }
 
     /**
@@ -33,9 +49,17 @@ class TypeController extends ApiController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(TypeRequest $request)
     {
-        //
+        $params = array_filters($request->input());
+
+        try {
+            $model = $this->model->create($params);
+        } catch (RepositoryException $e) {
+            throw new \Exception($e->getMessage(), $e->getCode());
+        }
+
+        return $this->respond($model->toArray());
     }
 
     /**
@@ -46,18 +70,14 @@ class TypeController extends ApiController
      */
     public function show($id)
     {
-        //
-    }
+        $model = $this->model->find($id);
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        if ($model) {
+            $result = $model->toArray();
+            return $this->respond($result);
+        }
+
+        return $this->failed(ApiStatus::CODE_1021);
     }
 
     /**
@@ -67,9 +87,21 @@ class TypeController extends ApiController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(TypeRequest $request, $id)
     {
-        //
+        $params = array_filters($request->input());
+
+        try {
+            unset($params['_method']);
+
+            $this->model->withTrashed()->update($params, $id);
+
+        } catch (RepositoryException $e) {
+
+            throw new \Exception($e->getMessage(), $e->getCode());
+
+        }
+        return $this->respond([]);
     }
 
     /**
@@ -80,6 +112,11 @@ class TypeController extends ApiController
      */
     public function destroy($id)
     {
-        //
+        try {
+            $result = $this->model->trash($id);
+        } catch (RepositoryException $e) {
+            throw new \Exception($e->getMessage(), $e->getCode());
+        }
+        return $this->respond($result);
     }
 }

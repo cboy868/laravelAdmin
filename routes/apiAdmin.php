@@ -36,6 +36,7 @@ Route::group([
         Route::apiResource('pictures', 'Cms\PicturesController');
 
         Route::apiResource('brands', 'Goods\BrandController');
+        Route::apiResource('types', 'Goods\TypeController');
 //    });
 });
 //

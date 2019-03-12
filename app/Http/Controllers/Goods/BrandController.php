@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Goods;
 
+use App\Common\ApiStatus;
 use App\Entities\Goods\Repository\BrandRepository;
 use App\Entities\Goods\Requests\BrandRequest;
 use App\Http\Controllers\ApiController;
@@ -10,12 +11,11 @@ use Illuminate\Http\Request;
 
 class BrandController extends ApiController
 {
-
-    public $brand;
+    public $model;
 
     public function __construct(BrandRepository $model)
     {
-        $this->brand = $model;
+        $this->model = $model;
 
         parent::__construct();
     }
@@ -35,7 +35,7 @@ class BrandController extends ApiController
             array_push($where, ['name', 'like', '%'.$name.'%']);
         }
 
-        $result = $this->brand->where($where)
+        $result = $this->model->where($where)
             ->orderBy('id', 'desc')
             ->paginate($pageSize);
 
@@ -53,7 +53,7 @@ class BrandController extends ApiController
     {
         $params = array_filters($request->input());
         try {
-            $model = $this->brand->create($params);
+            $model = $this->model->create($params);
         } catch (RepositoryException $e) {
             throw new \Exception($e->getMessage(), $e->getCode());
         }
@@ -69,7 +69,13 @@ class BrandController extends ApiController
      */
     public function show($id)
     {
-        //
+        $model = $this->model->find($id);
+
+        if ($model) {
+            $result = $model->toArray();
+            return $this->respond($result);
+        }
+        return $this->failed(ApiStatus::CODE_1021);
     }
 
     /**
@@ -86,7 +92,7 @@ class BrandController extends ApiController
         try {
             unset($params['_method']);
 
-            $this->brand->withTrashed()->update($params, $id);
+            $this->model->withTrashed()->update($params, $id);
 
         } catch (RepositoryException $e) {
             throw new \Exception($e->getMessage(), $e->getCode());
@@ -102,6 +108,11 @@ class BrandController extends ApiController
      */
     public function destroy($id)
     {
-        //
+        try {
+            $result = $this->model->trash($id);
+        } catch (RepositoryException $e) {
+            throw new \Exception($e->getMessage(), $e->getCode());
+        }
+        return $this->respond($result);
     }
 }

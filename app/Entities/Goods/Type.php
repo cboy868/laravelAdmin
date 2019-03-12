@@ -10,10 +10,13 @@
 namespace App\Entities\Goods;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 
 class Type extends Model
 {
+    use SoftDeletes;
+
     protected $table = 'goods_type';
 
     /**
@@ -22,6 +25,7 @@ class Type extends Model
      */
     protected $fillable = [
         'name',
+        'deleted_at',
         'created_at',
         'updated_at'
     ];
