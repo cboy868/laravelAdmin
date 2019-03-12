@@ -54,3 +54,25 @@ function array_filters($array, $filters=['null', ''])
         return in_array($v, $filters) ? false : true;
     });
 }
+
+/**
+ * 二维数组 提key
+ * @param $array
+ * @param $field
+ *
+ *
+ */
+function array_index($array, $field)
+{
+    if (!is_array($array)) {
+        return false;
+    }
+
+    $result = [];
+
+    foreach ($array as $item) {
+        $result[$item[$field]] = $item;
+    }
+
+    return $result;
+}

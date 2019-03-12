@@ -9,12 +9,16 @@
 
 namespace App\Entities\Goods;
 
+use App\Traits\Tree;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Category extends Model
 {
+
+    use Tree;
+
     protected $table = 'goods_category';
 
     /**

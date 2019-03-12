@@ -12,7 +12,7 @@ use App\Http\Requests\FormRequest;
 class CategoryRequest extends FormRequest
 {
     protected $rules = [
-        'name' => 'required|min:1|max:255|unique:goods_brand',
+        'name' => 'required|min:1|max:255|unique:goods_category',
     ];
 
     public function rules()

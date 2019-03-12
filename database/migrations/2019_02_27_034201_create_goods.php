@@ -56,7 +56,7 @@ class CreateGoods extends Migration
             $table->unsignedInteger('pid')->default(0);
             $table->unsignedInteger('type_id')->default(0);//叶子节点才需要分配
             $table->unsignedSmallInteger('level')->default(1);//树级
-            $table->string('code', 100);
+            $table->string('code', 100)->default(0);
             $table->string('name', 255);
             $table->text('intro')->nullable();//分类介绍
             $table->unsignedTinyInteger('sort')->default(0);//排序
@@ -69,10 +69,11 @@ class CreateGoods extends Migration
             $table->softDeletes();
             $table->timestamps();
 
-            $table->foreign('type_id')
-                ->references('id')
-                ->on('goods_type')
-                ->onDelete('cascade');
+            //这里暂时不用这个 因为可以不关联
+//            $table->foreign('type_id')
+//                ->references('id')
+//                ->on('goods_type')
+//                ->onDelete('cascade');
         });
 
         //商品品牌

@@ -52,6 +52,7 @@ class CategoryController extends ApiController
     public function store(CategoryRequest $request)
     {
         $params = array_filters($request->input());
+
         try {
             $model = $this->model->create($params);
         } catch (RepositoryException $e) {
@@ -70,6 +71,9 @@ class CategoryController extends ApiController
     public function show($id)
     {
         $model = $this->model->find($id);
+
+
+        return [$model->selTree()];
 
         if ($model) {
             $result = $model->toArray();

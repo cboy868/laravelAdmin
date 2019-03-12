@@ -37,6 +37,7 @@ Route::group([
 
         Route::apiResource('brands', 'Goods\BrandController');
         Route::apiResource('types', 'Goods\TypeController');
+        Route::apiResource('goods-categorys', 'Goods\CategoryController');
 //    });
 });
 //
