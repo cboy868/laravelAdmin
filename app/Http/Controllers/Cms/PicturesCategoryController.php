@@ -76,7 +76,7 @@ class PicturesCategoryController extends ApiController
 
         try {
             unset($params['_method']);
-            $this->model->withTrashed()->update($params, $id);
+            $this->model->update($params, $id);
         } catch (RepositoryException $e) {
             throw new \Exception($e->getMessage(), $e->getCode());
         }

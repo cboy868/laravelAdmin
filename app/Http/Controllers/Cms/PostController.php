@@ -116,9 +116,9 @@ class PostController extends ApiController
         $params = $postRequest->input();
         try {
             if (isset($params['type']) && $params['type'] == 'restore') { //数据恢复
-                $this->post->withTrashed()->restore($id);
+                $this->post->restore($id);
             } else {
-                $this->post->withTrashed()->update($params, $id);
+                $this->post->update($params, $id);
             }
         } catch (RepositoryException $e) {
             throw new \Exception($e->getMessage(), $e->getCode());
