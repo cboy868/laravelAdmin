@@ -12,5 +12,5 @@ namespace App\Entities\Sms\Services;
 
 interface SmsInterface
 {
-    public function sendSms();
+    public function sendSms(String $mobile,array $params=[], String $template, String $sign_name);
 }
