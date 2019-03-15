@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Entities\Sms\Services\SmsInterface;
 use App\Http\Requests\SmsCodeRequest;
 use App\Repository\UserRepository;
 use Illuminate\Session\Store as Session;
@@ -30,11 +31,12 @@ class ShowSmsCode extends ApiController
      * @param $id
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function __invoke(SmsCodeRequest $request)
+    public function __invoke(SmsCodeRequest $request, SmsInterface $sms)
     {
         $mobile = $request->input('mobile');
 
-        if ($this->generateCode($mobile)) {
+        if ($code = $this->generateCode($mobile)) {
+            $sms->sendSms($mobile, ['code'=>$code]);
             return $this->respond();
         }
 
@@ -71,6 +73,7 @@ class ShowSmsCode extends ApiController
 
             return false;
         }
-        return true;
+
+        return $code;
     }
 }

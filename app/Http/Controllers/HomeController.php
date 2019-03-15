@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Entities\Sms\Services\SmsInterface;
 use Illuminate\Http\Request;
 use App\Repository\PostRepository as Post;
 
@@ -14,7 +15,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+//        $this->middleware('auth');
     }
 
     /**
@@ -22,8 +23,9 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(SmsInterface $sms)
     {
-        return view('home');
+        $sms->sendSms('15910470214', ['code'=>1234]);
+//        return view('home');
     }
 }
