@@ -15,7 +15,7 @@ function human_filesize($bytes, $decimals = 2)
     $size = ['B', 'kB', 'MB', 'GB', 'TB', 'PB'];
     $factor = floor((strlen($bytes) - 1) / 3);
 
-    return sprintf("%.{$decimals}f", $bytes / pow(1024, $factor)) .@$size[$factor];
+    return sprintf("%.{$decimals}f", $bytes / pow(1024, $factor)) . @$size[$factor];
 }
 
 /**
@@ -31,15 +31,22 @@ function is_image($mimeType)
  * @param $length 随机数长度
  * @return bool|string
  */
-function random_str($length){
-    $str = '2346789abcdefghjmnpqrtuxyzABCDEFGHJMNPQRTUXYZ';//62个字符
+function random_str($length, $int = false)
+{
+    if ($int) {
+        $str = '1234567890';
+    } else {
+        $str = '2346789abcdefghjmnpqrtuxyzABCDEFGHJMNPQRTUXYZ';//62个字符
+    }
+
     $strlen = strlen($str);
-    while($length > $strlen){
+    while ($length > $strlen) {
         $str .= $str;
         $strlen += $strlen;
     }
     $str = str_shuffle($str);
-    return substr($str,0, $length);
+
+    return substr($str, 0, $length);
 }
 
 /**
@@ -48,9 +55,9 @@ function random_str($length){
  * @param $filters
  * @return array
  */
-function array_filters($array, $filters=['null', ''])
+function array_filters($array, $filters = ['null', ''])
 {
-    return array_filter($array, function($v)use($filters){
+    return array_filter($array, function ($v) use ($filters) {
         return in_array($v, $filters) ? false : true;
     });
 }
