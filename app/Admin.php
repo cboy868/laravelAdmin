@@ -11,6 +11,8 @@ class Admin extends Authenticatable implements \Tymon\JWTAuth\Contracts\JWTSubje
     use HasRoles;
     use Notifiable;
 
+    protected $table = 'admins';
+
     /**
      * The attributes that are mass assignable.
      *

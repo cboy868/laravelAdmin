@@ -4,8 +4,11 @@ namespace App\Http\Controllers\User;
 
 use App\Common\ApiStatus;
 use App\Http\Controllers\ApiController;
+use App\Repository\UserRepository;
 use Illuminate\Support\Facades\Log;
 use Tymon\JWTAuth\Exceptions\JWTException;
+use Illuminate\Support\Facades\Cache;
+
 
 class AuthController extends ApiController
 {
@@ -15,7 +18,7 @@ class AuthController extends ApiController
      */
     public function __construct()
     {
-        $this->middleware('auth:member', ['except' => ['login']]);
+        $this->middleware('auth:member', ['except' => ['login', 'loginBySmsCode']]);
     }
 
     /**
@@ -31,12 +34,12 @@ class AuthController extends ApiController
         Log::error(__METHOD__, $params);
 
         try {
-            if (! $token = auth('member')->attempt($params)) {
+            if (!$token = auth('member')->attempt($params)) {
                 return $this->failed(ApiStatus::CODE_2001);
             }
             return $this->respondWithToken($token);
         } catch (JWTException $e) {
-            Log::error(ApiStatus::CODE_2001 . __METHOD__ . __LINE__,[
+            Log::error(ApiStatus::CODE_2001 . __METHOD__ . __LINE__, [
                 'code' => $e->getCode(),
                 'msg' => $e->getMessage()
             ]);
@@ -45,28 +48,37 @@ class AuthController extends ApiController
     }
 
 
-    public function loginBySmsCode(\App\Http\Requests\AuthMemberRequest $authRequest)
+    public function loginBySmsCode(\App\Http\Requests\AuthMemberRequest $authRequest, UserRepository $user)
     {
 
         $params = $authRequest->input();
 
-        Log::error(__METHOD__, $params);
-
         try {
-            if (! $token = auth('member')->attempt($params)) {
+            $model = $user->findBy('mobile', $params['mobile']);
+
+            //验证smscode
+            $code = Cache::get($params['mobile']);
+
+            if ($code != $params['code']) {
+                return $this->failed(ApiStatus::CODE_2001, "验证码错误或不匹配", 401);
+            }
+
+            if (!$token = auth('member')->tokenById($model->id)) {
                 return $this->failed(ApiStatus::CODE_2001);
             }
+
             return $this->respondWithToken($token);
+
         } catch (JWTException $e) {
-            Log::error(ApiStatus::CODE_2001 . __METHOD__ . __LINE__,[
+
+            Log::error(ApiStatus::CODE_2001 . __METHOD__ . __LINE__, [
                 'code' => $e->getCode(),
                 'msg' => $e->getMessage()
             ]);
-            return $this->failed(ApiStatus::CODE_2001, "登录名或密码不匹配", 401);
+
+            return $this->failed(ApiStatus::CODE_2001, "验证码错误或不匹配", 401);
         }
     }
-
-
 
 
     /**
@@ -86,7 +98,7 @@ class AuthController extends ApiController
      */
     public function logout()
     {
-        try{
+        try {
             auth('admin')->logout();
             return $this->setCodeMsg("Successfully logged out")->success();
         } catch (\Exception $e) {
@@ -114,7 +126,7 @@ class AuthController extends ApiController
      */
     protected function respondWithToken($token)
     {
-        return $this->setHeader(['Authorization'=>'Bearer ' . $token])->success([
+        return $this->setHeader(['Authorization' => 'Bearer ' . $token])->success([
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth('admin')->factory()->getTTL() * 60

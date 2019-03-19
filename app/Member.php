@@ -10,6 +10,9 @@ class Member extends Authenticatable implements \Tymon\JWTAuth\Contracts\JWTSubj
 {
     use Notifiable;
 
+
+    protected $table = 'users';
+
     /**
      * The attributes that are mass assignable.
      *
