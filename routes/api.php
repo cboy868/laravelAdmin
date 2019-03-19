@@ -27,6 +27,7 @@ Route::get('smscode', 'ShowSmsCode')->middleware('api');
 
 Route::get('wechat', 'Wechat\Controller@index');
 
+Route::post('/login_by_code', 'User\AuthController@loginBySmsCode');
 
 ////会员
 //Route::group([
