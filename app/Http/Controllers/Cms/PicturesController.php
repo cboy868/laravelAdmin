@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Cms;
 
 use App\Common\ApiStatus;
+use App\Entities\Pictures\PicturesRel;
+use App\Entities\Pictures\Repository\UserRepository;
 use App\Entities\Pictures\Requests\StorePicturesRequest;
 use App\Entities\Pictures\Requests\UpdatePicturesRequest;
 use App\Http\Controllers\ApiController;
@@ -34,7 +36,7 @@ class PicturesController extends ApiController
         //查询条件
         $where = [];
         if ($name = $request->input('name')) {
-            array_push($where, ['name', 'like', '%'.$name.'%']);
+            array_push($where, ['name', 'like', '%' . $name . '%']);
         }
 
         if ($cid = $request->input('cid')) {
@@ -42,9 +44,9 @@ class PicturesController extends ApiController
         }
 
         $result = $this->model->where($where)
-            ->withOnly('createdby', ['name','email'])
+            ->withOnly('createdby', ['name', 'email'])
             ->with('category')
-            ->whereHas('category',function ($query){
+            ->whereHas('category', function ($query) {
                 $query->whereNull('deleted_at');
             })
             ->orderBy('id', 'desc')
@@ -57,7 +59,7 @@ class PicturesController extends ApiController
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(StorePicturesRequest $request)
@@ -76,19 +78,24 @@ class PicturesController extends ApiController
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id, UserRepository $userRepository)
     {
         $model = $this->model->with('items')->find($id);
 
         if ($model) {
 
             $result = $model->toArray();
+            $result['auth'] = 0;
+            if ($user = auth('member')->user()) {
+                $rel = $userRepository->find($user->id)->pictures;
+                $result['auth'] = count($rel) ? 1 : 0;
+            }
+
             $baseUrl = 'http://' . \request()->getHttpHost() . '/storage/';
             $result['base_url'] = $baseUrl;
-            $result['auth'] = auth('member')->guest() ? 0 : 1;
 
             return $this->respond($result);
         }
@@ -99,8 +106,8 @@ class PicturesController extends ApiController
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(UpdatePicturesRequest $request, $id)
@@ -118,7 +125,7 @@ class PicturesController extends ApiController
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
