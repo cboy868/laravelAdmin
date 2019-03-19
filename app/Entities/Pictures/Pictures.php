@@ -50,7 +50,9 @@ class Pictures extends Model
      */
     public function items(): HasMany
     {
-        return $this->hasMany(PicturesItem::class, 'pictures_id');
+        return $this->hasMany(PicturesItem::class, 'pictures_id')
+            ->orderBy('sort', 'ASC')
+            ->orderBy('id', 'DESC');
     }
 
     /**

@@ -84,9 +84,12 @@ class PicturesController extends ApiController
         $model = $this->model->with('items')->find($id);
 
         if ($model) {
+
             $result = $model->toArray();
             $baseUrl = 'http://' . \request()->getHttpHost() . '/storage/';
             $result['base_url'] = $baseUrl;
+            $result['auth'] = auth('member')->guest() ? 0 : 1;
+
             return $this->respond($result);
         }
         return $this->failed(ApiStatus::CODE_1021);
