@@ -38,7 +38,7 @@ class Pictures extends Model
         "views",
         "comms",
         "created_by",
-        "recommend",
+        "flag",
         'deleted_at',
         'created_at',
         'updated_at'
