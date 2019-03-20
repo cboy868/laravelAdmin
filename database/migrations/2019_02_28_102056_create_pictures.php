@@ -36,7 +36,7 @@ class CreatePictures extends Migration
             $table->unsignedSmallInteger('views')->default(0);//查看次数
             $table->unsignedSmallInteger('comms')->default(0);//评论次数
             $table->unsignedInteger('created_by');//添加人
-            $table->unsignedTinyInteger('recommend')->default(0);//推荐
+            $table->unsignedTinyInteger('flag')->default(0);//推荐1 热门2 其它再定义 
 
             $table->softDeletes();//软删除
             $table->timestamps();

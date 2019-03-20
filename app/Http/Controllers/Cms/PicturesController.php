@@ -43,6 +43,11 @@ class PicturesController extends ApiController
             array_push($where, ['category_id', $cid]);
         }
 
+
+        if ($flag = $request->input('flag')) {
+            array_push($where, ['flag', $flag]);
+        }
+
         $result = $this->model->where($where)
             ->withOnly('createdby', ['name', 'email'])
             ->with('category')
