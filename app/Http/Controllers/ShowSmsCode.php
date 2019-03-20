@@ -10,6 +10,7 @@ use Illuminate\Hashing\BcryptHasher as Hasher;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Cache;
+use App\Entities\Sms\Services\Code;
 
 class ShowSmsCode extends ApiController
 {
@@ -17,13 +18,16 @@ class ShowSmsCode extends ApiController
     public $session;
     public $hasher;
     public $str;
+    public $code;
 
-    public function __construct(UserRepository $user, Session $session, Hasher $hasher, Str $str)
+    public function __construct(UserRepository $user, Session $session, Hasher $hasher, Str $str, Code $code)
     {
         $this->model = $user;
         $this->session = $session;
         $this->hasher = $hasher;
         $this->str = $str;
+        $this->code = $code;
+
     }
 
     /**
@@ -61,11 +65,7 @@ class ShowSmsCode extends ApiController
                 ]);
             }
 
-            //生成验证码并存入session
-            $code = random_str(6);
-
-            //10分钟内有效
-            Cache::put($mobile, $code, 10);
+            $code = $this->code->generateCode($mobile);
         } catch (\Exception $e) {
             Log::error(__METHOD__ . __LINE__, [
                 'msg' => $e->getMessage()

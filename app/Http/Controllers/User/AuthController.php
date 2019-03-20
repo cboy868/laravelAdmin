@@ -8,7 +8,7 @@ use App\Repository\UserRepository;
 use Illuminate\Support\Facades\Log;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Support\Facades\Cache;
-
+use App\Entities\Sms\Services\Code;
 
 class AuthController extends ApiController
 {
@@ -48,7 +48,7 @@ class AuthController extends ApiController
     }
 
 
-    public function loginBySmsCode(\App\Http\Requests\AuthMemberRequest $authRequest, UserRepository $user)
+    public function loginBySmsCode(\App\Http\Requests\AuthMemberRequest $authRequest, UserRepository $user, Code $code)
     {
 
         $params = $authRequest->input();
@@ -56,12 +56,10 @@ class AuthController extends ApiController
         try {
             $model = $user->findBy('mobile', $params['mobile']);
 
-            //验证smscode
-            $code = Cache::get($params['mobile']);
-
-            if ($code != $params['code']) {
+            if (!$code->check($params['mobile'], $params['code'])) {
                 return $this->failed(ApiStatus::CODE_2001, "验证码错误或不匹配", 401);
             }
+           
 
             if (!$token = auth('member')->tokenById($model->id)) {
                 return $this->failed(ApiStatus::CODE_2001);
