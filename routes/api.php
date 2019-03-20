@@ -25,6 +25,10 @@ Route::get('smscode', 'ShowSmsCode')->middleware('api');
 //=================================================
 
 
+Route::get('home', 'HomeController@index')->middleware('api');
+Route::get('discover', 'HomeController@discover')->middleware('api');
+Route::get('profile', 'HomeController@profile')->middleware('api');
+
 Route::get('wechat', 'Wechat\Controller@index');
 
 Route::post('/login_by_code', 'User\AuthController@loginBySmsCode');

@@ -17,8 +17,8 @@ class User extends Model
     {
         return $this->belongsToMany(Pictures::class,
             'pictures_user_rel',
-        'user_id',
-        'pictures_id'
-            );
+            'user_id',
+            'pictures_id'
+        );
     }
 }

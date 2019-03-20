@@ -1,31 +1,63 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Entities\Pictures\Repository\PicturesRepository;
 
-use App\Entities\Sms\Services\SmsInterface;
-use Illuminate\Http\Request;
-use App\Repository\PostRepository as Post;
-
-class HomeController extends Controller
+/**
+ * 集合页面
+ * Class HomeController
+ * @package App\Http\Controllers
+ */
+class HomeController extends ApiController
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public $pictures;
+
+    public function __construct(PicturesRepository $picturesRepository)
     {
-//        $this->middleware('auth');
+        $this->pictures = $picturesRepository;
+//        parent::__construct(); 不需要middleware
     }
 
     /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
+     * 首页
+     * 需要展示
+     * 1、banner图
+     * 2、pictures热、推等
      */
-    public function index(SmsInterface $sms)
+    public function index()
     {
-        $sms->sendSms('15910470214', ['code'=>1234]);
-//        return view('home');
+        $hots = $this->pictures->where([['flag', 2]])
+            ->orderBy('sort', 'asc')
+            ->orderBy('id', 'desc')
+            ->limit(4)
+            ->get();
+
+        $recommends = $this->pictures->where([['flag', 1]])
+            ->orderBy('sort', 'asc')
+            ->orderBy('id', 'desc')
+            ->limit(4)
+            ->get();
+
+        return $this->respond([
+            'recommends' => $recommends,
+            'hots' => $hots
+        ]);
+    }
+
+    /**
+     * 发现 最新的一些内容吗
+     */
+    public function discover()
+    {
+
+    }
+
+    /**
+     * 我的 个人中心
+     * 可修改个人的一些东西
+     */
+    public function me()
+    {
+        
     }
 }
