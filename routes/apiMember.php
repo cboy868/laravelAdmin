@@ -13,17 +13,21 @@ use Illuminate\Http\Request;
 |
 */
 
-//Route::group([
-//    'prefix' => 'client'
-//], function ($router){
-//
-//    $router->post('/login', 'Client\AuthController@login');
-//
-////    Route::middleware(['auth:admin', 'auth.token'])->group(function ($router){
-//
-//        Route::apiResource('pictures', 'Cms\PicturesController');
-////    });
-//});
+Route::group([
+   'prefix' => 'client'
+], function ($router){
+
+   $router->post('/login_by_code', 'User\AuthController@loginBySmsCode');
+
+   // $router->post('/login', 'Client\AuthController@login');//没用的登录，暂时注掉
+   // Route::middleware(['auth:member', 'auth.token'])->group(function ($router){
+
+		Route::apiResource('pictures-user', 'Cms\PicturesUserController');
+		Route::apiResource('pictures-category', 'Cms\PicturesCategoryController');
+		Route::apiResource('pictures', 'Cms\PicturesController');
+
+   // });
+});
 
 
 
