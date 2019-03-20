@@ -11,10 +11,10 @@ use Illuminate\Support\Facades\Cache;
 class Code
 {
 	
-	public function generateCode($mobile)
+	public function generateCode($mobile, $length=6)
 	{
         try {
-        	$code = random_str(6);
+        	$code = random_str($length);
         	//10分钟内有效
         	Cache::put($mobile, $code, 10);
 
