@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Lisenter;
+namespace App\Listeners;
 
-use App\Events\UserLogin;
+use App\Events\FirstLogin;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class DoSomething1
+class GiveFreePicture
 {
     /**
      * Create the event listener.
@@ -21,11 +21,13 @@ class DoSomething1
     /**
      * Handle the event.
      *
-     * @param  UserLogin  $event
+     * @param  FirstLogin  $event
      * @return void
      */
-    public function handle(UserLogin $event)
+    public function handle(FirstLogin $event)
     {
-        info("do something 1");
+        info("do something what to do",[
+            'a' => $event
+        ]);
     }
 }

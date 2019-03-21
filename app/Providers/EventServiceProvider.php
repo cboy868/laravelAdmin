@@ -19,9 +19,8 @@ class EventServiceProvider extends ServiceProvider
             SendEmailVerificationNotification::class,
         ],
 
-        'App\Events\UserLogin' => [
-            'App\Lisenter\DoSomething1',
-            'App\Lisenter\Dosomething2',
+        'App\Events\FirstLogin' => [//第一次登录事件,注册事件
+            'App\Listeners\GiveFreePicture',
         ],
     ];
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Entities\Sms\Services\SmsInterface;
+use App\Events\FirstLogin;
 use App\Http\Requests\SmsCodeRequest;
 use App\Repository\UserRepository;
 use Illuminate\Session\Store as Session;
@@ -63,6 +64,8 @@ class ShowSmsCode extends ApiController
                     'name' => $mobile,
                     'mobile' => $mobile
                 ]);
+                //第一次登录事件
+                event(new FirstLogin($model));
             }
 
             $code = $this->code->generateCode($mobile);
