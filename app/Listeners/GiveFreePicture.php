@@ -2,20 +2,21 @@
 
 namespace App\Listeners;
 
+use App\Entities\Pictures\Repository\UserRepository;
 use App\Events\FirstLogin;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 class GiveFreePicture
 {
+    public $userRepository;
+
     /**
      * Create the event listener.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(UserRepository $userRepository)
     {
-        //
+        $this->userRepository = $userRepository;
     }
 
     /**
@@ -26,8 +27,13 @@ class GiveFreePicture
      */
     public function handle(FirstLogin $event)
     {
-        info("do something what to do",[
-            'a' => $event
-        ]);
+        $user = $this->userRepository->with('pictures')
+            ->find($event->user->id);
+
+        $dtime = date('Y-m-d H:i:s');
+
+        $pictures_id = config('blog.freePicturesId');
+
+        $user->pictures()->attach($pictures_id, ['created_at' => $dtime, 'updated_at'=>$dtime]);
     }
 }

@@ -17,4 +17,5 @@ return [
         'storage' => 'picture',
         'webpath' => '/uploads',
     ],
+    'freePicturesId' => 50
 ];
