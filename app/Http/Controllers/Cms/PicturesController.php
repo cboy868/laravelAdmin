@@ -50,6 +50,7 @@ class PicturesController extends ApiController
 
         $result = $this->model->where($where)
             ->withOnly('createdby', ['name', 'email'])
+            ->with('cover')
             ->with('category')
             ->whereHas('category', function ($query) {
                 $query->whereNull('deleted_at');

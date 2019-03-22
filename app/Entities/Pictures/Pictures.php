@@ -64,6 +64,15 @@ class Pictures extends Model
         return $this->belongsTo(Category::class, 'category_id');
     }
 
+    /**
+     * 图册封面
+     * @return BelongsTo
+     */
+    public function cover(): BelongsTo
+    {
+        return $this->belongsTo(PicturesItem::class, 'thumb', 'id');
+    }
+
 
     public function createdby(): BelongsTo
     {
