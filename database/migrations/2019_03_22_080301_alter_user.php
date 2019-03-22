@@ -15,7 +15,9 @@ class AlterUser extends Migration
     {
         //添加会员级别
         Schema::table('users', function (Blueprint $table) {
-            $table->unsignedTinyInteger('level')->comment("会员级别");
+            $table->unsignedTinyInteger('level')
+                ->default(0)
+                ->comment("会员级别");
         });
 
     }
