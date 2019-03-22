@@ -34,6 +34,7 @@ Route::group([
         Route::apiResource('pictures-category', 'Cms\PicturesCategoryController');
         Route::apiResource('pictures-user', 'Cms\PicturesUserController');
         Route::apiResource('pictures', 'Cms\PicturesController');
+        Route::apiResource('focus', 'Cms\FocusController');
 
         //商品
         Route::apiResource('brands', 'Goods\BrandController');
