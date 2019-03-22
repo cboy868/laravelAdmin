@@ -127,7 +127,7 @@ class FileService
 
                 $picture->create([
                     "pictures_id" => $model->id,
-                    "title" => $arr[0] ,
+                    "title" => $arr[0],
                     "path" => $dir,
                     "name" => $newName,
                     "ext" => $arr[1]

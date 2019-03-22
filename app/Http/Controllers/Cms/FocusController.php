@@ -36,6 +36,10 @@ class FocusController extends ApiController
             array_push($where, ['name', 'like', '%' . $name . '%']);
         }
 
+        if ($pos = $request->input('pos')) {
+            array_push($where, ['pos', $pos]);
+        }
+
         if ($appid = $request->input('appid')) {
             array_push($where, ['appid', $appid]);
         }
