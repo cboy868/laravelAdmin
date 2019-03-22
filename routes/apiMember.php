@@ -26,6 +26,8 @@ Route::group([
 		Route::apiResource('pictures-category', 'Cms\PicturesCategoryController');
 		Route::apiResource('pictures', 'Cms\PicturesController');
 
+        Route::apiResource('focus', 'Cms\FocusController');
+
    // });
 });
 
