@@ -12,13 +12,17 @@ class User extends Authenticatable implements \Tymon\JWTAuth\Contracts\JWTSubjec
     use Notifiable;
     use HasRoles;
 
+    const USER_LEVEL_NORMAL = 0;//普通用户
+    const USER_LEVEL_ALL = 1;//全栈会员
+    const USER_LEVEL_PICTURE = 2;//图集会员
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'mobile'
+        'name', 'email', 'password', 'mobile', 'level'
     ];
 
     /**

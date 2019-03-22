@@ -10,6 +10,9 @@ class Member extends Authenticatable implements \Tymon\JWTAuth\Contracts\JWTSubj
 {
     use Notifiable;
 
+    const USER_LEVEL_NORMAL = 0;//普通用户
+    const USER_LEVEL_ALL = 1;//全栈会员
+    const USER_LEVEL_PICTURE = 2;//图集会员
 
     protected $table = 'users';
 
@@ -19,7 +22,7 @@ class Member extends Authenticatable implements \Tymon\JWTAuth\Contracts\JWTSubj
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password','level'
     ];
 
     /**
