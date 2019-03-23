@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Entities\Focus\Repository\FocusRepository;
 use App\Entities\Pictures\Repository\PicturesRepository;
 
 /**
@@ -11,10 +12,12 @@ use App\Entities\Pictures\Repository\PicturesRepository;
 class HomeController extends ApiController
 {
     public $pictures;
+    public $focus;
 
-    public function __construct(PicturesRepository $picturesRepository)
+    public function __construct(PicturesRepository $picturesRepository, FocusRepository $focusRepository)
     {
         $this->pictures = $picturesRepository;
+        $this->focus = $focusRepository;
 //        parent::__construct(); 不需要middleware
     }
 
@@ -26,6 +29,9 @@ class HomeController extends ApiController
      */
     public function index()
     {
+
+        $banners = $this->focus->where(['pos'=>'home_top'])->with('items')->first();
+
         $hots = $this->pictures->where([['flag', 2]])
             ->orderBy('sort', 'asc')
             ->orderBy('id', 'desc')
@@ -39,8 +45,9 @@ class HomeController extends ApiController
             ->get();
 
         return $this->respond([
+            'banners' => $banners,
             'recommends' => $recommends,
-            'hots' => $hots
+            'hots' => $hots,
         ]);
     }
 
