@@ -29,8 +29,8 @@ class HomeController extends ApiController
      */
     public function index()
     {
-
-        $banners = $this->focus->where(['pos'=>'home_top'])->with('items')->first();
+        $top_banners = $this->focus->where(['pos'=>'home_top'])->with('items')->first();
+        $midle_banners = $this->focus->where(['pos'=>'home_middle'])->with('items')->first();
 
         $hots = $this->pictures->where([['flag', 2]])
             ->orderBy('sort', 'asc')
@@ -45,9 +45,10 @@ class HomeController extends ApiController
             ->get();
 
         return $this->respond([
-            'banners' => $banners,
-            'recommends' => $recommends,
-            'hots' => $hots,
+            'top_banners' => $top_banners,
+            'middle_banners' => $midle_banners,
+            'hot_meitu' => $recommends,
+            'hot_manhua' => $hots,
         ]);
     }
 
