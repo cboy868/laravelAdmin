@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Entities\Focus\Repository\FocusRepository;
+use App\Entities\Goods\Repository\GoodsRepository;
 use App\Entities\Pictures\Repository\PicturesRepository;
 
 /**
@@ -13,11 +14,15 @@ class HomeController extends ApiController
 {
     public $pictures;
     public $focus;
+    public $goods;
 
-    public function __construct(PicturesRepository $picturesRepository, FocusRepository $focusRepository)
+    public function __construct(PicturesRepository $picturesRepository,
+                                FocusRepository $focusRepository,
+                                GoodsRepository $goodsRepository)
     {
         $this->pictures = $picturesRepository;
         $this->focus = $focusRepository;
+        $this->goods = $goodsRepository;
 //        parent::__construct(); 不需要middleware
     }
 
@@ -75,6 +80,22 @@ class HomeController extends ApiController
             'base_url' =>  $baseUrl,
             'discover' => $discover,
         ]);
+    }
+
+    /**
+     * 商品
+     */
+    public function goods()
+    {
+        $where =[['cid'=>1]];
+
+        $result = $this->goods
+            ->where($where)
+            ->orderBy('id', 'desc')
+            ->limit(4)
+            ->get();
+
+        return $this->respond($result);
     }
 
     /**

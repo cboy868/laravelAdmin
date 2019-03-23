@@ -34,8 +34,12 @@ Route::group([
         Route::get('discover', 'HomeController@discover')->middleware('api');
         Route::get('profile', 'HomeController@profile')->middleware('api');
 
-        $router->post('me', 'User\AuthController@me');//个人信息
+        //套餐包
+        Route::get('bag', 'HomeController@goods')->middleware('api');
 
+        Route::post('me', 'User\AuthController@me');//个人信息
+
+        Route::apiResource('goods', 'Goods\CategoryController');
 
    // });
 });
