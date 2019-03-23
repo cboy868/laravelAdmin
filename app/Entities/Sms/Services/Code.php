@@ -29,8 +29,7 @@ class Code
 		//验证smscode
         $catchCode = Cache::get($mobile);
 
-
-        return $catchCode == $code;
+        return strtolower($catchCode) == strtolower($code);
 	}
 
 }
