@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Common\ApiStatus;
 use App\Entities\Sms\Services\SmsInterface;
 use App\Events\FirstLogin;
 use App\Http\Requests\SmsCodeRequest;
@@ -45,7 +46,7 @@ class ShowSmsCode extends ApiController
             return $this->respond();
         }
 
-        return $this->failed();
+        return $this->failed(ApiStatus::CODE_2051);
     }
 
 
