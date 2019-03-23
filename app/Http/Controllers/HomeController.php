@@ -33,18 +33,23 @@ class HomeController extends ApiController
         $midle_banners = $this->focus->where(['pos'=>'home_middle'])->with('items')->first();
 
         $hots = $this->pictures->where([['flag', 2]])
+            ->with('cover')
             ->orderBy('sort', 'asc')
             ->orderBy('id', 'desc')
-            ->limit(4)
+            ->limit(6)
             ->get();
 
         $recommends = $this->pictures->where([['flag', 1]])
+            ->with('cover')
             ->orderBy('sort', 'asc')
             ->orderBy('id', 'desc')
-            ->limit(4)
+            ->limit(6)
             ->get();
 
+        $baseUrl = 'http://' . \request()->getHttpHost() . '/storage/';
+
         return $this->respond([
+            'base_url' =>  $baseUrl,
             'top_banners' => $top_banners,
             'middle_banners' => $midle_banners,
             'hot_meitu' => $recommends,
