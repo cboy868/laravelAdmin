@@ -29,6 +29,12 @@ Route::group([
 
         Route::apiResource('focus', 'Cms\FocusController');
 
+        //聚合页面
+        Route::get('home', 'HomeController@index')->middleware('api');
+        Route::get('discover', 'HomeController@discover')->middleware('api');
+        Route::get('profile', 'HomeController@profile')->middleware('api');
+
+        $router->post('me', 'User\AuthController@me');//个人信息
 
 
    // });

@@ -86,7 +86,16 @@ class AuthController extends ApiController
      */
     public function me()
     {
-        return $this->success(auth('admin')->user());
+        $user = auth('member')->user();
+
+        if ($user) {
+            $userArray = $user->toArray();
+
+            $userArray['level_label'] = $user->getLevel();
+            return $this->respond($userArray);
+        }
+
+        return $this->failed(ApiStatus::CODE_2002);
     }
 
     /**
