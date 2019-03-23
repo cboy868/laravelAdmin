@@ -32,7 +32,7 @@ class HomeController extends ApiController
         $top_banners = $this->focus->where(['pos'=>'home_top'])->with('items')->first();
         $midle_banners = $this->focus->where(['pos'=>'home_middle'])->with('items')->first();
 
-        $hots = $this->pictures->where([['flag', 2]])
+        $hots = $this->pictures->where([['flag', 1]])
             ->with('cover')
             ->orderBy('sort', 'asc')
             ->orderBy('id', 'desc')
@@ -62,7 +62,19 @@ class HomeController extends ApiController
      */
     public function discover()
     {
+        $discover = $this->pictures->where([['flag', 1]])
+            ->with('cover')
+            ->orderBy('sort', 'asc')
+            ->orderBy('id', 'desc')
+            ->limit(6)
+            ->get();
 
+        $baseUrl = 'http://' . \request()->getHttpHost() . '/storage/';
+
+        return $this->respond([
+            'base_url' =>  $baseUrl,
+            'discover' => $discover,
+        ]);
     }
 
     /**
