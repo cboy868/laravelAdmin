@@ -21,7 +21,7 @@ require_once 'apiMember.php';
 // 取图片验证码
 Route::get('captcha', 'ShowCaptcha')->middleware('api');
 //取短信验证码
-Route::get('smscode', 'ShowSmsCode')->middleware('api');
+Route::post('smscode', 'ShowSmsCode')->middleware('api');
 //=================================================
 
 
