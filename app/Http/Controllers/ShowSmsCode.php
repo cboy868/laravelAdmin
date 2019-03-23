@@ -61,7 +61,7 @@ class ShowSmsCode extends ApiController
             //根据验证码查找用户,如果没有则新生成
             $model = $this->model->findBy('mobile', $mobile);
             if (!$model) {
-                $this->model->create([
+                $model = $this->model->create([
                     'name' => $mobile,
                     'mobile' => $mobile
                 ]);
