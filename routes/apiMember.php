@@ -19,21 +19,21 @@ Route::group([
 
    $router->post('/login_by_code', 'User\AuthController@loginBySmsCode');
 
-   // $router->post('/login', 'Client\AuthController@login');//没用的登录，暂时注掉
+    $router->post('/login', 'User\AuthController@login');//没用的登录，暂时注掉
    // Route::middleware(['auth:member', 'auth.token'])->group(function ($router){
 
 		Route::apiResource('pictures-user', 'Cms\PicturesUserController');
 		Route::apiResource('pictures-category', 'Cms\PicturesCategoryController');
 		Route::apiResource('pictures', 'Cms\PicturesController');
 
+        Route::apiResource('focus', 'Cms\FocusController');
+
    // });
 });
 
 
-
-
-
-
+//
+//
 
 
 

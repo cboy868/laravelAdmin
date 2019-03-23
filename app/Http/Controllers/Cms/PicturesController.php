@@ -58,6 +58,9 @@ class PicturesController extends ApiController
             ->orderBy('id', 'desc')
             ->paginate($pageSize);
 
+        $baseUrl = 'http://' . \request()->getHttpHost() . '/storage/';
+        $result['base_url'] = $baseUrl;
+
         return $this->respond($result);
     }
 

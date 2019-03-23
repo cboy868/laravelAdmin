@@ -7,6 +7,11 @@ use App\Entities\Pictures\Repository\PicturesRepository;
 use App\Entities\Pictures\Services\FileService;
 use Illuminate\Console\Command;
 
+/**
+ * php artisan pictures:sync
+ * Class ScanPictures
+ * @package App\Console\Commands
+ */
 class ScanPictures extends Command
 {
     /**
