@@ -2,10 +2,15 @@
 
 namespace App\Entities\Pictures;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Member;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class User extends Model
+/**
+ * 直接继承外部的总表
+ * Class User
+ * @package App\Entities\Pictures
+ */
+class User extends Member
 {
     protected $table = 'users';
 
