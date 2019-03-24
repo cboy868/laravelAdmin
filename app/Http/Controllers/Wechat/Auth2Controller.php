@@ -18,6 +18,7 @@ class Auth2Controller extends Controller
     public function __construct(WechatUserRepository $wechatUserRepository)
     {
         $this->wechatUser = $wechatUserRepository;
+        parent::__construct();
     }
 
 
