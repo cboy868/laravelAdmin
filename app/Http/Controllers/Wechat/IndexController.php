@@ -46,7 +46,7 @@ class IndexController extends Controller
 
     public function pay()
     {
-
+        $this->wechat->setSubMerchant('1487057712', 'sub-app-id');
     }
 }
 

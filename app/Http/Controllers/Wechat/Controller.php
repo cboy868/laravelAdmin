@@ -93,8 +93,6 @@ class Controller extends BaseController
         ];
 
         $this->wechat = Factory::officialAccount($config);
-
-        $this->wechat->setSubMerchant('1487057712', 'sub-app-id');
     }
 
 
