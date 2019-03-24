@@ -18,9 +18,6 @@ class IndexController extends Controller
 
     public function index()
     {
-        Log::error(__METHOD__. __LINE__, [
-            'a' => request()->all()
-        ]);
         try{
             $this->wechat->server->push(function ($message) {
                 return "您好！欢迎使用 EasyWeChat";
