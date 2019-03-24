@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entities\Sms\Repository;
+namespace App\Entities\Wechat\Repository;
 
 use Cboy868\Repositories\Eloquent\SoftDeleteRepository;
 
@@ -12,10 +12,10 @@ use Cboy868\Repositories\Eloquent\SoftDeleteRepository;
  * Time: 17:28
  */
 
-class SmsRepository extends SoftDeleteRepository
+class WechatUserRepository extends SoftDeleteRepository
 {
     function model()
     {
-        return 'App\Entities\Sms\Sms';
+        return 'App\Entities\Wechat\WechatUser';
     }
 }

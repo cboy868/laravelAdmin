@@ -7,10 +7,19 @@ namespace App\Http\Controllers\Wechat;
  * Date: 2019/3/5
  * Time: 17:27
  */
+use App\Entities\Wechat\Repository\WechatUserRepository;
 use Illuminate\Support\Facades\Log;
 
 class Auth2Controller extends Controller
 {
+
+    protected $wechatUser;
+
+    public function __construct(WechatUserRepository $wechatUserRepository)
+    {
+        $this->wechatUser = $wechatUserRepository;
+    }
+
 
     /**
      * 授权
@@ -31,8 +40,22 @@ class Auth2Controller extends Controller
 
         $user = $oauth->user();
 
+        $original = $user->getOriginal();
+
+        $model = $this->wechatUser->create([
+            'unionid' => $original->unionid,
+            'openid' => $user->getId(),
+            'nickname' => $user->getNickname(),
+            'sex'=> $original->sex,
+            'language' => $original->language,
+            'province'=> $original->province,
+            'country' => $original->country,
+            'headimgurl' => $user->getAvatar(),
+        ]);
+
         Log::error(__METHOD__ . __LINE__, [
-            'user' => $user
+            'user' => $user,
+            'model' => $model
         ]);
 
 //        $targetUrl = empty($_SESSION['target_url']) ? '/' : $_SESSION['target_url'];
