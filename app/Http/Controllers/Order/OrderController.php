@@ -44,15 +44,6 @@ class OrderController extends ApiController
         return $this->respond($res);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -73,19 +64,16 @@ class OrderController extends ApiController
      */
     public function show($id)
     {
-        //
+        $model = $this->order->with('goods')->find($id);
+
+        if ($model) {
+            $result = $model->toArray();
+            return $this->respond($result);
+        }
+
+        return $this->failed(ApiStatus::CODE_1021);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
