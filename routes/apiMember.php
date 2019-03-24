@@ -41,6 +41,9 @@ Route::group([
 
         Route::apiResource('goods', 'Goods\CategoryController');
 
+
+        Route::apiResource('wechat', 'Wechat\IndexController');
+
    // });
 });
 

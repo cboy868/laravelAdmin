@@ -19,8 +19,8 @@ class Controller extends BaseController
     public function __construct()
     {
         $config = [
-            'app_id' => 'wxa49d94dde698d291',
-            'secret' => 'db9f2d31ee80a622568d7f6eab3649c8',
+            'app_id' => 'wxf2831524143015af',
+            'secret' => 'fa7aec57b599c0e1155b4ba19857a8f5',
             'token' => '7JPN8xArTFbvBgIjHXaDZdnwf3tQeY2c',
             'response_type' => 'array',
         ];
@@ -31,7 +31,7 @@ class Controller extends BaseController
 
     public function index()
     {
-        return $this->wechat->server->serve();
+//        return $this->wechat->server->serve();
     }
 }
 
