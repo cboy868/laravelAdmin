@@ -18,6 +18,10 @@ class CrossHttp
     {
         $response = $next($request);
 
+
+        Log::error(__METHOD__ . __LINE__,[
+            're' => $response
+        ]);
         //todo 这的ip里要写成配置
         $response->header('Access-Control-Allow-Origin', '*');
         $response->header('Access-Control-Allow-Headers', 'Origin, Content-Type, Cookie, Accept,Authorization');
