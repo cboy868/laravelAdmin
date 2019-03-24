@@ -28,6 +28,7 @@ Route::group([
 		Route::apiResource('pictures', 'Cms\PicturesController');
 
         Route::apiResource('focus', 'Cms\FocusController');
+        Route::apiResource('orders', 'Order\OrderController');
 
         //聚合页面
         Route::get('home', 'HomeController@index')->middleware('api');
