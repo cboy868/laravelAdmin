@@ -18,6 +18,9 @@ class IndexController extends Controller
 
     public function index()
     {
+        Log::error(__METHOD__. __LINE__, [
+            'a' => request()->all()
+        ]);
         try{
             return $this->wechat->server->serve();
         } catch (\Exception $e) {
