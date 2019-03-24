@@ -17,16 +17,30 @@ class CrossHttp
     public function handle($request, Closure $next)
     {
         $response = $next($request);
+        $IlluminateResponse = 'Illuminate\Http\Response';
+        $SymfonyResopnse = 'Symfony\Component\HttpFoundation\Response';
+        $headers = [
+            'Access-Control-Allow-Origin' => '*',
+            'Access-Control-Allow-Methods' => 'GET, POST, PATCH, PUT, OPTIONS, DELETE',
+            'Access-Control-Allow-Headers' => 'Origin, Content-Type, Cookie, Accept,Authorization',
+            'Access-Control-Allow-Credentials' => 'true'
+        ];
 
+        if ($response instanceof $IlluminateResponse) {
+            foreach ($headers as $key => $value) {
+                $response->header($key, $value);
+            }
+            return $response;
+        }
 
-        Log::error(__METHOD__ . __LINE__,[
-            're' => $response
-        ]);
-        //todo 这的ip里要写成配置
-        $response->header('Access-Control-Allow-Origin', '*');
-        $response->header('Access-Control-Allow-Headers', 'Origin, Content-Type, Cookie, Accept,Authorization');
-        $response->header('Access-Control-Allow-Methods', 'GET, POST, PATCH, PUT, OPTIONS');
-        $response->header('Access-Control-Allow-Credentials', 'true');
+        if ($response instanceof $SymfonyResopnse) {
+            foreach ($headers as $key => $value) {
+                $response->headers->set($key, $value);
+            }
+            return $response;
+        }
+
         return $response;
+
     }
 }
