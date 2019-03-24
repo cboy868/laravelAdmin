@@ -40,6 +40,8 @@ class OrderController extends Controller
                 'msg' => $e->getMessage()
             ]);
         }
+
+        return false;
     }
 
 
