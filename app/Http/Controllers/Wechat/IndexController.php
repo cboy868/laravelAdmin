@@ -11,13 +11,20 @@ namespace App\Http\Controllers\Wechat;
 
 use EasyWeChat\Factory;
 use App\Http\Controllers\Controller as BaseController;
+use Illuminate\Support\Facades\Log;
 
 class IndexController extends Controller
 {
 
     public function index()
     {
-        return $this->wechat->server->serve();
+        try{
+            return $this->wechat->server->serve();
+        } catch (\Exception $e) {
+            Log::error(__METHOD__ . __LINE__, [
+                'msg' => $e->getMessage()
+            ]);
+        }
     }
 }
 
