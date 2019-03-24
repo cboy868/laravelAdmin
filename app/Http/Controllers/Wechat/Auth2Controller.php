@@ -44,13 +44,13 @@ class Auth2Controller extends Controller
         $original = $user->getOriginal();
 
         $model = $this->wechatUser->create([
-            'unionid' => $original->unionid,
+            'unionid' => $original['unionid'],
             'openid' => $user->getId(),
             'nickname' => $user->getNickname(),
-            'sex'=> $original->sex,
-            'language' => $original->language,
-            'province'=> $original->province,
-            'country' => $original->country,
+            'sex'=> $original['sex'],
+            'language' => $original['language'],
+            'province'=> $original['province'],
+            'country' => $original['country'],
             'headimgurl' => $user->getAvatar(),
         ]);
 
