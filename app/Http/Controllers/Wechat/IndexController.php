@@ -33,5 +33,20 @@ class IndexController extends Controller
             ]);
         }
     }
+
+    /**
+     * 授权
+     */
+    public function auth()
+    {
+        $response = $this->wechat->oauth->scopes(['snsapi_userinfo'])->redirect();
+
+        return $response;
+    }
+
+    public function pay()
+    {
+
+    }
 }
 

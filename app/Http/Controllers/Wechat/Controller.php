@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Http\Controllers\Wechat;
+
 /**
  *
  * @author: wansq
@@ -19,12 +21,24 @@ class Controller extends BaseController
     public function __construct()
     {
         $config = [
-            'app_id' => 'wxf2831524143015af',
-            'secret' => 'fa7aec57b599c0e1155b4ba19857a8f5',
+
+            //测试账号
+
+            'app_id' => 'wxa49d94dde698d291',
+            'secret' => 'db9f2d31ee80a622568d7f6eab3649c8',
             'token' => '7JPN8xArTFbvBgIjHXaDZdnwf3tQeY2c',
+
+//            'app_id' => 'wxf2831524143015af',
+//            'secret' => 'fa7aec57b599c0e1155b4ba19857a8f5',
+//            'token' => '7JPN8xArTFbvBgIjHXaDZdnwf3tQeY2c',
             'aes_key' => 'xiqs4UDgb6ZzXaK1pStdnIk7r0VmcfTH8wYNRu2yhJF',
 
             'response_type' => 'array',
+
+            /**
+             * 支付
+             */
+            'notify_url' => '',
 
             /**
              * 日志配置
@@ -79,6 +93,8 @@ class Controller extends BaseController
         ];
 
         $this->wechat = Factory::officialAccount($config);
+
+        $this->wechat->setSubMerchant('1487057712', 'sub-app-id');
     }
 
 

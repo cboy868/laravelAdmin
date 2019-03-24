@@ -43,6 +43,7 @@ Route::group([
 
 
         Route::apiResource('wechat', 'Wechat\IndexController');
+    Route::get('wechat-auth', 'Wechat\IndexController@auth');
 
    // });
 });

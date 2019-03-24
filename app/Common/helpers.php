@@ -63,6 +63,22 @@ function array_filters($array, $filters = ['null', ''])
 }
 
 /**
+ * 没有代理，获取客户端ip
+ * @return array|false|string
+ */
+function get_client_ip()
+{
+    $cip = "unknow";
+    if ($_SERVER['REMOTE_ADDR']) {
+        $cip = $_SERVER['REMOTE_ADDR'];
+    } elseif (getenv("REMOTE_ADDR")) {
+        $cip = getenv("REMOTE_ADDR");
+    }
+
+    return $cip;
+}
+
+/**
  * 二维数组 提key
  * @param $array
  * @param $field
