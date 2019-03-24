@@ -22,6 +22,10 @@ class IndexController extends Controller
             'a' => request()->all()
         ]);
         try{
+            $this->wechat->server->push(function ($message) {
+                return "您好！欢迎使用 EasyWeChat";
+            });
+
             return $this->wechat->server->serve();
         } catch (\Exception $e) {
             Log::error(__METHOD__ . __LINE__, [
