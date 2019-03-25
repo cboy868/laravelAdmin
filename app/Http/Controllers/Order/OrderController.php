@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Order;
 
 use App\Common\ApiStatus;
 use App\Entities\Order\Repository\OrderRepository;
+use App\Entities\Order\Requests\OrderCreateRequest;
 use App\Http\Controllers\ApiController;
+use Cboy868\Repositories\Exceptions\RepositoryException;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -25,6 +27,10 @@ class OrderController extends ApiController
      */
     public function index(Request $request)
     {
+
+        $model = $this->order->create($request->input());
+        dd($model->filter());
+
         $pageSize = $request->input('page_size', self::DEFAULT_PAGE_SIZE);
 
         //查询条件
@@ -51,9 +57,20 @@ class OrderController extends ApiController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(OrderCreateRequest $request)
     {
-        //
+        $params = array_filters($request->input());
+        try {
+
+            $model = $this->order->create($params);
+
+        } catch (RepositoryException $e) {
+
+            throw new \Exception($e->getMessage(), $e->getCode());
+
+        }
+
+        return $this->respond($model->toArray());
     }
 
     /**
