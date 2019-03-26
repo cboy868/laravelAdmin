@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Order;
 use App\Common\ApiStatus;
 use App\Entities\Order\Repository\OrderRepository;
 use App\Entities\Order\Requests\OrderCreateRequest;
+use App\Entities\Order\Services\OrderService;
 use App\Http\Controllers\ApiController;
 use Cboy868\Repositories\Exceptions\RepositoryException;
 use Illuminate\Http\Request;
@@ -15,9 +16,9 @@ class OrderController extends ApiController
 
     protected $order;
 
-    public function __construct(OrderRepository $orderRepository)
+    public function __construct(OrderService $orderService)
     {
-        $this->order = $orderRepository;
+        $this->order = $orderService;
     }
 
     /**
@@ -28,8 +29,13 @@ class OrderController extends ApiController
     public function index(Request $request)
     {
 
-        $model = $this->order->create($request->input());
-        dd($model->getData());
+        $params = [
+            'goods_id' => 1,
+        ];
+
+        $model = $this->order->create($params);
+
+        dd($model);
 
         $pageSize = $request->input('page_size', self::DEFAULT_PAGE_SIZE);
 

@@ -21,20 +21,18 @@ class Order extends Model
      * @var array
      */
     protected $fillable = [
-        'unionid',
-        'openid',
-        'user_id',
-        'nickname',
-        'sex',
-        'language',
-        'province',
-        'country',
-        'headimgurl',
-        'subscribe',
-        'subscribe_at',
-        'mobile',
-        'created_at',
-        'updated_at',
+        "id",
+        "order_no",
+        "user_id",
+        "title",
+        "price",
+        "origin_price",
+        "type",
+        "progres",
+        "note",
+        "deleted_at",
+        "created_at",
+        "updated_at",
     ];
 
     /**

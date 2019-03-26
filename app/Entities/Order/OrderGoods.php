@@ -21,20 +21,24 @@ class OrderGoods extends Model
      * @var array
      */
     protected $fillable = [
-        'unionid',
-        'openid',
-        'user_id',
-        'nickname',
-        'sex',
-        'language',
-        'province',
-        'country',
-        'headimgurl',
-        'subscribe',
-        'subscribe_at',
-        'mobile',
-        'created_at',
-        'updated_at',
+        "id",
+        "order_id",
+        "user_id",
+        "title",
+        "type_id",
+        "category_id",
+        "goods_no",
+        "sku_no",
+        "sku_name",
+        "price",
+        "origin_price",
+        "num",
+        "use_time",
+        "note",
+        "is_refund",
+        "deleted_at",
+        "created_at",
+        "updated_at",
     ];
 
 
