@@ -8,13 +8,28 @@
 
 namespace App\Entities\Order\Creators;
 
+use App\Entities\Goods\Repository\GoodsRepository;
+
 class GoodsDecorator implements CreaterInterface
 {
     private $orderComponnet;
 
-    public function __construct($componnet)
+    protected $goodsRepository;
+
+    protected $goods_id;
+
+    protected $goods_num;
+
+    protected $goods;
+
+    public function __construct(CreaterInterface $componnet, $goods_id, $goods_num=1, GoodsRepository $goodsRepository)
     {
         $this->orderComponnet = $componnet;
+        $this->goodsRepository = $goodsRepository;
+
+        $this->goods_num = $goods_num;
+        $this->goods_id = $goods_id;
+        $this->goods = $this->goodsRepository->find($goods_id);
     }
 
     public function filter(): bool
@@ -30,7 +45,11 @@ class GoodsDecorator implements CreaterInterface
     {
         $oriData = $this->orderComponnet->getData();
 
-        return array_merge(['goods'=>['id'=>1, 'num'=>2]], $oriData);
+        return array_merge([
+            'goods'=>[
+                'id'=>$this->goods->id,
+                'num'=>$this->goods_num
+            ]], $oriData);
     }
 
     public function create(): bool

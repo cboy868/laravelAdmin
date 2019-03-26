@@ -25,13 +25,14 @@ class OrderRepository extends SoftDeleteRepository
 
     public function create(array $data)
     {
-        $order = new OrderCreater();
+        $container = app();
 
-        $order = new UserDecorator($order);
+        $order = $container->make(OrderCreater::class);
 
-        $order = new GoodsDecorator($order);
+        $order = $container->make(GoodsDecorator::class, ['componnet'=>$order,'goods_id'=>1,'num'=>1]);
+
+        $order = $container->make(UserDecorator::class, ['componnet'=>$order]);
 
         return $order;
-
     }
 }

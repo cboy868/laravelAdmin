@@ -14,7 +14,7 @@ class UserDecorator implements CreaterInterface
 
     protected $user;
 
-    public function __construct($componnet)
+    public function __construct(CreaterInterface $componnet)
     {
         $this->orderComponnet = $componnet;
     }
