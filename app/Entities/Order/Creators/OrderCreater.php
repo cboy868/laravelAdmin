@@ -27,7 +27,9 @@ class OrderCreater implements CreaterInterface
     public function getData(): array
     {
         return [
-            'order_no' => $this->orderNo
+            'order' => [
+                'order_no' => $this->orderNo
+            ]
         ];
     }
 

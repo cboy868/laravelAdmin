@@ -12,6 +12,8 @@ class UserDecorator implements CreaterInterface
 {
     private $orderComponnet;
 
+    protected $user;
+
     public function __construct($componnet)
     {
         $this->orderComponnet = $componnet;
@@ -23,14 +25,16 @@ class UserDecorator implements CreaterInterface
             return false;
         }
 
+        $this->user = auth('member')->user();
+        
         return true;
     }
 
     public function getData(): array
     {
-        echo __METHOD__ ;
-        return [];
-        // TODO: Implement getData() method.
+        $oriData = $this->orderComponnet->getData();
+
+        return array_merge(['user'=>['id'=>1]], $oriData);
     }
 
     public function create(): bool

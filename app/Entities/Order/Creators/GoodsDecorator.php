@@ -28,10 +28,9 @@ class GoodsDecorator implements CreaterInterface
 
     public function getData(): array
     {
-        echo __METHOD__;
+        $oriData = $this->orderComponnet->getData();
 
-        return [];
-        // TODO: Implement getData() method.
+        return array_merge(['goods'=>['id'=>1, 'num'=>2]], $oriData);
     }
 
     public function create(): bool

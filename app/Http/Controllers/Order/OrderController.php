@@ -29,7 +29,7 @@ class OrderController extends ApiController
     {
 
         $model = $this->order->create($request->input());
-        dd($model->filter());
+        dd($model->getData());
 
         $pageSize = $request->input('page_size', self::DEFAULT_PAGE_SIZE);
 
