@@ -52,6 +52,9 @@ class PicturesController extends ApiController
             ->withOnly('createdby', ['name', 'email'])
             ->with('cover')
             ->with('category')
+            ->with(['items' => function ($query){
+                return $query->take(3);
+            }])
             ->whereHas('category', function ($query) {
                 $query->whereNull('deleted_at');
             })
