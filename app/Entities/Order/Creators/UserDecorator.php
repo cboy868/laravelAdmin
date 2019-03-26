@@ -26,7 +26,7 @@ class UserDecorator implements CreaterInterface
         }
 
         $this->user = auth('member')->user();
-        
+
         return true;
     }
 
