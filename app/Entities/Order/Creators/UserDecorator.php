@@ -8,15 +8,28 @@
 
 namespace App\Entities\Order\Creators;
 
+use App\Common\ApiStatus;
+use App\Repository\UserRepository;
+use Illuminate\Validation\UnauthorizedException;
+
 class UserDecorator implements CreaterInterface
 {
     private $orderComponnet;
+
+    protected $userRepository;
 
     protected $user;
 
     public function __construct(CreaterInterface $componnet)
     {
         $this->orderComponnet = $componnet;
+
+        $this->user = auth('member')->user();
+
+        if (!$this->user) {
+            throw new UnauthorizedException("授权失败，请先登录", ApiStatus::CODE_2002);
+        }
+
     }
 
     public function filter(): bool
