@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Common\ApiStatus;
 use App\Entities\Focus\Repository\FocusRepository;
 use App\Entities\Goods\Repository\GoodsRepository;
 use App\Entities\Pictures\Repository\PicturesRepository;
@@ -67,19 +68,30 @@ class HomeController extends ApiController
      */
     public function discover()
     {
+
+        $pageSize = 20;
+
         $discover = $this->pictures->where([['flag', 1]])
             ->with('cover')
+            ->whereHas('category', function ($query) {
+                $query->whereNull('deleted_at');
+            })
             ->orderBy('sort', 'asc')
             ->orderBy('id', 'desc')
-            ->limit(6)
-            ->get();
+            ->paginate($pageSize);
+
+
+        if ($discover) {
+            $arr = $discover->toArray();
+        } else {
+            return $this->failed(ApiStatus::CODE_1021);
+        }
 
         $baseUrl = 'http://' . \request()->getHttpHost() . '/storage/';
 
-        return $this->respond([
-            'base_url' =>  $baseUrl,
-            'discover' => $discover,
-        ]);
+        $arr['base_url'] = $baseUrl;
+
+        return $this->respond($arr);
     }
 
     /**
