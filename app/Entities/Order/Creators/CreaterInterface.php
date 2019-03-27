@@ -28,4 +28,10 @@ interface CreaterInterface {
      * @return bool
      */
     public function create(): bool;
+
+    /**
+     * 获取被装饰者 订单对象
+     * @return CreaterInterface
+     */
+    public function getOrderCreater(): CreaterInterface;
 }

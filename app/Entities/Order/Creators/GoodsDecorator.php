@@ -53,7 +53,7 @@ class GoodsDecorator implements CreaterInterface
         $this->getOrderCreater()->setComponents('goodsDecorator', $this);
     }
 
-    public function getOrderCreater()
+    public function getOrderCreater(): CreaterInterface
     {
         return $this->orderComponnet->getOrderCreater();
     }

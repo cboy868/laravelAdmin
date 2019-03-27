@@ -40,7 +40,7 @@ class OrderCreater implements CreaterInterface
         return $this->components[$name];
     }
 
-    public function getOrderCreater()
+    public function getOrderCreater() : CreaterInterface
     {
         return $this;
     }

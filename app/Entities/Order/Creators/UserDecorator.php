@@ -41,7 +41,7 @@ class UserDecorator implements CreaterInterface
         $this->getOrderCreater()->setComponents("userDecorator", $this);
     }
 
-    public function getOrderCreater()
+    public function getOrderCreater(): CreaterInterface
     {
         return $this->orderComponnet->getOrderCreater();
     }
