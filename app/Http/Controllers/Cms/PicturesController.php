@@ -30,8 +30,9 @@ class PicturesController extends ApiController
      */
     public function index(Request $request)
     {
+//        self::DEFAULT_PAGE_SIZE
 
-        $pageSize = $request->input('page_size', self::DEFAULT_PAGE_SIZE);
+        $pageSize = $request->input('page_size', 5);
 
         //查询条件
         $where = [];
