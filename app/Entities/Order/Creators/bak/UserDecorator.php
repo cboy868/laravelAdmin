@@ -13,14 +13,15 @@ use App\Models\User;
 use App\Repository\UserRepository;
 use Illuminate\Validation\UnauthorizedException;
 
-class UserDecorator extends DecoratorAbs
+class UserDecorator implements CreaterInterface
 {
+    private $orderComponnet;
+
     protected $user;
 
-    public function __construct(ComponentInterface $componnet)
+    public function __construct(CreaterInterface $componnet)
     {
-
-        parent::__construct($componnet);
+        $this->orderComponnet = $componnet;
 
         //以下为测试代码
         $this->user = User::find(1);
@@ -31,6 +32,18 @@ class UserDecorator extends DecoratorAbs
 //            throw new UnauthorizedException("授权失败，请先登录", ApiStatus::CODE_2002);
 //        }
 
+        $this->setComponents();
+
+    }
+
+    public function setComponents()
+    {
+        $this->getOrderCreater()->setComponents("userDecorator", $this);
+    }
+
+    public function getOrderCreater(): CreaterInterface
+    {
+        return $this->orderComponnet->getOrderCreater();
     }
 
     public function getUser()
