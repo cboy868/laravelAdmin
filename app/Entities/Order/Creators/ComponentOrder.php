@@ -31,7 +31,7 @@ class ComponentOrder implements ComponentInterface
     {
         return [
             'order' => [
-                'order_id' => $this->orderId,
+//                'order_id' => $this->orderId,
                 'order_no' => $this->orderNo
             ]
         ];
