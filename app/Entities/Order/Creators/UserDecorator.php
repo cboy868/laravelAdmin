@@ -15,15 +15,12 @@ use Illuminate\Validation\UnauthorizedException;
 
 class UserDecorator extends DecoratorAbs
 {
-    protected $user;
-
     public function __construct(ComponentInterface $componnet)
     {
 
         parent::__construct($componnet);
 
         //以下为测试代码
-        $this->user = User::find(1);
 
 //        $this->user = auth('member')->user();
 //
@@ -62,9 +59,9 @@ class UserDecorator extends DecoratorAbs
 
     public function create(): bool
     {
-        if (!$this->orderComponnet->create()) {
-            return false;
-        }
+//        if (!$this->orderComponnet->create()) {
+//            return false;
+//        }
 
         return true;
     }

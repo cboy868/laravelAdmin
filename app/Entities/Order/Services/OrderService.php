@@ -2,10 +2,13 @@
 
 namespace App\Entities\Order\Services;
 
+use App\Common\ApiStatus;
+use App\Entities\Order\Creators\ComponentOrder;
 use App\Entities\Order\Creators\GoodsDecorator;
-use App\Entities\Order\Creators\OrderCreater;
 use App\Entities\Order\Creators\UserDecorator;
+use App\Models\User;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\UnauthorizedException;
 
 /**
  *
@@ -24,21 +27,24 @@ class OrderService
         try {
 
 //            $user = auth('member')->user();
-//
-//            if (!$user) {
-//                throw new UnauthorizedException("请先登录", ApiStatus::CODE_2002);
-//            }
+
+            $user = User::find(1);
+            if (!$user) {
+                throw new UnauthorizedException("请先登录", ApiStatus::CODE_2002);
+            }
 
             $container = app();
 
-            $orderComponent = $container->make(OrderCreater::class);
+            $orderComponent = $container->make(ComponentOrder::class, ['user'=>$user, 'goodsInfo'=>[['id'=>1, 'num'=>1], ['id'=>2, 'num'=>1]]]);
 
             $orderComponent = $container->make(UserDecorator::class, ['componnet'=>$orderComponent]);
 
-            $orderComponent = $container->make(GoodsDecorator::class, ['componnet'=>$orderComponent,'goods_id'=>1,'num'=>1]);
+            $orderComponent = $container->make(GoodsDecorator::class, ['componnet'=>$orderComponent]);
 
             if ($orderComponent->filter()) {
-                $orderComponent->create();
+                echo 'a';
+                dd($orderComponent->create());
+                echo 'b';
             }
 
         } catch (\Exception $e) {
