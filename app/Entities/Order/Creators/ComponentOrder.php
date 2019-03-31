@@ -41,6 +41,8 @@ class ComponentOrder implements ComponentInterface
 
     protected $totalPrice = 0;
 
+    protected $title = '';
+
 
     public function __construct(OrderRepository $orderRepository,
                                 GoodsRepository $goodsRepository,
@@ -80,7 +82,7 @@ class ComponentOrder implements ComponentInterface
         $dbData = [
             'order_no' => $this->orderNo,
             'user_id'  => $this->user->id,
-            'title' => '',
+            'title' => $this->title,
             'price' => $this->totalPrice,
             'origin_price' => $this->totalPrice,
             'type' => 1,
@@ -100,22 +102,26 @@ class ComponentOrder implements ComponentInterface
             throw new \Exception("数据格式错误" . ApiStatus::CODE_1001);
         }
 
-        $goodsIds = array_column($this->goodsParams, 'id');
+        $goodsNos = array_column($this->goodsParams, 'goods_no');
 
-        $goodsModels = $this->goodsRepository->whereIn('id', $goodsIds)->get();
+        $goodsModels = $this->goodsRepository->whereIn('goods_no', $goodsNos)->get();
 
         if (!$goodsModels) {
             throw new ResourceNotFoundException("对应商品不存在", ApiStatus::CODE_1021);
         }
 
+
         $this->goods = $goodsModels;
 
-        $kGoodsParams = collect($this->goodsParams)->keyBy('id');
+        $kGoodsParams = collect($this->goodsParams)->keyBy('goods_no');
+
 
         $data = [];
         foreach ($this->goods as $item) {
-            if (!isset($kGoodsParams[$item['id']]['num']) || !$kGoodsParams[$item['id']]['num'])
+            if (!isset($kGoodsParams[$item->goods_no]['num']) || !$kGoodsParams[$item->goods_no]['num']){
                 continue;
+            }
+
             $data[$item['id']] = [
                 'goods_id' => $item->id,
                 'type_id' => $item->type_id,
@@ -125,15 +131,14 @@ class ComponentOrder implements ComponentInterface
                 'sku_name' => '',
                 'price' => $item->max_price,
                 'origin_price' => $item->max_price,
-                'num' => $kGoodsParams[$item->id]['num'],
+                'num' => $kGoodsParams[$item->goods_no]['num'] ?? 1,
                 'note' => '',
                 'name' => $item->name
             ];
 
-            $this->totalPrice += $item->max_price * $kGoodsParams[$item->id]['num'];
+            $this->totalPrice += $item->max_price * $kGoodsParams[$item->goods_no]['num'];
+            $this->title .= $item->name . ',';
         }
-
-        dd($data);
 
         if (!$data) {
             throw new \Exception("请选择正确的商品下单", ApiStatus::CODE_1021);

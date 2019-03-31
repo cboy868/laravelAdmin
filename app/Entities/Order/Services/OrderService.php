@@ -21,8 +21,47 @@ use Illuminate\Validation\UnauthorizedException;
 class OrderService
 {
 
+    /**
+     * $data 下单数据,结构如下
+     *
+     * 未来可能要添加sku数据
+     *
+     * 单商品
+     * [
+     *  goods_no => 1//商品id
+     *  num => 3//商品数量
+     * ]
+     *
+     * 或者
+     *
+     * 多商品
+     *
+     * [
+     *  [
+     *    goods_no => 1, //商品id
+     *    num => 2 //商品数量
+     *  ],
+     *  [
+     *    goods_no => 2,
+     *    num => 3
+     *  ]
+     *  ...
+     * ]
+     *
+     *
+     * @param array $data
+     * @return bool
+     */
     public function create(array $data)
     {
+
+        $params = [];
+
+        if (isset($data['goods_no'])) {
+            $params = [$data];
+        } else if (is_array($data[0])) {
+            $params = $data;
+        }
 
         try {
 
@@ -35,14 +74,14 @@ class OrderService
 
             $container = app();
 
-            $orderComponent = $container->make(ComponentOrder::class, ['user'=>$user, 'goodsParams'=>[['id'=>1, 'num'=>1], ['id'=>2, 'num'=>1]]]);
+            $orderComponent = $container->make(ComponentOrder::class, ['user'=>$user, 'goodsParams'=>$params]);
 
             $orderComponent = $container->make(UserDecorator::class, ['componnet'=>$orderComponent]);
 
             $orderComponent = $container->make(GoodsDecorator::class, ['componnet'=>$orderComponent]);
 
             if ($orderComponent->filter()) {
-                dd($orderComponent->create());
+                $orderComponent->create();
             }
 
         } catch (\Exception $e) {

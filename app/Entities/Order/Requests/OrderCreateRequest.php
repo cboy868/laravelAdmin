@@ -13,7 +13,7 @@ class OrderCreateRequest extends FormRequest
 {
 
     protected $rules = [
-        'goods_id' => 'required',
+//        'goods_id' => 'required',
     ];
 
     public function rules()
