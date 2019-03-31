@@ -35,16 +35,14 @@ class OrderService
 
             $container = app();
 
-            $orderComponent = $container->make(ComponentOrder::class, ['user'=>$user, 'goodsInfo'=>[['id'=>1, 'num'=>1], ['id'=>2, 'num'=>1]]]);
+            $orderComponent = $container->make(ComponentOrder::class, ['user'=>$user, 'goodsParams'=>[['id'=>1, 'num'=>1], ['id'=>2, 'num'=>1]]]);
 
             $orderComponent = $container->make(UserDecorator::class, ['componnet'=>$orderComponent]);
 
             $orderComponent = $container->make(GoodsDecorator::class, ['componnet'=>$orderComponent]);
 
             if ($orderComponent->filter()) {
-                echo 'a';
                 dd($orderComponent->create());
-                echo 'b';
             }
 
         } catch (\Exception $e) {

@@ -37,31 +37,22 @@ class UserDecorator extends DecoratorAbs
 
     public function filter(): bool
     {
-//        if (!$this->orderComponnet->filter()) {
-//            return false;
-//        }
-//
-//        $this->user = auth('member')->user();
-
+        if (!$this->component->filter()) {
+            return false;
+        }
         return true;
     }
 
     public function getData(): array
     {
-        $oriData = $this->orderComponnet->getData();
-
-        return array_merge([
-            'user'=>[
-                'model' => $this->getUser()
-            ]
-        ], $oriData);
+        return $this->component->getData();
     }
 
     public function create(): bool
     {
-//        if (!$this->orderComponnet->create()) {
-//            return false;
-//        }
+        if (!$this->component->create()) {
+            return false;
+        }
 
         return true;
     }

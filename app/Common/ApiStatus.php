@@ -66,6 +66,8 @@ class ApiStatus {
     //-+----------------------------------------------------------------------
     const CODE_4001 = '4001';//商品不存在
 
+    const CODE_4002 = '4002';//订单商品添加失败
+
 
 
     public static $errCodes = [
@@ -87,6 +89,9 @@ class ApiStatus {
         self::CODE_3052 => 'Delete folder error',
         self::CODE_3053 => 'upload file error',
         self::CODE_3055 => 'folder already exists',
-        self::CODE_3056 => 'folder not empty'
+        self::CODE_3056 => 'folder not empty',
+
+        self::CODE_4001 => 'goods not found',
+        self::CODE_4002 => 'order goods create faild'
     ];
 }

@@ -8,8 +8,10 @@
 
 namespace App\Entities\Order\Creators;
 
+use App\Common\ApiStatus;
 use App\Entities\Goods\Repository\GoodsRepository;
 use App\Entities\Order\Repository\OrderGoodsRepository;
+use Cboy868\Repositories\Exceptions\RepositoryException;
 
 class GoodsDecorator extends DecoratorAbs
 {
@@ -45,11 +47,40 @@ class GoodsDecorator extends DecoratorAbs
 
     public function getData(): array
     {
-        return [];
+        return $this->component->getData();
     }
 
     public function create(): bool
     {
+
+        if (!$this->component->create()) {
+            return false;
+        }
+
+        $data = $this->getData();
+        $goodsData = $data['goods'];
+
+        foreach ($goodsData as $goods) {
+            $dbData = [
+                'order_id' => $data['order']['order_id'],
+                'user_id'  => $data['user']['id'],
+                'title' => $goods['name'],
+                'type_id' => $goods['type_id'] ?? 0,
+                'category_id' => $goods['category_id'],
+                'goods_no' => $goods['goods_no'],
+                'sku_no' => '',
+                'sku_name' => '',
+                'price' => $goods['price'],
+                'origin_price' => $goods['origin_price'],
+                'num' => $goods['num'],
+                'note' => '',
+            ];
+
+            if (!$this->orderGoodsRepository->create($dbData)) {
+                throw new \Exception('数据添加失败', ApiStatus::CODE_4002);
+            }
+        }
+
         return true;
     }
 }
