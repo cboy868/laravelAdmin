@@ -7,7 +7,7 @@
  */
 namespace App\Entities\Order\Creators;
 
-interface CreaterInterface {
+interface ComponentInterface {
 
     /**
      * 过滤 判断是否符合条件
@@ -15,23 +15,15 @@ interface CreaterInterface {
      */
     public function filter(): bool;
 
-
     /**
      * 获取 所有数据
      * @return array
      */
     public function getData(): array;
 
-
     /**
      * 创建
      * @return bool
      */
     public function create(): bool;
-
-    /**
-     * 获取被装饰者 订单对象
-     * @return CreaterInterface
-     */
-    public function getOrderCreater(): CreaterInterface;
 }

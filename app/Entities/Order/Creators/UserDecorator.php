@@ -13,18 +13,14 @@ use App\Models\User;
 use App\Repository\UserRepository;
 use Illuminate\Validation\UnauthorizedException;
 
-class UserDecorator implements CreaterInterface
+class UserDecorator extends DecoratorAbs
 {
-    private $orderComponnet;
-
-    protected $user;
-
-    public function __construct(CreaterInterface $componnet)
+    public function __construct(ComponentInterface $componnet)
     {
-        $this->orderComponnet = $componnet;
+
+        parent::__construct($componnet);
 
         //以下为测试代码
-        $this->user = User::find(1);
 
 //        $this->user = auth('member')->user();
 //
@@ -32,18 +28,6 @@ class UserDecorator implements CreaterInterface
 //            throw new UnauthorizedException("授权失败，请先登录", ApiStatus::CODE_2002);
 //        }
 
-        $this->setComponents();
-
-    }
-
-    public function setComponents()
-    {
-        $this->getOrderCreater()->setComponents("userDecorator", $this);
-    }
-
-    public function getOrderCreater(): CreaterInterface
-    {
-        return $this->orderComponnet->getOrderCreater();
     }
 
     public function getUser()
@@ -53,29 +37,20 @@ class UserDecorator implements CreaterInterface
 
     public function filter(): bool
     {
-//        if (!$this->orderComponnet->filter()) {
-//            return false;
-//        }
-//
-//        $this->user = auth('member')->user();
-
+        if (!$this->component->filter()) {
+            return false;
+        }
         return true;
     }
 
     public function getData(): array
     {
-        $oriData = $this->orderComponnet->getData();
-
-        return array_merge([
-            'user'=>[
-                'model' => $this->getUser()
-            ]
-        ], $oriData);
+        return $this->component->getData();
     }
 
     public function create(): bool
     {
-        if (!$this->orderComponnet->create()) {
+        if (!$this->component->create()) {
             return false;
         }
 

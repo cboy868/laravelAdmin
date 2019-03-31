@@ -30,12 +30,22 @@ class OrderController extends ApiController
     {
 
         $params = [
-            'goods_id' => 1,
+            'goods_no' => 1,
+            'num' => 1
+        ];
+
+        $params = [
+            [
+                'goods_no' => 'a111',
+                'num' => 2
+            ],
+            [
+                'goods_no' => 'a222',
+                'num' => 2
+            ]
         ];
 
         $model = $this->order->create($params);
-
-        dd($model);
 
         $pageSize = $request->input('page_size', self::DEFAULT_PAGE_SIZE);
 
@@ -58,6 +68,22 @@ class OrderController extends ApiController
 
 
     /**
+     *
+     *  $params = [
+            'goods_no' => 1,
+            'num' => 1
+        ];
+
+        $params = [
+            [
+            'goods_no' => 'a111',
+            'num' => 2
+            ],
+            [
+            'goods_no' => 'a222',
+            'num' => 2
+            ]
+        ];
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -66,6 +92,7 @@ class OrderController extends ApiController
     public function store(OrderCreateRequest $request)
     {
         $params = array_filters($request->input());
+
         try {
 
             $model = $this->order->create($params);
@@ -76,7 +103,7 @@ class OrderController extends ApiController
 
         }
 
-        return $this->respond($model->toArray());
+        return $this->respond();
     }
 
     /**
