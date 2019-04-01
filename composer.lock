@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3a13987c571f2946d481beb840cb9487",
+    "content-hash": "b254dbd8710e6e158dddcc17f2011cf6",
     "packages": [
         {
             "name": "adbario/php-dot-notation",
@@ -63,16 +63,16 @@
         },
         {
             "name": "alibabacloud/client",
-            "version": "1.0.26",
+            "version": "1.0.27",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aliyun/openapi-sdk-php-client.git",
-                "reference": "c8405acd8100a176af8a9ec6ed29c0717ab8e141"
+                "reference": "e99fa2125aae6efd02b98afbe30007c6180104de"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aliyun/openapi-sdk-php-client/zipball/c8405acd8100a176af8a9ec6ed29c0717ab8e141",
-                "reference": "c8405acd8100a176af8a9ec6ed29c0717ab8e141",
+                "url": "https://api.github.com/repos/aliyun/openapi-sdk-php-client/zipball/e99fa2125aae6efd02b98afbe30007c6180104de",
+                "reference": "e99fa2125aae6efd02b98afbe30007c6180104de",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -152,20 +152,20 @@
                 "sdk",
                 "tool"
             ],
-            "time": "2019-03-27T10:18:32+00:00"
+            "time": "2019-03-31T08:41:52+00:00"
         },
         {
             "name": "cboy868/repositories",
-            "version": "1.0",
+            "version": "1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cboy868/laravel-repository.git",
-                "reference": "c31a94d5efaa47c0213a5e23531cbcd72d7984cc"
+                "reference": "86d54364bb5a59d562c5280878cfc4edf7ee477d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cboy868/laravel-repository/zipball/c31a94d5efaa47c0213a5e23531cbcd72d7984cc",
-                "reference": "c31a94d5efaa47c0213a5e23531cbcd72d7984cc",
+                "url": "https://api.github.com/repos/cboy868/laravel-repository/zipball/86d54364bb5a59d562c5280878cfc4edf7ee477d",
+                "reference": "86d54364bb5a59d562c5280878cfc4edf7ee477d",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -193,7 +193,7 @@
                 }
             ],
             "description": "Laravel Repositories",
-            "time": "2019-03-22T06:24:04+00:00"
+            "time": "2019-03-31T01:10:02+00:00"
         },
         {
             "name": "clagiordano/weblibs-configmanager",

@@ -2,7 +2,7 @@
 
 namespace App\Events;
 
-use App\Entities\Pictures\User;
+use App\Member;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Foundation\Events\Dispatchable;
@@ -18,7 +18,7 @@ class UserRegister
      *
      * @return void
      */
-    public function __construct(User $user)
+    public function __construct(Member $user)
     {
         $this->user = $user;
     }

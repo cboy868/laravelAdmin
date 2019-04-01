@@ -38,6 +38,9 @@ class AuthController extends ApiController
             if (!$token = auth('member')->attempt($params)) {
                 return $this->failed(ApiStatus::CODE_2001);
             }
+
+            event(new UserLogin(auth('member')->user()));
+
             return $this->respondWithToken($token);
         } catch (JWTException $e) {
             Log::error(ApiStatus::CODE_2001 . __METHOD__ . __LINE__, [

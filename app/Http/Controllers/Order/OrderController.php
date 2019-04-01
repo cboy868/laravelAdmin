@@ -16,11 +16,14 @@ use App\Http\Controllers\Controller;
 class OrderController extends ApiController
 {
 
+    protected $orderService;
+
     protected $order;
 
-    public function __construct(OrderService $orderService)
+    public function __construct(OrderService $orderService, OrderRepository $orderRepository)
     {
-        $this->order = $orderService;
+        $this->orderService = $orderService;
+        $this->order = $orderRepository;
     }
 
     /**
@@ -34,24 +37,24 @@ class OrderController extends ApiController
         $user = User::find(1);
         event(new UserLogin($user));
 
-die;
-//        $params = [
-//            'goods_no' => 1,
-//            'num' => 1
-//        ];
-//
-//        $params = [
-//            [
-//                'goods_no' => 'a111',
-//                'num' => 2
-//            ],
-//            [
-//                'goods_no' => 'a222',
-//                'num' => 2
-//            ]
-//        ];
+//die;
+        $params = [
+            'goods_no' => 1,
+            'num' => 1
+        ];
 
-//        $model = $this->order->create($params);
+        $params = [
+            [
+                'goods_no' => 'a111',
+                'num' => 2
+            ],
+            [
+                'goods_no' => 'a222',
+                'num' => 2
+            ]
+        ];
+
+        $model = $this->orderService->create($params);
 
         $pageSize = $request->input('page_size', self::DEFAULT_PAGE_SIZE);
 
