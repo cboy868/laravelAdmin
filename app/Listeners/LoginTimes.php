@@ -3,9 +3,9 @@
 namespace App\Listeners;
 
 use App\Entities\Pictures\Repository\UserRepository;
-use App\Events\UserRegister;
+use App\Events\UserLogin;
 
-class GiveFreePicture
+class LoginTimes
 {
     public $userRepository;
 
@@ -22,13 +22,12 @@ class GiveFreePicture
     /**
      * Handle the event.
      *
-     * @param  UserRegister  $event
+     * @param  UserLogin  $event
      * @return void
      */
-    public function handle(UserRegister $event)
+    public function handle(UserLogin $event)
     {
-        //赠送免费章节
-        $pictures_id = config('blog.freePicturesId');
-        $this->userRepository->givePicture($event->user->id, $pictures_id);
+        //登录次数增加
+        $event->user->increment('login_times');
     }
 }

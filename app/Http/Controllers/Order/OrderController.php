@@ -6,6 +6,8 @@ use App\Common\ApiStatus;
 use App\Entities\Order\Repository\OrderRepository;
 use App\Entities\Order\Requests\OrderCreateRequest;
 use App\Entities\Order\Services\OrderService;
+use App\Entities\Pictures\User;
+use App\Events\UserLogin;
 use App\Http\Controllers\ApiController;
 use Cboy868\Repositories\Exceptions\RepositoryException;
 use Illuminate\Http\Request;
@@ -29,23 +31,27 @@ class OrderController extends ApiController
     public function index(Request $request)
     {
 
-        $params = [
-            'goods_no' => 1,
-            'num' => 1
-        ];
+        $user = User::find(1);
+        event(new UserLogin($user));
 
-        $params = [
-            [
-                'goods_no' => 'a111',
-                'num' => 2
-            ],
-            [
-                'goods_no' => 'a222',
-                'num' => 2
-            ]
-        ];
+die;
+//        $params = [
+//            'goods_no' => 1,
+//            'num' => 1
+//        ];
+//
+//        $params = [
+//            [
+//                'goods_no' => 'a111',
+//                'num' => 2
+//            ],
+//            [
+//                'goods_no' => 'a222',
+//                'num' => 2
+//            ]
+//        ];
 
-        $model = $this->order->create($params);
+//        $model = $this->order->create($params);
 
         $pageSize = $request->input('page_size', self::DEFAULT_PAGE_SIZE);
 

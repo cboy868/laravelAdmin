@@ -18,4 +18,16 @@ class UserRepository extends SoftDeleteRepository
     {
         return 'App\Entities\Pictures\User';
     }
+
+    /**
+     * 为用户分配picture
+     */
+    public function givePicture($user_id, $pictures_id)
+    {
+        $user = $this->with('pictures')->find($user_id);
+
+        $dtime = date('Y-m-d H:i:s');
+
+        $user->pictures()->attach($pictures_id, ['created_at' => $dtime, 'updated_at'=>$dtime]);
+    }
 }

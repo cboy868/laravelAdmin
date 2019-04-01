@@ -19,7 +19,17 @@ class EventServiceProvider extends ServiceProvider
             SendEmailVerificationNotification::class,
         ],
 
-        'App\Events\FirstLogin' => [//第一次登录事件,注册事件
+        /**
+         * 登录事件
+         * 第一次登录事件,注册事件
+         * 以后每次登录，登录次数增加
+         */
+        'App\Events\UserLogin' => [
+            'App\Listeners\LoginTimes',
+        ],
+
+
+        'App\Events\UserRegister' => [
             'App\Listeners\GiveFreePicture',
         ],
     ];

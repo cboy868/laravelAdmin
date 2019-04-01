@@ -17,5 +17,5 @@ return [
         'storage' => 'picture',
         'webpath' => '/uploads',
     ],
-    'freePicturesId' => 9
+    'freePicturesId' => 48
 ];

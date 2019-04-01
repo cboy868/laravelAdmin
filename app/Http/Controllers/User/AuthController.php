@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Common\ApiStatus;
+use App\Events\UserLogin;
 use App\Http\Controllers\ApiController;
 use App\Repository\UserRepository;
 use Illuminate\Support\Facades\Log;
@@ -64,6 +65,11 @@ class AuthController extends ApiController
             if (!$token = auth('member')->tokenById($model->id)) {
                 return $this->failed(ApiStatus::CODE_2001);
             }
+
+            //这里是登录成功 1、修改登录次数 2、如果是第一次登录，则执行第一次登录事件
+            //执行一个登录事件就ok
+
+            event(new UserLogin($model));
 
             return $this->respondWithToken($token);
 
