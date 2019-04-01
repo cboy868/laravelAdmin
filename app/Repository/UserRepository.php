@@ -17,6 +17,6 @@ class UserRepository extends SoftDeleteRepository
 {
     function model()
     {
-        return 'App\User';
+        return 'App\Member';
     }
 }
