@@ -60,6 +60,14 @@ class AuthController extends ApiController
         try {
             $model = $user->findBy('mobile', $params['mobile']);
 
+
+            if (!$model) {
+                Log::error(__METHOD__ . __LINE__, [
+                    'msg' => '未找到用户信息'
+                ]);
+                return $this->failed(ApiStatus::CODE_2001, "未找到用户信息", 401);
+            }
+
             if (!$code->check($params['mobile'], $params['code'])) {
                 return $this->failed(ApiStatus::CODE_2001, "验证码错误或不匹配", 401);
             }

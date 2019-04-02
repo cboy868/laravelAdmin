@@ -22,7 +22,7 @@ class Member extends Authenticatable implements \Tymon\JWTAuth\Contracts\JWTSubj
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password','level'
+        'name', 'email', 'password','level', 'mobile','login_times'
     ];
 
     /**
