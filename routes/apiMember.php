@@ -38,7 +38,7 @@ Route::group([
         //套餐包
         Route::get('bag', 'HomeController@goods')->middleware('api');
 
-        Route::post('me', 'User\AuthController@me');//个人信息
+        Route::get('me', 'User\AuthController@me');//个人信息
 
         Route::apiResource('goods', 'Goods\CategoryController');
 
