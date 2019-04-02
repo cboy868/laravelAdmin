@@ -44,7 +44,7 @@ class Auth2Controller extends Controller
         $original = $user->getOriginal();
 
         $model = $this->wechatUser->create([
-            'unionid' => $original['unionid'],
+            'unionid' => isset($original['unionid']) ?? '',
             'openid' => $user->getId(),
             'nickname' => $user->getNickname(),
             'sex'=> $original['sex'],
