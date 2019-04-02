@@ -104,7 +104,6 @@ class Controller extends BaseController
             'app_id' => 'wxae3fcf7fd4549053',
             'mch_id' => '1518168341',
             'key' => 'Zhaoyekun23168814711111111111111',   // API 密钥
-            'secret' => 'a5d948aa2caba62416f7654563c3e478',
 
             // 如需使用敏感接口（如退款、发送红包等）需要配置 API 证书路径(登录商户平台下载 API 证书)
             'cert_path' => 'path/to/your/cert.pem', // XXX: 绝对路径！！！！
