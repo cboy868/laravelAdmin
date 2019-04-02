@@ -20,6 +20,10 @@ Route::group([
     $router->post('/smscode', 'ShowSmsCode')->middleware('api');
     $router->post('/login_by_code', 'User\AuthController@loginBySmsCode');
 
+
+    $router->post('/wechat_order_create', 'Wechat\OrderController@create');
+
+
     $router->post('/login', 'User\AuthController@login');//没用的登录，暂时注掉
    // Route::middleware(['auth:member', 'auth.token'])->group(function ($router){
 

@@ -9,11 +9,13 @@ namespace App\Http\Controllers\Wechat;
  */
 
 
+use App\Common\ApiStatus;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
+    use \App\Traits\ApiResponse;
 
     /**
      * 统一下单
@@ -22,8 +24,10 @@ class OrderController extends Controller
      */
     public function create()
     {
+        $app = $this->getPayInstance();
+
         try{
-            $result = $this->wechat->order->unify([
+            $result = $app->order->unify([
                 'body' => '腾讯充值中心-QQ会员充值',
                 'out_trade_no' => '20190106125346',
                 'total_fee' => 88,
@@ -39,9 +43,11 @@ class OrderController extends Controller
             Log::error(__METHOD__ . __LINE__, [
                 'msg' => $e->getMessage()
             ]);
+
+            return $this->failed(ApiStatus::CODE_4003);
         }
 
-        return false;
+        return $this->respond([]);
     }
 
 
