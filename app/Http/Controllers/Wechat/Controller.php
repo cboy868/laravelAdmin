@@ -29,7 +29,7 @@ class Controller extends BaseController
 //            'token' => '7JPN8xArTFbvBgIjHXaDZdnwf3tQeY2c',
 
             'app_id' => 'wxae3fcf7fd4549053',
-            'secret' => 'fa7aec57b599c0e1155b4ba19857a8f5',
+            'secret' => 'a5d948aa2caba62416f7654563c3e478',
             'token' => '7JPN8xArTFbvBgIjHXaDZdnwf3tQeY2c',
             'aes_key' => 'xiqs4UDgb6ZzXaK1pStdnIk7r0VmcfTH8wYNRu2yhJF',
 
