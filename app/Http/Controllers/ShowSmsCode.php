@@ -41,6 +41,11 @@ class ShowSmsCode extends ApiController
     {
         $mobile = $request->input('mobile');
 
+        Log::error(__METHOD__, [
+            'params' => $request->input()
+        ]);
+
+
         if ($code = $this->generateCode($mobile)) {
             $sms->sendSms($mobile, ['code'=>$code]);
             return $this->respond();

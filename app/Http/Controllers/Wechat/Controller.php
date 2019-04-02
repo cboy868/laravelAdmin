@@ -24,13 +24,13 @@ class Controller extends BaseController
 
             //测试账号
 
-            'app_id' => 'wxa49d94dde698d291',
-            'secret' => 'db9f2d31ee80a622568d7f6eab3649c8',
-            'token' => '7JPN8xArTFbvBgIjHXaDZdnwf3tQeY2c',
-
-//            'app_id' => 'wxf2831524143015af',
-//            'secret' => 'fa7aec57b599c0e1155b4ba19857a8f5',
+//            'app_id' => 'wxa49d94dde698d291',
+//            'secret' => 'db9f2d31ee80a622568d7f6eab3649c8',
 //            'token' => '7JPN8xArTFbvBgIjHXaDZdnwf3tQeY2c',
+
+            'app_id' => 'wxae3fcf7fd4549053',
+            'secret' => 'fa7aec57b599c0e1155b4ba19857a8f5',
+            'token' => '7JPN8xArTFbvBgIjHXaDZdnwf3tQeY2c',
             'aes_key' => 'xiqs4UDgb6ZzXaK1pStdnIk7r0VmcfTH8wYNRu2yhJF',
 
             'response_type' => 'array',
