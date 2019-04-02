@@ -28,7 +28,7 @@ class OrderController extends Controller
 
         try{
             $result = $app->order->unify([
-                'body' => '腾讯充值中心-QQ会员充值',
+                'body' => '充值',
                 'out_trade_no' => '20190106125346',
                 'total_fee' => 88,
                 'notify_url' => '/api/client/notify', // 支付结果通知网址，如果不设置则会使用配置里的默认地址
