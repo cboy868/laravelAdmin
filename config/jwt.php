@@ -31,9 +31,11 @@ return [
     | Specify the length of time (in minutes) that the token will be valid for.
     | Defaults to 1 hour
     |
+    |
+    | 暂时改成个周 60 * 24 * 7 =
     */
 
-    'ttl' => 60,
+    'ttl' => 10080,//60,
 
     /*
     |--------------------------------------------------------------------------
@@ -45,9 +47,10 @@ return [
     | the original token being created until they must re-authenticate.
     | Defaults to 2 weeks
     |
+    | 暂时改成一个月 10080 * 4
     */
 
-    'refresh_ttl' => 20160,
+    'refresh_ttl' => 40320,//20160,
 
     /*
     |--------------------------------------------------------------------------
