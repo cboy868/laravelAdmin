@@ -190,7 +190,10 @@ return [
         Mews\Captcha\CaptchaServiceProvider::class,
 
         //短信服务
-        \App\Entities\Sms\DayuSmsServiceProvider::class
+        \App\Entities\Sms\DayuSmsServiceProvider::class,
+
+        //Follow,Like,Bookmark,Subscribe,Favorite,Vote (Upvote & Downvote)
+        Overtrue\LaravelFollow\FollowServiceProvider::class
     ],
 
     /*

@@ -70,7 +70,7 @@ class ApiStatus {
 
     const CODE_4003 = '4003';//订单下单失败
 
-    const CODE_4004 = '4004';//订单下单失败
+    const CODE_4004 = '4004';//付费内容
 
 
 
@@ -96,6 +96,8 @@ class ApiStatus {
         self::CODE_3056 => 'folder not empty',
 
         self::CODE_4001 => 'goods not found',
-        self::CODE_4002 => 'order goods create faild'
+        self::CODE_4002 => 'order goods create faild',
+        self::CODE_4003 => 'order failed',
+        self::CODE_4004 => 'Need to buy'
     ];
 }
