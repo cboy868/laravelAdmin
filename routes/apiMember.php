@@ -30,6 +30,9 @@ Route::group([
 		Route::apiResource('pictures-user', 'Cms\PicturesUserController');
 		Route::apiResource('pictures-category', 'Cms\PicturesCategoryController');
 		Route::apiResource('pictures', 'Cms\PicturesController');
+        Route::apiResource('cartoons', 'Cms\CartoonController');
+        Route::get('chapter/{id}', 'Cms\CartoonController@chapter')->middleware('api');
+
 
         Route::apiResource('focus', 'Cms\FocusController');
         Route::apiResource('orders', 'Order\OrderController');

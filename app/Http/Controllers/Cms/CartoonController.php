@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Cms;
 
 use App\Common\ApiStatus;
 use App\Entities\Pictures\PicturesRel;
+use App\Entities\Pictures\Repository\CartoonRepository;
+use App\Entities\Pictures\Repository\PicturesUserRelRepository;
 use App\Entities\Pictures\Repository\UserRepository;
 use App\Entities\Pictures\Requests\StorePicturesRequest;
 use App\Entities\Pictures\Requests\UpdatePicturesRequest;
@@ -12,7 +14,7 @@ use Illuminate\Http\Request;
 use App\Entities\Pictures\Repository\PicturesRepository;
 use Cboy868\Repositories\Exceptions\RepositoryException;
 
-class PicturesController extends ApiController
+class CartoonController extends ApiController
 {
     public $model;
 
@@ -49,12 +51,13 @@ class PicturesController extends ApiController
             array_push($where, ['flag', $flag]);
         }
 
-        array_push($where, ['type'=>PicturesRepository::TYPE_ALBUM]);
+        array_push($where, ['type'=>PicturesRepository::TYPE_CARTOON]);
 
         $result = $this->model->where($where)
             ->withOnly('createdby', ['name', 'email'])
             ->with('cover')
             ->with('category')
+            ->with('cartoons')
             ->with(['items' => function ($query){
                 return $query->take(3);
             }])
@@ -96,30 +99,55 @@ class PicturesController extends ApiController
         return $this->respond($model->toArray());
     }
 
+
+    /**
+     * 所有章节
+     */
+    public function chapter($id, CartoonRepository $cartoon, PicturesUserRelRepository $picturesUserRelRepository)
+    {
+        $auth = 0;
+        if ($user = auth('member')->user()) {
+            $rel = $picturesUserRelRepository->where(['user_id'=>$user->id, 'pictures_id'=>$id])->first();
+            $auth = $rel ? 1 : 0;
+        }
+
+        $model = $cartoon->find($id);
+
+        if (!$model) {
+            return $this->failed(ApiStatus::CODE_1021);
+        }
+
+        $result = $model->toArray();
+
+        $baseUrl = 'http://' . \request()->getHttpHost() . '/storage/';
+        $result['base_url'] = $baseUrl;
+
+        if ($auth || $model->chapter < 3) {
+            $result['items'] = $model->items;
+            return $this->respond($result);
+        }
+
+        //未购买提示，需要购买
+        return $this->failed(ApiStatus::CODE_4004);
+    }
+
     /**
      * Display the specified resource.
-     *
+     * 列出所有章节
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id, UserRepository $userRepository)
+    public function show($id)
     {
-        $model = $this->model->with('items')->find($id);
+        $model = $this->model->where(['type'=>PicturesRepository::TYPE_CARTOON])
+            ->with('cartoons')
+            ->find($id);
 
         if ($model) {
-
             $result = $model->toArray();
-            $result['auth'] = 0;
-            if ($user = auth('member')->user()) {
-                $rel = $userRepository->find($user->id)->pictures;
-                $result['auth'] = count($rel) ? 1 : 0;
-            }
-
-            $baseUrl = 'http://' . \request()->getHttpHost() . '/storage/';
-            $result['base_url'] = $baseUrl;
-
             return $this->respond($result);
         }
+
         return $this->failed(ApiStatus::CODE_1021);
     }
 

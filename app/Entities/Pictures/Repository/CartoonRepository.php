@@ -12,13 +12,13 @@ use Cboy868\Repositories\Eloquent\SoftDeleteRepository;
  * Time: 17:28
  */
 
-class PicturesRepository extends SoftDeleteRepository
+class CartoonRepository extends SoftDeleteRepository
 {
     const TYPE_ALBUM = 1;//图
     const TYPE_CARTOON = 2;//漫
 
     function model()
     {
-        return 'App\Entities\Pictures\Pictures';
+        return 'App\Entities\Pictures\Cartoon';
     }
 }

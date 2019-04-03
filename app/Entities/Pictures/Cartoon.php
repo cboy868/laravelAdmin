@@ -16,45 +16,27 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Pictures extends Model
+class Cartoon extends Model
 {
     use SoftDeletes;
     use scopeModel;
 
-    protected $table = 'pictures';
+    protected $table = 'pictures_cartoon';
 
     /**
      * The attributes that are mass assignable.
      * @var array
      */
     protected $fillable = [
-        'type',
-        'category_id',
-        'author',
-        "name",
+        'pictures_id',
+        'title',
+        "subtitle",
         "thumb",
-        "sort",
         "intro",
-        "num",
-        "views",
-        "comms",
-        "created_by",
-        "flag",
         'deleted_at',
         'created_at',
         'updated_at'
     ];
-
-
-    /**
-     * pictures
-     * @return HasMany
-     */
-    public function cartoons(): HasMany
-    {
-        return $this->hasMany(Cartoon::class, 'pictures_id')
-            ->orderBy('id', 'ASC');
-    }
 
     /**
      * pictures
@@ -62,35 +44,10 @@ class Pictures extends Model
      */
     public function items(): HasMany
     {
-        return $this->hasMany(PicturesItem::class, 'pictures_id')
+        return $this->hasMany(PicturesItem::class, 'cartoon_id')
             ->orderBy('sort', 'ASC')
             ->orderBy('id', 'DESC');
     }
-
-    /**
-     * 所属分类
-     * @return BelongsTo
-     */
-    public function category(): BelongsTo
-    {
-        return $this->belongsTo(Category::class, 'category_id');
-    }
-
-    /**
-     * 图册封面
-     * @return BelongsTo
-     */
-    public function cover(): BelongsTo
-    {
-        return $this->belongsTo(PicturesItem::class, 'thumb', 'id');
-    }
-
-
-    public function createdby(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'created_by');
-    }
-
     /**
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany

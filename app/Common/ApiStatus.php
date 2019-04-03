@@ -70,6 +70,8 @@ class ApiStatus {
 
     const CODE_4003 = '4003';//订单下单失败
 
+    const CODE_4004 = '4004';//订单下单失败
+
 
 
     public static $errCodes = [

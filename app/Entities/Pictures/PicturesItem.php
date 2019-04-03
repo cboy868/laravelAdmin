@@ -22,6 +22,7 @@ class PicturesItem extends Model
      */
     protected $fillable = [
         "pictures_id",
+        "cartoon_id",
         "title",
         "path",
         "name",
@@ -38,6 +39,16 @@ class PicturesItem extends Model
      * @return BelongsTo
      */
     public function picture(): BelongsTo
+    {
+        return $this->belongsTo(Pictures::class, 'pictures_id');
+    }
+
+
+    /**
+     * 所属漫集
+     * @return BelongsTo
+     */
+    public function cartoon(): BelongsTo
     {
         return $this->belongsTo(Pictures::class, 'pictures_id');
     }
