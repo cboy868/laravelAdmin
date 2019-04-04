@@ -57,7 +57,7 @@ class CartoonController extends ApiController
             ->withOnly('createdby', ['name', 'email'])
             ->with('cover')
             ->with('category')
-            ->with('cartoons')
+//            ->with('cartoons')
             ->with(['items' => function ($query){
                 return $query->take(3);
             }])

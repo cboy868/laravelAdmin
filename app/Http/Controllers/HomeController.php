@@ -35,8 +35,12 @@ class HomeController extends ApiController
      */
     public function index()
     {
-        $top_banners = $this->focus->where(['pos'=>'home_top'])->with('items')->first();
-        $midle_banners = $this->focus->where(['pos'=>'home_middle'])->with('items')->first();
+        $top_banners = $this->focus->where(['pos'=>'home_top'])
+            ->with('items')
+            ->first();
+        $midle_banners = $this->focus->where(['pos'=>'home_middle'])
+            ->with('items')
+            ->first();
 
         $hots = $this->pictures->where([['flag', 1]])
             ->with('cover')
