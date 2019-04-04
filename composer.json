@@ -20,6 +20,7 @@
         "mews/captcha": "^2.2",
         "overtrue/laravel-follow": "^1.1",
         "overtrue/laravel-wechat": "~4.0",
+        "overtrue/pinyin": "^4.0",
         "spatie/laravel-permission": "^2.30",
         "tymon/jwt-auth": "dev-develop"
     },

@@ -29,10 +29,10 @@ class OrderController extends Controller
         try{
             $result = $app->order->unify([
                 'body' => '充值',
-                'out_trade_no' => '201901061253461',
-                'total_fee' => 88,
+                'out_trade_no' => '201901061253462',
+                'total_fee' => 1,
                 'notify_url' => '/api/client/notify', // 支付结果通知网址，如果不设置则会使用配置里的默认地址
-                'trade_type' => 'JSAPI',
+                'trade_type' => 'MWEB',//h5下单
                 'openid' => 'o889k529BxLR4vWB10p9I5pWrYVs',
             ]);
 
