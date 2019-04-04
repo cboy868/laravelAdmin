@@ -137,14 +137,37 @@ class CartoonController extends ApiController
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id, PicturesUserRelRepository $picturesUserRelRepository)
     {
+        $auth = 0;
+        if ($user = auth('member')->user()) {
+            $rel = $picturesUserRelRepository->where(['user_id'=>$user->id, 'pictures_id'=>$id])->first();
+            $auth = $rel ? 1 : 0;
+        }
+
         $model = $this->model->where(['type'=>PicturesRepository::TYPE_CARTOON])
             ->with('cartoons')
+            ->with('cover')
             ->find($id);
 
         if ($model) {
             $result = $model->toArray();
+
+            foreach ($result['cartoons'] as $k => &$v) {
+                if ($auth) {
+                    $v['auth'] = $auth;
+                } else {
+                    if ($k < 2) {
+                        $v['auth'] = 1;
+                    } else {
+                        $v['auth'] = $auth;
+                    }
+                }
+            }unset($v);
+
+            $baseUrl = 'http://' . \request()->getHttpHost() . '/storage/';
+            $result['base_url'] = $baseUrl;
+
             return $this->respond($result);
         }
 
