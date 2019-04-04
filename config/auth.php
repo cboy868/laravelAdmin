@@ -79,7 +79,8 @@ return [
 
         'members' => [
             'driver' => 'eloquent',
-            'model' => App\Member::class,
+            'model' => App\User::class,//todo 暂时修改，适应第三方扩展，稍后再改回来
+//            'model' => App\Member::class,
         ],
 
         'admins' => [

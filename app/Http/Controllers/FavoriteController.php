@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Common\ApiStatus;
 use App\Member;
+use App\User;
 use Illuminate\Http\Request;
 use Cboy868\Repositories\Exceptions\RepositoryException;
 
@@ -17,14 +18,11 @@ class FavoriteController extends ApiController
      * @return mixed
      * @throws \Exception
      */
-    public function favorite($id, Request $request)
+    public function favorite(Request $request)
     {
         $params = array_filters($request->input());
 
-
-//        $user = auth('member')->user();
-
-        $user = Member::find(1);
+        $user = auth('member')->user();
 
         //未登录
         if (!$user) {
@@ -32,8 +30,7 @@ class FavoriteController extends ApiController
         }
 
         try {
-            $this->model->favorite($user, $id);
-//            $this->model->favorite($user, $params['id']);
+            $this->model->favorite($user, $params['id']);
         } catch (RepositoryException $e) {
             throw new \Exception($e->getMessage(), $e->getCode());
         }
@@ -49,7 +46,7 @@ class FavoriteController extends ApiController
      * @return mixed
      * @throws \Exception
      */
-    public function unFavorite($id, Request $request)
+    public function unFavorite(Request $request)
     {
         $user = auth('member')->user();
 
@@ -59,13 +56,12 @@ class FavoriteController extends ApiController
         }
 
         try {
-            $this->model->unFavorite($user, $id);
-            $result = $this->model->trash($id);
+            $this->model->unFavorite($user, $request->input('id'));
         } catch (RepositoryException $e) {
             throw new \Exception($e->getMessage(), $e->getCode());
         }
 
-        return $this->respond($result);
+        return $this->respond([]);
     }
 
 

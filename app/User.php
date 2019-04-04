@@ -5,12 +5,14 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Overtrue\LaravelFollow\Traits\CanFavorite;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements \Tymon\JWTAuth\Contracts\JWTSubject
 {
     use Notifiable;
     use HasRoles;
+    use CanFavorite;
 
     const USER_LEVEL_NORMAL = 0;//普通用户
     const USER_LEVEL_ALL = 1;//全栈会员
