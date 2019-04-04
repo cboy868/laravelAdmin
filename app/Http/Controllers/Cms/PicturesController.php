@@ -3,16 +3,15 @@
 namespace App\Http\Controllers\Cms;
 
 use App\Common\ApiStatus;
-use App\Entities\Pictures\PicturesRel;
 use App\Entities\Pictures\Repository\UserRepository;
 use App\Entities\Pictures\Requests\StorePicturesRequest;
 use App\Entities\Pictures\Requests\UpdatePicturesRequest;
-use App\Http\Controllers\ApiController;
+use App\Http\Controllers\FavoriteController;
 use Illuminate\Http\Request;
 use App\Entities\Pictures\Repository\PicturesRepository;
 use Cboy868\Repositories\Exceptions\RepositoryException;
 
-class PicturesController extends ApiController
+class PicturesController extends FavoriteController
 {
     public $model;
 

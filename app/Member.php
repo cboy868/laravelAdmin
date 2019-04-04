@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Overtrue\LaravelFollow\Traits\CanFavorite;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -9,6 +10,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class Member extends Authenticatable implements \Tymon\JWTAuth\Contracts\JWTSubject
 {
     use Notifiable;
+    use CanFavorite;
 
     const USER_LEVEL_NORMAL = 0;//普通用户
     const USER_LEVEL_ALL = 1;//全栈会员

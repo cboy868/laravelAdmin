@@ -2,6 +2,7 @@
 
 namespace App\Entities\Pictures\Repository;
 
+use App\Entities\Pictures\Pictures;
 use Cboy868\Repositories\Eloquent\SoftDeleteRepository;
 
 /**
@@ -20,5 +21,27 @@ class PicturesRepository extends SoftDeleteRepository
     function model()
     {
         return 'App\Entities\Pictures\Pictures';
+    }
+
+    /**
+     * 收藏
+     * @param $user
+     * @param $id
+     * @return mixed
+     */
+    public function favorite($user, $id)
+    {
+        return $user->favorite($id, Pictures::class);
+    }
+
+    /**
+     * 取消收藏
+     * @param $user
+     * @param $id
+     * @return mixed
+     */
+    public function unFavorite($user, $id)
+    {
+        return $user->unfavorite($id, Pictures::class);
     }
 }

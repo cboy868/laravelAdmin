@@ -32,6 +32,8 @@ Route::group([
 		Route::apiResource('pictures', 'Cms\PicturesController');
         Route::apiResource('cartoons', 'Cms\CartoonController');
         Route::get('chapter/{id}', 'Cms\CartoonController@chapter')->middleware('api');
+        Route::get('pictures/favorite/{id}', 'Cms\PicturesController@favorite')->middleware('api');
+
 
 
         Route::apiResource('focus', 'Cms\FocusController');

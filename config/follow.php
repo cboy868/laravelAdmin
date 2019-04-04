@@ -13,7 +13,7 @@ return [
     /*
      * Model class name of users.
      */
-    'user_model' => config('auth.providers.users.model', App\User::class),
+    'user_model' => config('auth.providers.users.model', App\Member::class),
 
     /*
      * Table name of users table.

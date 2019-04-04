@@ -7,7 +7,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Spatie\Permission\Traits\HasRoles;
 
-class Userbak extends Authenticatable implements \Tymon\JWTAuth\Contracts\JWTSubject
+class User extends Authenticatable implements \Tymon\JWTAuth\Contracts\JWTSubject
 {
     use Notifiable;
     use HasRoles;

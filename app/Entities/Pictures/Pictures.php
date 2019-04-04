@@ -15,11 +15,13 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Overtrue\LaravelFollow\Traits\CanBeFavorited;
 
 class Pictures extends Model
 {
     use SoftDeletes;
     use scopeModel;
+    use CanBeFavorited;
 
     protected $table = 'pictures';
 
