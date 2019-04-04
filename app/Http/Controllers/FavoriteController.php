@@ -5,12 +5,8 @@ namespace App\Http\Controllers;
 use App\Common\ApiStatus;
 use App\Entities\Pictures\Pictures;
 use App\Http\Requests\FavoriteRequest;
-use App\Member;
-use App\User;
 use Illuminate\Http\Request;
 use Cboy868\Repositories\Exceptions\RepositoryException;
-use Illuminate\Support\Facades\DB;
-use Overtrue\LaravelFollow\FollowRelation;
 
 class FavoriteController extends ApiController
 {
