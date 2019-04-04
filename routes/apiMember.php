@@ -32,9 +32,9 @@ Route::group([
 		Route::apiResource('pictures', 'Cms\PicturesController');
         Route::apiResource('cartoons', 'Cms\CartoonController');
         Route::get('chapter/{id}', 'Cms\CartoonController@chapter')->middleware('api');
-        Route::get('pictures/favorite/{id}', 'Cms\PicturesController@favorite')->middleware('api');
-        Route::get('pictures/unfavorite/{id}', 'Cms\PicturesController@unFavorite')->middleware('api');
-
+        Route::post('favorite/picture', 'Cms\PicturesController@favorite')->middleware('api');
+        Route::post('unfavorite/picture', 'Cms\PicturesController@unFavorite')->middleware('api');
+        Route::get('favorites', 'Cms\PicturesController@favorites')->middleware('api');
 
 
         Route::apiResource('focus', 'Cms\FocusController');

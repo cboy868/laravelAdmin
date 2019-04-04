@@ -3,25 +3,26 @@
 namespace App\Http\Controllers;
 
 use App\Common\ApiStatus;
+use App\Entities\Pictures\Pictures;
+use App\Http\Requests\FavoriteRequest;
 use App\Member;
 use App\User;
 use Illuminate\Http\Request;
 use Cboy868\Repositories\Exceptions\RepositoryException;
+use Illuminate\Support\Facades\DB;
+use Overtrue\LaravelFollow\FollowRelation;
 
 class FavoriteController extends ApiController
 {
     protected $model;
 
     /**
-     * 添加收藏
-     * @param Request $request
+     * 列表
      * @return mixed
      * @throws \Exception
      */
-    public function favorite(Request $request)
+    public function favorites()
     {
-        $params = array_filters($request->input());
-
         $user = auth('member')->user();
 
         //未登录
@@ -30,7 +31,33 @@ class FavoriteController extends ApiController
         }
 
         try {
-            $this->model->favorite($user, $params['id']);
+
+            $result = $user->favorites(Pictures::class)->paginate();
+
+        } catch (RepositoryException $e) {
+            throw new \Exception($e->getMessage(), $e->getCode());
+        }
+
+        return $this->respond($result);
+    }
+
+
+    /**
+     * 添加收藏
+     * @param Request $request
+     * @return mixed
+     * @throws \Exception
+     */
+    public function favorite(FavoriteRequest $request)
+    {
+        $user = auth('member')->user();
+        //未登录
+        if (!$user) {
+            return $this->failed(ApiStatus::CODE_2002);
+        }
+
+        try {
+            $this->model->favorite($user, $request->input('id'));
         } catch (RepositoryException $e) {
             throw new \Exception($e->getMessage(), $e->getCode());
         }
@@ -46,10 +73,9 @@ class FavoriteController extends ApiController
      * @return mixed
      * @throws \Exception
      */
-    public function unFavorite(Request $request)
+    public function unFavorite(FavoriteRequest $request)
     {
         $user = auth('member')->user();
-
         //未登录
         if (!$user) {
             return $this->failed(ApiStatus::CODE_2002);
