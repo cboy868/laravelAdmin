@@ -46,4 +46,22 @@ class User extends Authenticatable implements \Tymon\JWTAuth\Contracts\JWTSubjec
     {
         return [];
     }
+
+    public static function levels($level=null)
+    {
+        $levels = [
+            self::USER_LEVEL_ALL => '全栈会员',
+            self::USER_LEVEL_PICTURE => '图栈会员',
+            self::USER_LEVEL_NORMAL => '普通会员'
+        ];
+
+
+        return $level === null ? $levels : $levels[$level];
+    }
+
+
+    public function getLevel()
+    {
+        return self::levels($this->level);
+    }
 }
