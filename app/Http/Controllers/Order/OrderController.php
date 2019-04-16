@@ -104,7 +104,7 @@ class OrderController extends ApiController
 
         try {
 
-            $model = $this->order->create($params);
+            $model = $this->orderService->create($params);
 
         } catch (RepositoryException $e) {
 
