@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Cms;
 
 use App\Common\ApiStatus;
+use App\Entities\Pictures\Repository\PicturesUserRelRepository;
 use App\Entities\Pictures\Repository\UserRepository;
 use App\Entities\Pictures\Requests\StorePicturesRequest;
 use App\Entities\Pictures\Requests\UpdatePicturesRequest;
@@ -101,7 +102,7 @@ class PicturesController extends FavoriteController
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id, UserRepository $userRepository)
+    public function show($id, UserRepository $userRepository, PicturesUserRelRepository $picturesUserRelRepository)
     {
         $model = $this->model->with('items')->find($id);
 
@@ -110,8 +111,8 @@ class PicturesController extends FavoriteController
             $result = $model->toArray();
             $result['auth'] = 0;
             if ($user = auth('member')->user()) {
-                $rel = $userRepository->find($user->id)->pictures;
-                $result['auth'] = count($rel) ? 1 : 0;
+                $rel = $picturesUserRelRepository->where(['user_id'=>$user->id, 'pictures_id'=>$id])->first();
+                $result['auth'] = $rel ? 1 : 0;
             }
 
             $baseUrl = 'http://' . \request()->getHttpHost() . '/storage/';
