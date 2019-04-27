@@ -3,6 +3,7 @@
 namespace App\Entities\Order\Services;
 
 use App\Common\ApiStatus;
+use App\Entities\Order\Creators\PayDecorator;
 use App\Entities\Order\Creators\Pictures\ComponentOrder;
 use App\Entities\Order\Creators\Pictures\PicturesDecorator;
 use App\Entities\Order\Creators\UserDecorator;
@@ -81,6 +82,8 @@ class PicturesOrderService
 
             $orderComponent = $container->make(PicturesDecorator::class, ['componnet'=>$orderComponent]);
 
+            $orderComponent = $container->make(PayDecorator::class, ['componnet'=>$orderComponent]);
+
             if ($orderComponent->filter()) {
                 $orderComponent->create();
             }
@@ -98,6 +101,6 @@ class PicturesOrderService
             return false;
         }
 
-        return true;
+        return $orderComponent->getData();
     }
 }

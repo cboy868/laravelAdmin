@@ -73,7 +73,8 @@ class ComponentOrder implements ComponentInterface
                 'order_id' => $this->orderId,
                 'order_no' => $this->orderNo,
                 'user_id' => $this->user->id,
-                'price' => $this->totalPrice
+                'price' => $this->totalPrice,
+                'title' => $this->title
             ],
             'user' => $this->user->toArray(),
             'goods' => $this->orderGoods
@@ -124,7 +125,6 @@ class ComponentOrder implements ComponentInterface
                 continue;
             }
 
-
             $data[$item['id']] = [
                 'goods_id' => $item->id,
                 'type_id' => 0,
@@ -138,7 +138,8 @@ class ComponentOrder implements ComponentInterface
                 'name' => $item->name
             ];
 
-            $this->totalPrice += $item->max_price * $kGoodsParams[$item->goods_no]['num'];
+            $this->totalPrice += $item->getPrice() * $kGoodsParams[$item->goods_no]['num'];
+
             $this->title .= $item->name . ',';
         }
 

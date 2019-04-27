@@ -8,6 +8,7 @@ use App\Entities\Order\Requests\OrderCreateRequest;
 use App\Entities\Order\Services\OrderService;
 use App\Entities\Order\Services\PicturesOrderService;
 use App\Entities\Pictures\User;
+use App\Entities\Wechat\Services\Order;
 use App\Events\UserLogin;
 use App\Http\Controllers\ApiController;
 use Cboy868\Repositories\Exceptions\RepositoryException;
@@ -76,21 +77,36 @@ class OrderController extends ApiController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(OrderCreateRequest $request)
+    public function store(OrderCreateRequest $request, \App\Entities\Wechat\Services\OrderService $orderService)
     {
         $params = array_filters($request->input());
 
         try {
 
-            $model = $this->picturesOrderService->create($params);
+            $result = $this->picturesOrderService->create($params);
 
-        } catch (RepositoryException $e) {
+            if (!$result) {
+                throw new \Exception("下单失败");
+            }
 
-            throw new \Exception($e->getMessage(), $e->getCode());
+            if ($result) {
+                $orderResult = $orderService->create([
+                    'body' => $result['order']['title'],
+                    'out_trade_no' => $result['pay']['local_trade_no'],
+                    'total_fee' => $result['pay']['total_fee'],
+                    'notify_url' => '/api/client/notify', // 支付结果通知网址，如果不设置则会使用配置里的默认地址
+                    'trade_type' => 'MWEB',//h5下单
+                    'openid' => 'o889k529BxLR4vWB10p9I5pWrYVs',
+                ]);
+            }
+
+        } catch (\Exception $e) {
+
+            return $this->failed(ApiStatus::CODE_4003);
 
         }
 
-        return $this->respond();
+        return $this->respond($orderResult);
     }
 
     /**
