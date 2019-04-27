@@ -27,9 +27,10 @@ class Auth2Controller extends Controller
      */
     public function auth()
     {
-        $response = $this->wechat->oauth->scopes(['snsapi_userinfo'])->redirect();
-
-        return $response;
+        return $this->wechat->oauth
+            ->scopes(['snsapi_userinfo'])
+            ->setRequest(['ooo'=>'ccc'])
+            ->redirect();
     }
 
     /**
@@ -37,6 +38,11 @@ class Auth2Controller extends Controller
      */
     public function callBack()
     {
+
+        Log::error(__METHOD__, [
+            'a' => request()->input()
+        ]);
+
         $oauth = $this->wechat->oauth;
 
         $user = $oauth->user();
