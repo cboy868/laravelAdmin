@@ -27,6 +27,10 @@ class Auth2Controller extends Controller
      */
     public function auth()
     {
+
+        Log::error(__METHOD__, [
+            'b' => request()->input()
+        ]);
         return $this->wechat->oauth
             ->scopes(['snsapi_userinfo'])
             ->setRequest(request())

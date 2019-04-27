@@ -18,4 +18,25 @@ class WechatUserRepository extends SoftDeleteRepository
     {
         return 'App\Entities\Wechat\WechatUser';
     }
+
+    /**
+     * 检查是否已有对应微信openid
+     */
+    public function checkAuth()
+    {
+        $user = auth('member')->user();
+
+        if (!$user) return false;
+
+        $wechat = $this->where(['user_id'=>$user->id])
+            ->orderBy('id', 'DESC')
+            ->first();
+
+
+        if ($wechat && $wechat->openid) {
+            return true;
+        }
+
+        return false;
+    }
 }

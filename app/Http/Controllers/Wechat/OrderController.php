@@ -12,6 +12,7 @@ namespace App\Http\Controllers\Wechat;
 use App\Common\ApiStatus;
 use App\Entities\Order\Repository\OrderRepository;
 use App\Entities\Pay\Repository\PayRepository;
+use App\Entities\Wechat\Repository\WechatUserRepository;
 use App\Entities\Wechat\Services\PayService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
