@@ -14,6 +14,7 @@ use App\Http\Controllers\ApiController;
 use Cboy868\Repositories\Exceptions\RepositoryException;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Validation\UnauthorizedException;
 
 class OrderController extends ApiController
 {
@@ -100,10 +101,10 @@ class OrderController extends ApiController
                 ]);
             }
 
+        } catch (UnauthorizedException $e) {
+            return $this->failed(ApiStatus::CODE_2002);
         } catch (\Exception $e) {
-
             return $this->failed(ApiStatus::CODE_4003);
-
         }
 
         return $this->respond($orderResult);
