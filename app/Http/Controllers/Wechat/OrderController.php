@@ -30,9 +30,16 @@ class OrderController extends Controller
     public function pay(
         PayRepository $payRepository,
         OrderRepository $orderRepository,
-        PayService $payService
+        PayService $payService,WechatUserRepository $wechatUserRepository
         )
     {
+
+        if (!$wechatUserRepository->checkAuth()){
+            return $this->wechat->oauth
+                ->scopes(['snsapi_userinfo'])
+                ->setRequest(request())
+                ->redirect();
+        }
 
         $order_no = \request()->input('order_no');
 

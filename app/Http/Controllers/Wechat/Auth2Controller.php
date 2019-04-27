@@ -27,10 +27,6 @@ class Auth2Controller extends Controller
      */
     public function auth()
     {
-
-        Log::error(__METHOD__, [
-            'b' => request()->input()
-        ]);
         return $this->wechat->oauth
             ->scopes(['snsapi_userinfo'])
             ->setRequest(request())
@@ -53,20 +49,21 @@ class Auth2Controller extends Controller
 
         $original = $user->getOriginal();
 
-        $model = $this->wechatUser->create([
-            'unionid' => isset($original['unionid']) ?? '',
-            'openid' => $user->getId(),
-            'nickname' => $user->getNickname(),
-            'sex'=> $original['sex'],
-            'language' => $original['language'],
-            'province'=> $original['province'],
-            'country' => $original['country'],
-            'headimgurl' => $user->getAvatar(),
-        ]);
+        if (!$this->wechatUser->where(['openid'=>$user->getId()])->first()) {
+            $model = $this->wechatUser->create([
+                'unionid' => isset($original['unionid']) ?? '',
+                'openid' => $user->getId(),
+                'nickname' => $user->getNickname(),
+                'sex'=> $original['sex'],
+                'language' => $original['language'],
+                'province'=> $original['province'],
+                'country' => $original['country'],
+                'headimgurl' => $user->getAvatar(),
+            ]);
+        }
 
         Log::error(__METHOD__ . __LINE__, [
             'user' => $user,
-            'model' => $model
         ]);
 
 //        $targetUrl = empty($_SESSION['target_url']) ? '/' : $_SESSION['target_url'];
