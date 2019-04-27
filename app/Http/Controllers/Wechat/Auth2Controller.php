@@ -29,7 +29,7 @@ class Auth2Controller extends Controller
     {
         return $this->wechat->oauth
             ->scopes(['snsapi_userinfo'])
-            ->setRequest(['ooo'=>'ccc'])
+            ->setRequest(request())
             ->redirect();
     }
 
