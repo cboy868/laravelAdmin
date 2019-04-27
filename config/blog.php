@@ -17,5 +17,7 @@ return [
         'storage' => 'picture',
         'webpath' => '/uploads',
     ],
-    'freePicturesId' => 26//48
+    'freePicturesId' => 26,//48
+    'cartoon_price' => 990,
+    'pictures_price' => 380
 ];

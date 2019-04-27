@@ -6,6 +6,7 @@ use App\Common\ApiStatus;
 use App\Entities\Order\Repository\OrderRepository;
 use App\Entities\Order\Requests\OrderCreateRequest;
 use App\Entities\Order\Services\OrderService;
+use App\Entities\Order\Services\PicturesOrderService;
 use App\Entities\Pictures\User;
 use App\Events\UserLogin;
 use App\Http\Controllers\ApiController;
@@ -16,13 +17,13 @@ use App\Http\Controllers\Controller;
 class OrderController extends ApiController
 {
 
-    protected $orderService;
+    protected $picturesOrderService;
 
     protected $order;
 
-    public function __construct(OrderService $orderService, OrderRepository $orderRepository)
+    public function __construct(PicturesOrderService $picturesOrderService, OrderRepository $orderRepository)
     {
-        $this->orderService = $orderService;
+        $this->picturesOrderService = $picturesOrderService;
         $this->order = $orderRepository;
     }
 
@@ -33,29 +34,6 @@ class OrderController extends ApiController
      */
     public function index(Request $request)
     {
-
-        $user = User::find(1);
-        event(new UserLogin($user));
-
-//die;
-        $params = [
-            'goods_no' => 1,
-            'num' => 1
-        ];
-
-        $params = [
-            [
-                'goods_no' => 'a111',
-                'num' => 2
-            ],
-            [
-                'goods_no' => 'a222',
-                'num' => 2
-            ]
-        ];
-
-        $model = $this->orderService->create($params);
-
         $pageSize = $request->input('page_size', self::DEFAULT_PAGE_SIZE);
 
         //查询条件
@@ -104,7 +82,7 @@ class OrderController extends ApiController
 
         try {
 
-            $model = $this->orderService->create($params);
+            $model = $this->picturesOrderService->create($params);
 
         } catch (RepositoryException $e) {
 

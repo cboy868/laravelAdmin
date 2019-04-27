@@ -13,7 +13,7 @@ class CreateOrder extends Migration
      */
     public function up()
     {
-        Schema::create('order', function (Blueprint $table) {
+        Schema::create('order_info', function (Blueprint $table) {
             $table->increments('id');
             $table->string('order_no');
             $table->unsignedInteger('user_id');
@@ -21,7 +21,7 @@ class CreateOrder extends Migration
             $table->unsignedInteger('price')->default(0);//分为单位
             $table->unsignedInteger('origin_price')->default(0);
             $table->unsignedTinyInteger('type')->default(0);//定单类型
-            $table->unsignedTinyInteger('progres')->default(1);
+            $table->unsignedTinyInteger('progress')->default(1);
             $table->text('note')->nullable();//备注
             $table->softDeletes();
             $table->timestamps();
@@ -48,7 +48,7 @@ class CreateOrder extends Migration
 
             $table->foreign('order_id')
                 ->references('id')
-                ->on('order')
+                ->on('order_info')
                 ->onDelete('cascade');
         });
     }

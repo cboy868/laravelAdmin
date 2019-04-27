@@ -23,6 +23,9 @@ class Pictures extends Model
     use scopeModel;
     use CanBeFavorited;
 
+    const TYPE_ALBUM = 1;//图
+    const TYPE_CARTOON = 2;//漫
+
     protected $table = 'pictures';
 
     /**
@@ -103,6 +106,12 @@ class Pictures extends Model
             'pictures_user_rel' ,
             'pictures_id',
             'user_id');
+    }
+
+    public function getPrice()
+    {
+        return $this->type == self::TYPE_CARTOON ?
+            config('blog.cartoon_price') : config('blog.pictures_price');
     }
 
 }

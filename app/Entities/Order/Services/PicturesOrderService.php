@@ -3,10 +3,11 @@
 namespace App\Entities\Order\Services;
 
 use App\Common\ApiStatus;
-use App\Entities\Order\Creators\ComponentOrder;
-use App\Entities\Order\Creators\GoodsDecorator;
+use App\Entities\Order\Creators\Pictures\ComponentOrder;
+use App\Entities\Order\Creators\Pictures\PicturesDecorator;
 use App\Entities\Order\Creators\UserDecorator;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\UnauthorizedException;
 
@@ -18,7 +19,7 @@ use Illuminate\Validation\UnauthorizedException;
  * Time: 17:28
  */
 
-class OrderService
+class PicturesOrderService
 {
 
     /**
@@ -62,6 +63,7 @@ class OrderService
         } else if (is_array($data[0])) {
             $params = $data;
         }
+        DB::beginTransaction();
 
         try {
 
@@ -77,20 +79,22 @@ class OrderService
 
             $orderComponent = $container->make(UserDecorator::class, ['componnet'=>$orderComponent]);
 
-            $orderComponent = $container->make(GoodsDecorator::class, ['componnet'=>$orderComponent]);
+            $orderComponent = $container->make(PicturesDecorator::class, ['componnet'=>$orderComponent]);
 
             if ($orderComponent->filter()) {
                 $orderComponent->create();
             }
 
+            DB::commit();
+
         } catch (\Exception $e) {
+            DB::rollback();
             Log::error(__METHOD__ . __LINE__, [
                 'file' => $e->getFile(),
                 'line' => $e->getLine(),
                 'code' => $e->getCode(),
                 'msg' => $e->getMessage()
             ]);
-
             return false;
         }
 

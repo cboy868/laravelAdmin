@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Order extends Model
 {
-    protected $table = 'order';
+    protected $table = 'order_info';
 
     /**
      * The attributes that are mass assignable.
@@ -28,7 +28,7 @@ class Order extends Model
         "price",
         "origin_price",
         "type",
-        "progres",
+        "progress",
         "note",
         "deleted_at",
         "created_at",
