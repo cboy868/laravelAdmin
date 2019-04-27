@@ -29,7 +29,6 @@ class PayService extends Wechat {
                 'total_fee' => $payModel->total_fee,
                 'notify_url' => '/api/client/notify', // 支付结果通知网址，如果不设置则会使用配置里的默认地址
                 'trade_type' => $type,//h5下单
-                'openid' => 'o889k529BxLR4vWB10p9I5pWrYVs',
             ]);
 
             $payModel->trade_no = $result['prepay_id'];
