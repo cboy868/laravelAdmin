@@ -83,14 +83,11 @@ class OrderController extends ApiController
         $params = array_filters($request->input());
 
         try {
-
             $result = $this->picturesOrderService->create($params);
 
             if (!$result) {
                 throw new \Exception("下单失败");
             }
-
-
 
         } catch (UnauthorizedException $e) {
             return $this->failed(ApiStatus::CODE_2002);
@@ -98,7 +95,7 @@ class OrderController extends ApiController
             return $this->failed(ApiStatus::CODE_4003);
         }
 
-        return $this->respond($orderResult);
+        return $this->respond($result['order']);
     }
 
     /**

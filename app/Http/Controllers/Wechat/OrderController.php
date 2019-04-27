@@ -34,12 +34,12 @@ class OrderController extends Controller
         )
     {
 
-        if (!$wechatUserRepository->checkAuth()){
-            return $this->wechat->oauth
-                ->scopes(['snsapi_userinfo'])
-                ->setRequest(request())
-                ->redirect();
-        }
+//        if (!$wechatUserRepository->checkAuth()){
+//            return $this->wechat->oauth
+//                ->scopes(['snsapi_userinfo'])
+//                ->setRequest(request())
+//                ->redirect();
+//        }
 
         $order_no = \request()->input('order_no');
 
