@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\IUser;
 use App\Member;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -18,7 +19,7 @@ class UserLogin
      *
      * @return void
      */
-    public function __construct(Member $user)
+    public function __construct(IUser $user)
     {
         $this->user = $user;
     }

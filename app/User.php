@@ -8,7 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Overtrue\LaravelFollow\Traits\CanFavorite;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable implements \Tymon\JWTAuth\Contracts\JWTSubject
+class User extends Authenticatable implements IUser
 {
     use Notifiable;
     use HasRoles;

@@ -20,6 +20,8 @@ class ApiStatus {
 
     const CODE_1021 = '1021';//资源不存在
 
+    const CODE_1022 = '1022';//资源类型错误
+
     const CODE_1099 = '1099';//未知错误类型，获取不到正常错误码时返回
     //-+----------------------------------------------------------------------
     // | 业务参数错误
@@ -80,6 +82,7 @@ class ApiStatus {
         self::CODE_1002 => 'method wrong',
         self::CODE_1011 => 'operation failed',
         self::CODE_1021 => 'resource not existed',
+        self::CODE_1022 => 'data type error',
         self::CODE_1099 => 'unknown error',
 
         self::CODE_2001 => 'login failed',
