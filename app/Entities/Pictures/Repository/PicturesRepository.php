@@ -45,13 +45,16 @@ class PicturesRepository extends SoftDeleteRepository
      */
     public function favorite($user, $id)
     {
-        $item = self::find($id);
+//        $item = self::find($id);
+//
+//        if (!$item) throw new ResourceNotFoundException('data not found', ApiStatus::CODE_1021);
+//
+//        if (!self::types($item->type)) throw new \Exception('data type error', ApiStatus::CODE_1022);
+//
+//        return $user->favorite($id, self::types($item->type));
 
-        if (!$item) throw new ResourceNotFoundException('data not found', ApiStatus::CODE_1021);
-
-        if (!self::types($item->type)) throw new \Exception('data type error', ApiStatus::CODE_1022);
-
-        return $user->favorite($id, self::types($item->type));
+        //图片和卡通暂时先不分开
+        return $user->favorite($id, Pictures::class);
     }
 
     /**
@@ -62,12 +65,15 @@ class PicturesRepository extends SoftDeleteRepository
      */
     public function unFavorite($user, $id)
     {
-        $item = self::find($id);
+//        $item = self::find($id);
+//
+//        if (!$item) throw new ResourceNotFoundException('data not found', ApiStatus::CODE_1021);
+//
+//        if (!self::types($item->type)) throw new \Exception('data type error', ApiStatus::CODE_1022);
+//
+//        return $user->unfavorite($id, self::types($item->type));
 
-        if (!$item) throw new ResourceNotFoundException('data not found', ApiStatus::CODE_1021);
-
-        if (!self::types($item->type)) throw new \Exception('data type error', ApiStatus::CODE_1022);
-
-        return $user->unfavorite($id, self::types($item->type));
+        //图片和卡通暂时先不分开
+        return $user->unfavorite($id, Pictures::class);
     }
 }

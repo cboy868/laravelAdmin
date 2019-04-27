@@ -109,6 +109,7 @@ class AuthController extends ApiController
             $userArray = $user->toArray();
 
             $userArray['level_label'] = $user->getLevel();
+            $userArray['show_id'] = $user->id + 8478846;
             return $this->respond($userArray);
         }
 
