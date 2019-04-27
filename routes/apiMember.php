@@ -38,7 +38,7 @@ Route::group([
 
 
         Route::apiResource('focus', 'Cms\FocusController');
-        Route::apiResource('orders', 'Order\OrderController');
+        Route::apiResource('orders', 'Order\OrderController')->middleware('api');
 
         //聚合页面
         Route::get('home', 'HomeController@index')->middleware('api');
