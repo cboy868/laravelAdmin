@@ -64,15 +64,17 @@ class PicturesOrderService
         } else if (is_array($data[0])) {
             $params = $data;
         }
+
+        $user = auth('member')->user();
+
+        if (!$user) {
+            throw new UnauthorizedException("请先登录", ApiStatus::CODE_2002);
+        }
+
+
         DB::beginTransaction();
 
         try {
-
-            $user = auth('member')->user();
-
-            if (!$user) {
-                throw new UnauthorizedException("请先登录", ApiStatus::CODE_2002);
-            }
 
             $container = app();
 
