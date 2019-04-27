@@ -74,6 +74,8 @@ class ApiStatus {
 
     const CODE_4004 = '4004';//付费内容
 
+    const CODE_4005 = '4005';//支付失败
+
 
 
     public static $errCodes = [
@@ -101,6 +103,7 @@ class ApiStatus {
         self::CODE_4001 => 'goods not found',
         self::CODE_4002 => 'order goods create faild',
         self::CODE_4003 => 'order failed',
-        self::CODE_4004 => 'Need to buy'
+        self::CODE_4004 => 'Need to buy',
+        self::CODE_4005 => 'pay failed'
     ];
 }

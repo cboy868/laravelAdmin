@@ -78,7 +78,7 @@ class OrderController extends ApiController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(OrderCreateRequest $request, \App\Entities\Wechat\Services\OrderService $orderService)
+    public function store(OrderCreateRequest $request)
     {
         $params = array_filters($request->input());
 
@@ -90,14 +90,7 @@ class OrderController extends ApiController
                 throw new \Exception("下单失败");
             }
 
-            $orderResult = $orderService->create([
-                'body' => $result['order']['title'],
-                'out_trade_no' => $result['pay']['local_trade_no'],
-                'total_fee' => $result['pay']['total_fee'],
-                'notify_url' => '/api/client/notify', // 支付结果通知网址，如果不设置则会使用配置里的默认地址
-                'trade_type' => 'MWEB',//h5下单
-                'openid' => 'o889k529BxLR4vWB10p9I5pWrYVs',
-            ]);
+
 
         } catch (UnauthorizedException $e) {
             return $this->failed(ApiStatus::CODE_2002);

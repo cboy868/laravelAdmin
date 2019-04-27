@@ -10,6 +10,10 @@ namespace App\Http\Controllers\Wechat;
 
 
 use App\Common\ApiStatus;
+use App\Entities\Order\Repository\OrderRepository;
+use App\Entities\Pay\Repository\PayRepository;
+use App\Entities\Wechat\Services\PayService;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 
@@ -22,32 +26,42 @@ class OrderController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function create()
+    public function pay(
+        PayRepository $payRepository,
+        OrderRepository $orderRepository,
+        PayService $payService
+        )
     {
-        $app = $this->getPayInstance();
 
-        try{
-            $result = $app->order->unify([
-                'body' => '充值',
-                'out_trade_no' => '201901061253462',
-                'total_fee' => 1,
-                'notify_url' => '/api/client/notify', // 支付结果通知网址，如果不设置则会使用配置里的默认地址
-                'trade_type' => 'MWEB',//h5下单
-                'openid' => 'o889k529BxLR4vWB10p9I5pWrYVs',
-            ]);
+        $order_no = \request()->input('order_no');
 
-            Log::error(__METHOD__ . __LINE__, [
-                'result' => $result
-            ]);
+        $order = $orderRepository->where(['order_no'=>$order_no])->first();
+
+        DB::beginTransaction();
+
+        try {
+            $payModel = $payRepository->getActivePayment($order, 'MWEB');
+
+            if (!$payModel) {
+                throw new \Exception("创建支付单失败");
+            }
+
+            $result = $payService->create($payModel);
+
+            if (!$result) {
+                throw new \Exception('微信下单失败');
+            }
+
+            DB::commit();
         } catch (\Exception $e) {
+            DB::rollBack();
             Log::error(__METHOD__ . __LINE__, [
                 'msg' => $e->getMessage()
             ]);
-
-            return $this->failed(ApiStatus::CODE_4003);
+            return $this->failed(ApiStatus::CODE_4005);
         }
 
-        return $this->respond([]);
+        return $this->respond(['mweb_url'=> $result['mweb_url']]);
     }
 
 

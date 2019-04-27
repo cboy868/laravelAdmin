@@ -57,7 +57,7 @@ Route::group([
 
         Route::get('wechat-auth', 'Wechat\Auth2Controller@auth');
         Route::get('wechat-auth-callback', 'Wechat\Auth2Controller@callBack');
-        Route::get('wechat-order-create', 'Wechat\OrderController@create');
+        Route::post('wechat-order-pay', 'Wechat\OrderController@pay');
         Route::get('wechat-order-notify', 'Wechat\OrderController@notify');
 
    // });
