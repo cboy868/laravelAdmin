@@ -125,7 +125,7 @@ class AuthController extends ApiController
     {
         try {
             auth('admin')->logout();
-            return $this->setCodeMsg("Successfully logged out")->success();
+            return $this->respond();
         } catch (\Exception $e) {
             return $this->failed(ApiStatus::CODE_1001);
         }

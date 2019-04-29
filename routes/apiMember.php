@@ -19,6 +19,7 @@ Route::group([
 
     $router->post('/smscode', 'ShowSmsCode')->middleware('api');
     $router->post('/login_by_code', 'User\AuthController@loginBySmsCode');
+    $router->post('/logout', 'User\AuthController@logout');
 
 
     $router->post('/wechat_order_create', 'Wechat\OrderController@create');

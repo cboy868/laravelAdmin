@@ -21,14 +21,28 @@ class FavoriteController extends ApiController
     {
         $user = auth('member')->user();
 
+        $where = [];
+        if ($type = \request()->input('type', 0)) {
+            $where['type'] = $type;
+        }
+
         //未登录
         if (!$user) {
             return $this->failed(ApiStatus::CODE_2002);
         }
 
         try {
+            $result = $user->favorites(Pictures::class)
+                ->where($where)
+                ->with('cover')
+                ->paginate();
 
-            $result = $user->favorites(Pictures::class)->paginate();
+            if ($result) {
+                $result = $result->toArray();
+                $result['base_url'] = 'http://' . \request()->getHttpHost() . '/storage/';
+            } else {
+                $result = [];
+            }
 
         } catch (RepositoryException $e) {
             throw new \Exception($e->getMessage(), $e->getCode());
