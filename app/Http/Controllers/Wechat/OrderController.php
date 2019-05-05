@@ -34,6 +34,10 @@ class OrderController extends Controller
         )
     {
 
+        if(!auth('member')->user()){
+            return $this->failed(ApiStatus::CODE_2002);
+        }
+
         $order_no = \request()->input('order_no');
 
         $order = $orderRepository->where(['order_no'=>$order_no])->first();
