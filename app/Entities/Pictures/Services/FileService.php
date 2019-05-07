@@ -144,6 +144,11 @@ class FileService
                     "ext" => $arr[1]
                 ]);
             }
+
+
+            if ($type == 2) {//还要加一步操作
+
+            }
         }
     }
 
