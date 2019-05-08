@@ -16,6 +16,7 @@ use App\Entities\Order\Repository\OrderRepository;
 use App\Entities\Pictures\Repository\PicturesRepository;
 use App\IUser;
 use App\Models\User;
+use Illuminate\Support\Facades\Log;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
 class ComponentOrder implements ComponentInterface
@@ -118,6 +119,9 @@ class ComponentOrder implements ComponentInterface
 
         $kGoodsParams = collect($this->goodsParams)->keyBy('id');
 
+        Log::error(__METHOD__, [
+            'a' => $kGoodsParams
+        ]);
 
         $data = [];
         foreach ($this->goods as $item) {
