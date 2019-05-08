@@ -83,6 +83,9 @@ class FileService
 
     /**
      * 入库
+     * 文件目录格式 类型type_分类category_名称name 在tmp目录下面 1_5_name，2_6_name  1 2指类别， 5,6指分类，name是图集名
+     * 文件目录格式 分类category_名称name 在tmp目录下面 5_name，6_name  5,6指分类，name是图集名
+     *
      */
     private function _toDb($album, $picture)
     {
@@ -98,9 +101,16 @@ class FileService
             $ar = explode('_', $folder);
             $category_id = 1;
             $name = $folder;
+            $type = 1;
             if (count($ar) == 2) {
                 $category_id = $ar[0];
                 $name = $ar[1];
+            }
+
+            if (count($ar) == 3) {
+                $type = $ar[0];
+                $category_id = $ar[1];
+                $name = $ar[2];
             }
 
             # 目录内文件
@@ -113,7 +123,8 @@ class FileService
                 'name' => $name,
                 "thumb" => 0,
                 "num" => $num,
-                "created_by" => 1
+                "created_by" => 1,
+                "type" => $type
             ]);
 
             $dir = $baseDir . '/' . $name;
@@ -132,6 +143,11 @@ class FileService
                     "name" => $newName,
                     "ext" => $arr[1]
                 ]);
+            }
+
+
+            if ($type == 2) {//还要加一步操作
+
             }
         }
     }
