@@ -142,7 +142,12 @@ class ComponentOrder implements ComponentInterface
                 'name' => $item->name
             ];
 
-            $this->totalPrice += $item->getPrice() * $kGoodsParams[$item->goods_no]['num'];
+            $num = 1;
+            if (isset($kGoodsParams[$item->goods_no]['num']) && $kGoodsParams[$item->goods_no]['num']) {
+                $num = $kGoodsParams[$item->goods_no]['num'];
+            }
+
+            $this->totalPrice += $item->getPrice() * $num;
 
             $this->title .= $item->name . ',';
         }
