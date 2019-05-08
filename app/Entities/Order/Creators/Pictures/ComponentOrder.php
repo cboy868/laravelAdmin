@@ -16,6 +16,7 @@ use App\Entities\Order\Repository\OrderRepository;
 use App\Entities\Pictures\Repository\PicturesRepository;
 use App\IUser;
 use App\Models\User;
+use Illuminate\Support\Facades\Log;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
 class ComponentOrder implements ComponentInterface
@@ -118,12 +119,15 @@ class ComponentOrder implements ComponentInterface
 
         $kGoodsParams = collect($this->goodsParams)->keyBy('id');
 
+        Log::error(__METHOD__, [
+            'a' => $kGoodsParams
+        ]);
 
         $data = [];
         foreach ($this->goods as $item) {
-            if (!isset($kGoodsParams[$item->goods_no]['num']) || !$kGoodsParams[$item->goods_no]['num']){
-                continue;
-            }
+//            if (!isset($kGoodsParams[$item->goods_no]['num']) || !$kGoodsParams[$item->goods_no]['num']){
+//                continue;
+//            }
 
             $data[$item['id']] = [
                 'goods_id' => $item->id,
@@ -138,7 +142,12 @@ class ComponentOrder implements ComponentInterface
                 'name' => $item->name
             ];
 
-            $this->totalPrice += $item->getPrice() * $kGoodsParams[$item->goods_no]['num'];
+            $num = 1;
+            if (isset($kGoodsParams[$item->goods_no]['num']) && $kGoodsParams[$item->goods_no]['num']) {
+                $num = $kGoodsParams[$item->goods_no]['num'];
+            }
+
+            $this->totalPrice += $item->getPrice() * $num;
 
             $this->title .= $item->name . ',';
         }
