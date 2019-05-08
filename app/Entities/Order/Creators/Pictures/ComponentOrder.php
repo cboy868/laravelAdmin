@@ -125,9 +125,9 @@ class ComponentOrder implements ComponentInterface
 
         $data = [];
         foreach ($this->goods as $item) {
-            if (!isset($kGoodsParams[$item->goods_no]['num']) || !$kGoodsParams[$item->goods_no]['num']){
-                continue;
-            }
+//            if (!isset($kGoodsParams[$item->goods_no]['num']) || !$kGoodsParams[$item->goods_no]['num']){
+//                continue;
+//            }
 
             $data[$item['id']] = [
                 'goods_id' => $item->id,
