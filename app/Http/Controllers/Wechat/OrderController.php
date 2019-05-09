@@ -66,7 +66,7 @@ class OrderController extends Controller
             return $this->failed(ApiStatus::CODE_4005);
         }
 
-        return $this->redirect($result['mweb_url']);
+        return redirect($result['mweb_url']);
 
 //        return $this->respond(['mweb_url'=> $result['mweb_url']]);
     }
