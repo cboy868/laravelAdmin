@@ -7,6 +7,7 @@ use App\Entities\Pictures\Repository\PicturesUserRelRepository;
 use App\Entities\Pictures\Repository\UserRepository;
 use App\Entities\Pictures\Requests\StorePicturesRequest;
 use App\Entities\Pictures\Requests\UpdatePicturesRequest;
+use App\Entities\Pictures\User;
 use App\Http\Controllers\FavoriteController;
 use Illuminate\Http\Request;
 use App\Entities\Pictures\Repository\PicturesRepository;
@@ -121,6 +122,38 @@ class PicturesController extends FavoriteController
             return $this->respond($result);
         }
         return $this->failed(ApiStatus::CODE_1021);
+    }
+
+    /**
+     * 我的已购,也应该按类型分开
+     */
+    public function mine()
+    {
+        if (!($user = auth('member')->user())) {
+            return $this->failed(ApiStatus::CODE_2002);//未登录
+        }
+
+        $user = User::find($user->id);
+
+        $type = \request()->input('type');
+
+        $where = [];
+        if ($type) {
+            $where['type'] = $type;
+        }
+
+        $list = $user->pictures()->where($where)->paginate();
+
+        if (!$list) {
+            return $this->respond();
+        }
+
+        $list = $list->toArray();
+        $baseUrl = 'http://' . \request()->getHttpHost() . '/storage/';
+        $list['base_url'] = $baseUrl;
+
+        return $this->respond($list);
+
     }
 
 

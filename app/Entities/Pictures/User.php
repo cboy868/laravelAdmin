@@ -24,6 +24,6 @@ class User extends Member
             'pictures_user_rel',
             'user_id',
             'pictures_id'
-        );
+        )->withPivot('pictures_id');
     }
 }

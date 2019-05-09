@@ -36,6 +36,7 @@ Route::group([
         Route::post('favorite/picture', 'Cms\PicturesController@favorite')->middleware('api');
         Route::post('unfavorite/picture', 'Cms\PicturesController@unFavorite')->middleware('api');
         Route::get('favorites', 'Cms\PicturesController@favorites')->middleware('api');
+        Route::get('mine', 'Cms\PicturesController@mine')->middleware('api');
 
 
         Route::apiResource('focus', 'Cms\FocusController');
