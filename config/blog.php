@@ -18,6 +18,6 @@ return [
         'webpath' => '/uploads',
     ],
     'freePicturesId' => 26,//48
-    'cartoon_price' => 990,
-    'pictures_price' => 380
+    'cartoon_price' => 1,
+    'pictures_price' => 1
 ];
