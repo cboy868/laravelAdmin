@@ -110,10 +110,9 @@ class FileService
 
             # 目录名
             $ar = explode('_', $folder);
-            if (count($ar) != 3) {
+            if (count($ar) != 2) {
                 return false;
             }
-
 
             if ($ar[0] == 1) {
                 $this->_handelPicture($folder);
@@ -128,8 +127,11 @@ class FileService
         $baseDir = $this->rootDir . '/' . $this->date;
         $ar = explode('_', $folder);
         try {
-            $category_id = $ar[1];
-            $name = $ar[2];
+
+            $category_id = 1;
+            $name = $ar[1];
+//            $category_id = $ar[1];
+//            $name = $ar[2];
 
             # 目录内文件
             $files = $this->manager->files($this->temp . '/' . $folder);
@@ -179,8 +181,10 @@ class FileService
         DB::beginTransaction();
         try {
             $picture_num = 0;
-            $category_id = $ar[1];
-            $name = $ar[2];
+            $category_id = 1;
+            $name = $ar[1];
+//            $category_id = $ar[1];
+//            $name = $ar[2];
 
             $chartFolders = $this->manager->folderInfo($this->temp . '/' . $folder);
 
@@ -294,11 +298,11 @@ class FileService
 
             # 目录名
             $ar = explode('_', $folder);
-            if (count($ar) != 3) {
+            if (count($ar) != 2) {
                 throw new \Exception('目录名错误');
             }
 
-            $this->manager->disk->move($this->temp . '/' . $folder, $this->date . '/' . $ar[2]);
+            $this->manager->disk->move($this->temp . '/' . $folder, $this->date . '/' . $ar[1]);
         }
     }
 
