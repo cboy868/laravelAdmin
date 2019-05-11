@@ -79,6 +79,9 @@ class PayService extends Wechat
                 'fail' => $fail
             ]);
 
+            if ($message['result_code'] != 'SUCCESS') {
+                return false;
+            }
 
             DB::beginTransaction();
 

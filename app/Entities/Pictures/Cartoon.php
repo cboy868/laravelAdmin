@@ -32,6 +32,7 @@ class Cartoon extends Model
         'title',
         "subtitle",
         "thumb",
+        "chapter",
         "intro",
         'deleted_at',
         'created_at',

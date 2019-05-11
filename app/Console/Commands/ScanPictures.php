@@ -2,8 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Entities\Pictures\Repository\PicturesItemRepository;
-use App\Entities\Pictures\Repository\PicturesRepository;
+
 use App\Entities\Pictures\Services\FileService;
 use Illuminate\Console\Command;
 
@@ -47,8 +46,8 @@ class ScanPictures extends Command
      *
      * @return mixed
      */
-    public function handle(PicturesRepository $album, PicturesItemRepository $picture)
+    public function handle()
     {
-        $this->fileService->sync($album, $picture);
+        $this->fileService->sync();
     }
 }
