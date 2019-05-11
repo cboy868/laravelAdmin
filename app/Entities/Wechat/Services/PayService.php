@@ -108,8 +108,6 @@ class PayService extends Wechat
             return true;
         });
 
-        Log::error(__METHOD__,['response' => $response]);
-
         return $response;
     }
 }

@@ -81,7 +81,7 @@ class OrderController extends Controller
      */
     public function notify(PayService $payService)
     {
-        $payService->notify();
+        return $payService->notify();
     }
 
 }
