@@ -33,8 +33,15 @@ class HomeController extends ApiController
      * 1、banner图
      * 2、pictures热、推等
      */
-    public function index()
+    public function index(PicturesRepository $picturesRepository)
     {
+
+
+        $goodsModels = $picturesRepository->whereIn('id', [26])->get();
+
+        dd($goodsModels);
+
+        die;
         $top_banners = $this->focus->where(['pos'=>'home_top'])
             ->with('items')
             ->first();
