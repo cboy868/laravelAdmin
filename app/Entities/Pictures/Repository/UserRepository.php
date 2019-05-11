@@ -2,6 +2,7 @@
 
 namespace App\Entities\Pictures\Repository;
 
+use App\Entities\Pictures\PicturesRel;
 use Cboy868\Repositories\Eloquent\SoftDeleteRepository;
 
 /**
@@ -24,6 +25,10 @@ class UserRepository extends SoftDeleteRepository
      */
     public function givePicture($user_id, $pictures_id)
     {
+        if (PicturesRel::where(['user_id'=>$user_id, 'pictures_id'=> $pictures_id])->first()) {
+            return true;
+        }
+
         $user = $this->with('pictures')->find($user_id);
 
         $dtime = date('Y-m-d H:i:s');
