@@ -13,6 +13,7 @@ use App\Entities\Goods\Repository\GoodsRepository;
 use App\Entities\Order\Creators\ComponentInterface;
 use App\Entities\Order\Helper;
 use App\Entities\Order\Repository\OrderRepository;
+use App\Entities\Pictures\Pictures;
 use App\Entities\Pictures\Repository\PicturesRepository;
 use App\IUser;
 use App\Models\User;
@@ -119,6 +120,10 @@ class ComponentOrder implements ComponentInterface
         }
 
         $this->goods = $goodsModels;
+
+        Log::error(__METHOD__, [
+            Pictures::whereIn('id', $goodsNos)->get()
+        ]);
 
         Log::error(DB::table('pictures')->whereIn('id', $goodsNos)->get());
 
