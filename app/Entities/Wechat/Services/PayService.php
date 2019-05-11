@@ -11,6 +11,7 @@ namespace App\Entities\Wechat\Services;
 use App\Entities\Order\Repository\OrderRepository;
 use App\Entities\Pay\Pay;
 use App\Entities\Pay\Repository\PayRepository;
+use App\Entities\Pictures\Repository\UserRepository;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -18,11 +19,15 @@ class PayService extends Wechat
 {
     protected $payRepository;
     protected $orderRepository;
+    protected $userRepository;
 
-    public function __construct(PayRepository $payRepository, OrderRepository $orderRepository)
+    public function __construct(PayRepository $payRepository,
+                                OrderRepository $orderRepository,
+                                UserRepository $userRepository)
     {
         $this->payRepository = $payRepository;
         $this->orderRepository = $orderRepository;
+        $this->userRepository = $userRepository;
     }
 
     /**
@@ -84,6 +89,10 @@ class PayService extends Wechat
 
                 $pay->success($message['total_fee'], $message);
                 $order->success();
+
+                $goods = $order->goods;
+
+                $this->userRepository->givePicture($order->user_id, $goods[0]->goods_no);
 
                 DB::commit();
             } catch (\Exception $e) {
