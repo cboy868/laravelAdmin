@@ -83,7 +83,7 @@ class PayService extends Wechat
             DB::beginTransaction();
 
             try {
-                $pay = $this->payRepository->where(['trade_no' => $message['out_trade_no']])->first();
+                $pay = $this->payRepository->where(['local_trade_no' => $message['out_trade_no']])->first();
 
                 $order = $this->orderRepository->where(['order_no' => $pay->order_no])->first();
 
