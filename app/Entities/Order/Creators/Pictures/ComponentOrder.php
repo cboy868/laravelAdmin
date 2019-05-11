@@ -108,6 +108,7 @@ class ComponentOrder implements ComponentInterface
         }
 
         $goodsNos = array_column($this->goodsParams, 'goods_no');
+        Log::error($goodsNos);
 
         $goodsModels = $this->picturesRepository->whereIn('id', $goodsNos)->get();
 
