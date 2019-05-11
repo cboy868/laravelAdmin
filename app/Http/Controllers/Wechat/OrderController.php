@@ -68,7 +68,7 @@ class OrderController extends Controller
 
         $goods = $order->goods[0];
 
-        $url = urlencode('http://h5.douyule.com/html/detailPic.html?id=' . $goods->goods_no + '&ntr=' . uniqid());
+        $url = urlencode('http://h5.douyule.com/html/detailPic.html?id=' . $goods->goods_no . '&ntr=' . uniqid());
 
         return redirect($result['mweb_url'] . '&redirect_url=' . $url);
 
