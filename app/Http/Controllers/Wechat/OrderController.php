@@ -66,7 +66,9 @@ class OrderController extends Controller
             return $this->failed(ApiStatus::CODE_4005);
         }
 
-        return redirect($result['mweb_url']);
+        $goods = $order->goods[0];
+
+        return redirect($result['mweb_url'] . '&redirect_url=' . urlencode('http://h5.douyule.com/html/detailPic.html?id=' . $goods->goods_no));
 
 //        return $this->respond(['mweb_url'=> $result['mweb_url']]);
     }
