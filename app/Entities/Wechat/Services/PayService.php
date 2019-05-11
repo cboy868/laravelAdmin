@@ -82,7 +82,7 @@ class PayService extends Wechat
 
                 $order = $this->orderRepository->where(['order_no' => $pay->order_no])->first();
 
-                $pay->success();
+                $pay->success($message['total_fee'], $message);
                 $order->success();
 
                 DB::commit();
@@ -90,13 +90,16 @@ class PayService extends Wechat
                 DB::rollBack();
                 Log::error("wechat_pay_error", [
                     'error' => $fail,
-                    'msg' => $message
+                    'msg' => $message,
+                    'exception' => $e->getMessage()
                 ]);
                 return false;
             }
 
             return true;
         });
+
+        Log::error(__METHOD__,['response' => $response]);
 
         return $response;
     }

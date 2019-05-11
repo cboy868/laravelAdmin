@@ -44,10 +44,11 @@ class Pay extends Model
     ];
 
 
-    public function success($total_pay)
+    public function success($total_pay, $payResult)
     {
         $this->pay_result = self::RESULT_SUCCESS;
         $this->total_pay = $total_pay;
+        $this->note = json_encode($payResult);
         $this->save();
     }
 
