@@ -120,7 +120,7 @@ class ComponentOrder implements ComponentInterface
 
         $this->goods = $goodsModels;
 
-        Log::error(DB::table('pictures')->whereIn('id', $goodsNos))->get();
+        Log::error(DB::table('pictures')->whereIn('id', $goodsNos)->get());
 
         Log::error($goodsModels);
 
