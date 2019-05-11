@@ -16,6 +16,7 @@ use App\Entities\Order\Repository\OrderRepository;
 use App\Entities\Pictures\Repository\PicturesRepository;
 use App\IUser;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
@@ -112,11 +113,16 @@ class ComponentOrder implements ComponentInterface
 
         $goodsModels = $this->picturesRepository->whereIn('id', $goodsNos)->get();
 
+
         if (!$goodsModels) {
             throw new ResourceNotFoundException("对应商品不存在", ApiStatus::CODE_1021);
         }
 
         $this->goods = $goodsModels;
+
+        Log::error(DB::table('pictures')->whereIn('id', $goodsNos))->get();
+
+        Log::error($goodsModels);
 
         Log::error($this->goods);
 
