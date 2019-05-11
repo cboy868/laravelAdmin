@@ -77,13 +77,9 @@ class OrderController extends Controller
     /**
      * 支付结果通知网址
      */
-    public function notify(Request $request)
+    public function notify(PayService $payService)
     {
-        $params = $request->input();
-
-        Log::error(__METHOD__ . __LINE__, [
-            'params' => $params
-        ]);
+        $payService->notify();
     }
 
 }

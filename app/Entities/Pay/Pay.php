@@ -15,6 +15,10 @@ class Pay extends Model
 {
     protected $table = 'order_pay';
 
+    const RESULT_INIT = 1;//失败
+    const RESULT_PROCESS = 2;//支付中
+    const RESULT_SUCCESS = 3;//成功
+
     /**
      * The attributes that are mass assignable.
      * @var array
@@ -38,5 +42,13 @@ class Pay extends Model
         'created_at',
         'updated_at'
     ];
+
+
+    public function success($total_pay)
+    {
+        $this->pay_result = self::RESULT_SUCCESS;
+        $this->total_pay = $total_pay;
+        $this->save();
+    }
 
 }

@@ -16,6 +16,8 @@ class Order extends Model
 {
     protected $table = 'order_info';
 
+    const PROGRESS_INIT = 1;//初始化定单
+    const PROGRESS_SUCCESS = 5;//支付成功
     /**
      * The attributes that are mass assignable.
      * @var array
@@ -43,5 +45,12 @@ class Order extends Model
     {
         return $this->hasMany(OrderGoods::class, 'order_id')
             ->orderBy('id', 'DESC');
+    }
+
+    public function success()
+    {
+        $this->progress = self::PROGRESS_SUCCESS;
+
+        $this->save();
     }
 }
