@@ -117,6 +117,8 @@ class ComponentOrder implements ComponentInterface
 
         $this->goods = $goodsModels;
 
+        Log::error($this->goods);
+
         $kGoodsParams = collect($this->goodsParams)->keyBy('id');
 
         Log::error(__METHOD__, [
