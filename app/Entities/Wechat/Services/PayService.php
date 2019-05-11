@@ -27,7 +27,7 @@ class PayService extends Wechat {
                 'body' => $payModel->title,
                 'out_trade_no' => $payModel->local_trade_no,
                 'total_fee' => $payModel->total_fee,
-                'notify_url' => 'http://' . \request()->getHttpHost() . '/api/client/notify', // 支付结果通知网址，如果不设置则会使用配置里的默认地址
+                'notify_url' => 'http://' . \request()->getHttpHost() . '/api/client/wechat-order-notify', // 支付结果通知网址，如果不设置则会使用配置里的默认地址
                 'trade_type' => $type,//h5下单
             ]);
 
