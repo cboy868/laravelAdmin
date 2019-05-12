@@ -54,7 +54,7 @@ class PicturesController extends AdminController
 
         $type = $request->input('type', 1);
 
-        array_push($where, ['type'=>$type]);
+        array_push($where, ['type' => $type]);
 
         $result = $this->model->where($where)
             ->withOnly('createdby', ['name', 'email'])
@@ -90,7 +90,7 @@ class PicturesController extends AdminController
      */
     public function store(StorePicturesRequest $request)
     {
-        $params = $request->only(['id','type','category_id','intro', 'name', 'author','flag']);
+        $params = $request->only(['id', 'type', 'category_id', 'intro', 'name', 'author', 'flag']);
 
         try {
             $params['created_by'] = auth('admin')->user()->id;
@@ -117,7 +117,7 @@ class PicturesController extends AdminController
             $result = $model->toArray();
             $result['auth'] = 0;
             if ($user = auth('member')->user()) {
-                $rel = $picturesUserRelRepository->where(['user_id'=>$user->id, 'pictures_id'=>$id])->first();
+                $rel = $picturesUserRelRepository->where(['user_id' => $user->id, 'pictures_id' => $id])->first();
                 $result['auth'] = $rel ? 1 : 0;
             }
 
@@ -139,7 +139,7 @@ class PicturesController extends AdminController
      */
     public function update(UpdatePicturesRequest $request, $id)
     {
-        $params = $request->only(['id','category_id','intro', 'name', 'author','flag']);
+        $params = $request->only(['id', 'category_id', 'intro', 'name', 'author', 'flag']);
 
         try {
             unset($params['_method']);

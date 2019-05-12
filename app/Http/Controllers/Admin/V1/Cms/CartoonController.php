@@ -49,14 +49,14 @@ class CartoonController extends AdminController
             array_push($where, ['flag', $flag]);
         }
 
-        array_push($where, ['type'=>PicturesRepository::TYPE_CARTOON]);
+        array_push($where, ['type' => PicturesRepository::TYPE_CARTOON]);
 
         $result = $this->model->where($where)
             ->withOnly('createdby', ['name', 'email'])
             ->with('cover')
             ->with('category')
 //            ->with('cartoons')
-            ->with(['items' => function ($query){
+            ->with(['items' => function ($query) {
                 return $query->take(3);
             }])
             ->whereHas('category', function ($query) {
@@ -105,7 +105,7 @@ class CartoonController extends AdminController
     {
         $auth = 0;
         if ($user = auth('member')->user()) {
-            $rel = $picturesUserRelRepository->where(['user_id'=>$user->id, 'pictures_id'=>$id])->first();
+            $rel = $picturesUserRelRepository->where(['user_id' => $user->id, 'pictures_id' => $id])->first();
             $auth = $rel ? 1 : 0;
         }
 
@@ -139,11 +139,11 @@ class CartoonController extends AdminController
     {
         $auth = 0;
         if ($user = auth('member')->user()) {
-            $rel = $picturesUserRelRepository->where(['user_id'=>$user->id, 'pictures_id'=>$id])->first();
+            $rel = $picturesUserRelRepository->where(['user_id' => $user->id, 'pictures_id' => $id])->first();
             $auth = $rel ? 1 : 0;
         }
 
-        $model = $this->model->where(['type'=>PicturesRepository::TYPE_CARTOON])
+        $model = $this->model->where(['type' => PicturesRepository::TYPE_CARTOON])
             ->with('cartoons')
             ->with('cover')
             ->find($id);
@@ -161,7 +161,8 @@ class CartoonController extends AdminController
                         $v['auth'] = $auth;
                     }
                 }
-            }unset($v);
+            }
+            unset($v);
 
             $baseUrl = 'http://' . \request()->getHttpHost() . '/storage/';
             $result['base_url'] = $baseUrl;
