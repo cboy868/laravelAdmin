@@ -27,13 +27,10 @@ Route::group([
         $router->post('/me', 'Admin\AuthController@me');//个人信息
         $router->post('/logout', 'Admin\AuthController@logout');//登出
 
-        Route::apiResource('posts', 'Cms\PostController');
-        Route::apiResource('folders', 'Admin\V1\FolderController');
-        Route::apiResource('files', 'Admin\V1\PictureController');
 
         Route::apiResource('pictures-category', 'Cms\PicturesCategoryController');
         Route::apiResource('pictures-user', 'Cms\PicturesUserController');
-        Route::apiResource('pictures', 'Cms\PicturesController');
+        Route::apiResource('pictures', 'Admin\V1\Cms\PicturesController');
         Route::apiResource('focus', 'Cms\FocusController');
 
         //商品
