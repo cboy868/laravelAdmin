@@ -58,6 +58,7 @@ class Pictures extends Model
     public function cartoons(): HasMany
     {
         return $this->hasMany(Cartoon::class, 'pictures_id')
+            ->orderBy('chapter', 'ASC')
             ->orderBy('id', 'ASC');
     }
 

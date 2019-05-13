@@ -33,6 +33,12 @@ Route::group([
         Route::apiResource('pictures', 'Admin\V1\Cms\PicturesController');
         Route::apiResource('focus', 'Cms\FocusController');
 
+    Route::apiResource('cartoons', 'Admin\V1\Cms\CartoonController');
+
+
+        Route::apiResource('brands', 'Goods\BrandController');
+        Route::get('cartoon_chapters/{id}', 'Admin\V1\Cms\CartoonController@chapters');
+
         //商品
         Route::apiResource('brands', 'Goods\BrandController');
         Route::apiResource('types', 'Goods\TypeController');

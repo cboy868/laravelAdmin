@@ -14,67 +14,17 @@ use Cboy868\Repositories\Exceptions\RepositoryException;
 
 class CartoonController extends AdminController
 {
-    public $model;
+    protected $picturesRepository;
 
-    public function __construct(PicturesRepository $model)
+    protected $cartoonRepository;
+
+    public function __construct(PicturesRepository $picturesRepository, CartoonRepository $cartoonRepository)
     {
-        $this->model = $model;
+        $this->picturesRepository = $picturesRepository;
+
+        $this->cartoonRepository = $cartoonRepository;
 
         parent::__construct();
-    }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index(Request $request)
-    {
-//        self::DEFAULT_PAGE_SIZE
-
-        $pageSize = $request->input('page_size', 5);
-
-        //查询条件
-        $where = [];
-        if ($name = $request->input('name')) {
-            array_push($where, ['name', 'like', '%' . $name . '%']);
-        }
-
-        if ($cid = $request->input('cid')) {
-            array_push($where, ['category_id', $cid]);
-        }
-
-
-        if ($flag = $request->input('flag')) {
-            array_push($where, ['flag', $flag]);
-        }
-
-        array_push($where, ['type' => PicturesRepository::TYPE_CARTOON]);
-
-        $result = $this->model->where($where)
-            ->withOnly('createdby', ['name', 'email'])
-            ->with('cover')
-            ->with('category')
-//            ->with('cartoons')
-            ->with(['items' => function ($query) {
-                return $query->take(3);
-            }])
-            ->whereHas('category', function ($query) {
-                $query->whereNull('deleted_at');
-            })
-            ->orderBy('id', 'desc')
-            ->paginate($pageSize);
-
-        if (!$result) {
-            return $this->failed(ApiStatus::CODE_1021);
-        }
-
-
-        $res = $result->toArray();
-        $baseUrl = 'http://' . \request()->getHttpHost() . '/storage/';
-        $res['base_url'] = $baseUrl;
-
-        return $this->respond($res);
     }
 
 
@@ -130,51 +80,6 @@ class CartoonController extends AdminController
     }
 
     /**
-     * Display the specified resource.
-     * 列出所有章节
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id, PicturesUserRelRepository $picturesUserRelRepository)
-    {
-        $auth = 0;
-        if ($user = auth('member')->user()) {
-            $rel = $picturesUserRelRepository->where(['user_id' => $user->id, 'pictures_id' => $id])->first();
-            $auth = $rel ? 1 : 0;
-        }
-
-        $model = $this->model->where(['type' => PicturesRepository::TYPE_CARTOON])
-            ->with('cartoons')
-            ->with('cover')
-            ->find($id);
-
-        if ($model) {
-            $result = $model->toArray();
-
-            foreach ($result['cartoons'] as $k => &$v) {
-                if ($auth) {
-                    $v['auth'] = $auth;
-                } else {
-                    if ($k < 2) {
-                        $v['auth'] = 1;
-                    } else {
-                        $v['auth'] = $auth;
-                    }
-                }
-            }
-            unset($v);
-
-            $baseUrl = 'http://' . \request()->getHttpHost() . '/storage/';
-            $result['base_url'] = $baseUrl;
-
-            return $this->respond($result);
-        }
-
-        return $this->failed(ApiStatus::CODE_1021);
-    }
-
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request $request
@@ -183,14 +88,21 @@ class CartoonController extends AdminController
      */
     public function update(UpdatePicturesRequest $request, $id)
     {
+
+        if (!is_numeric($id)) {
+            return $this->failed(ApiStatus::CODE_1001);
+        }
+
         $params = array_filters($request->input());
         try {
             unset($params['_method']);
-            $this->model->update($params, $id);
+            $z = $this->cartoonRepository->update($params, $id);
+
         } catch (RepositoryException $e) {
             throw new \Exception($e->getMessage(), $e->getCode());
+            return $this->failed(ApiStatus::CODE_1011);
         }
-        return $this->respond([]);
+        return $this->respond([$z]);
     }
 
     /**
@@ -202,7 +114,7 @@ class CartoonController extends AdminController
     public function destroy($id)
     {
         try {
-            $result = $this->model->trash($id);
+            $result = $this->cartoonRepository->trash($id);
         } catch (RepositoryException $e) {
             throw new \Exception($e->getMessage(), $e->getCode());
         }

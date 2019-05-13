@@ -61,4 +61,13 @@ class Cartoon extends Model
             'user_id');
     }
 
+    /**
+     * 所属分类
+     * @return BelongsTo
+     */
+    public function picture(): BelongsTo
+    {
+        return $this->belongsTo(Pictures::class, 'pictures_id');
+    }
+
 }

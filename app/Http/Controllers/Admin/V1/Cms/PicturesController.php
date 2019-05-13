@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin\V1\Cms;
 
 use App\Common\ApiStatus;
+use App\Entities\Pictures\Repository\CartoonRepository;
 use App\Entities\Pictures\Repository\CategoryRepository;
 use App\Entities\Pictures\Repository\PicturesUserRelRepository;
 use App\Entities\Pictures\Repository\UserRepository;
@@ -108,25 +109,28 @@ class PicturesController extends AdminController
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id, UserRepository $userRepository, PicturesUserRelRepository $picturesUserRelRepository)
+    public function show($id, CartoonRepository $cartoonRepository)
     {
-        $model = $this->model->with('items')->find($id);
 
-        if ($model) {
+        $model = $this->model->find($id);
 
-            $result = $model->toArray();
-            $result['auth'] = 0;
-            if ($user = auth('member')->user()) {
-                $rel = $picturesUserRelRepository->where(['user_id' => $user->id, 'pictures_id' => $id])->first();
-                $result['auth'] = $rel ? 1 : 0;
-            }
-
-            $baseUrl = 'http://' . \request()->getHttpHost() . '/storage/';
-            $result['base_url'] = $baseUrl;
-
-            return $this->respond($result);
+        if (!$model) {
+            return $this->respond();
         }
-        return $this->failed(ApiStatus::CODE_1021);
+
+        $chapters = $cartoonRepository->where(['pictures_id'=>$id])
+            ->orderBy('chapter', 'ASC')
+            ->paginate(20);
+
+        $result = [];
+        if ($chapters) {
+            $result = $chapters->toArray();
+        }
+        $result['base_url'] = 'http://' . \request()->getHttpHost() . '/storage/';
+        $result['picture'] = $model->toArray();
+
+        return $this->respond($result);
+
     }
 
 
