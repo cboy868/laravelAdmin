@@ -43,14 +43,14 @@ class HomeController extends ApiController
             ->with('items')
             ->first();
 
-        $hots = $this->pictures->where([['flag', 1]])
+        $hot_manhua = $this->pictures->where([['type', 2], ['flag', 1]])
             ->with('cover')
             ->orderBy('sort', 'asc')
             ->orderBy('id', 'desc')
             ->limit(6)
             ->get();
 
-        $recommends = $this->pictures->where([['flag', 1]])
+        $hot_meitu = $this->pictures->where([['type', 1],['flag', 1]])
             ->with('cover')
             ->orderBy('sort', 'asc')
             ->orderBy('id', 'desc')
@@ -63,8 +63,8 @@ class HomeController extends ApiController
             'base_url' =>  $baseUrl,
             'top_banners' => $top_banners,
             'middle_banners' => $midle_banners,
-            'hot_meitu' => $recommends,
-            'hot_manhua' => $hots,
+            'hot_meitu' => $hot_meitu,
+            'hot_manhua' => $hot_manhua,
         ]);
     }
 
