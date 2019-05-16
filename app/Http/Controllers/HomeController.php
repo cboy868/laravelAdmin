@@ -36,12 +36,6 @@ class HomeController extends ApiController
     public function index(PicturesRepository $picturesRepository)
     {
 
-
-        $goodsModels = $picturesRepository->whereIn('id', [26])->get();
-
-        dd($goodsModels);
-
-        die;
         $top_banners = $this->focus->where(['pos'=>'home_top'])
             ->with('items')
             ->first();
