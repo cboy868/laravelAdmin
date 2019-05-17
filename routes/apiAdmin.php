@@ -28,10 +28,12 @@ Route::group([
         $router->post('/logout', 'Admin\AuthController@logout');//登出
 
 
+    Route::post('cover', 'Admin\V1\Cms\PicturesController@cover');
         Route::apiResource('pictures-category', 'Cms\PicturesCategoryController');
         Route::apiResource('pictures-user', 'Cms\PicturesUserController');
         Route::apiResource('pictures', 'Admin\V1\Cms\PicturesController');
         Route::apiResource('focus', 'Cms\FocusController');
+    Route::post('upfocus', 'Admin\V1\Cms\FocusController@upload');
 
     Route::apiResource('cartoons', 'Admin\V1\Cms\CartoonController');
 
