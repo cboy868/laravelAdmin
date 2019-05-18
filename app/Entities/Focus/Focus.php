@@ -19,6 +19,8 @@ class Focus extends Model
 
     protected $table = 'focus';
 
+    public $timestamps = false;
+
     /**
      * The attributes that are mass assignable.
      * @var array

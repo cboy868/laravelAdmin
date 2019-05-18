@@ -16,33 +16,32 @@ use Illuminate\Http\Request;
 
 Route::group([
     'prefix' => 'admin'
-], function ($router){
+], function ($router) {
 
 
     $router->post('/login', 'Admin\AuthController@login');
 
 
-
 //    Route::middleware(['auth:admin', 'auth.token'])->group(function ($router){
-        $router->post('/me', 'Admin\AuthController@me');//个人信息
-        $router->post('/logout', 'Admin\AuthController@logout');//登出
+    $router->post('/me', 'Admin\AuthController@me');//个人信息
+    $router->post('/logout', 'Admin\AuthController@logout');//登出
 
 
-        Route::apiResource('pictures-category', 'Cms\PicturesCategoryController');
-        Route::apiResource('pictures-user', 'Cms\PicturesUserController');
-        Route::apiResource('pictures', 'Admin\V1\Cms\PicturesController');
-        Route::apiResource('focus', 'Cms\FocusController');
+    Route::apiResource('pictures-category', 'Cms\PicturesCategoryController');
+    Route::apiResource('pictures-user', 'Cms\PicturesUserController');
+    Route::apiResource('pictures', 'Admin\V1\Cms\PicturesController');
+    Route::apiResource('focus', 'Admin\V1\Cms\FocusController');
 
     Route::apiResource('cartoons', 'Admin\V1\Cms\CartoonController');
 
 
-        Route::apiResource('brands', 'Goods\BrandController');
-        Route::get('cartoon_chapters/{id}', 'Admin\V1\Cms\CartoonController@chapters');
+    Route::apiResource('brands', 'Goods\BrandController');
+    Route::get('cartoon_chapters/{id}', 'Admin\V1\Cms\CartoonController@chapters');
 
-        //商品
-        Route::apiResource('brands', 'Goods\BrandController');
-        Route::apiResource('types', 'Goods\TypeController');
-        Route::apiResource('goods-categorys', 'Goods\CategoryController');
+    //商品
+    Route::apiResource('brands', 'Goods\BrandController');
+    Route::apiResource('types', 'Goods\TypeController');
+    Route::apiResource('goods-categorys', 'Goods\CategoryController');
 //    });
 });
 //
