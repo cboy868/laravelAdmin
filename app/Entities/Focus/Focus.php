@@ -40,6 +40,6 @@ class Focus extends Model
     {
         return $this->hasMany(FocusItem::class, 'fid')
             ->orderBy('sort', 'ASC')
-            ->orderBy('id', 'DESC');
+            ->orderBy('id', 'ASC');
     }
 }
