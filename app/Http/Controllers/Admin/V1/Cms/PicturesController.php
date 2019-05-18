@@ -169,4 +169,33 @@ class PicturesController extends AdminController
         }
         return $this->respond($result);
     }
+
+
+    /**
+     * 修改封面
+     * @param Request $request
+     * @return mixed
+     * @throws RepositoryException
+     */
+    public function cover(Request $request)
+    {
+
+        $id = $request->input('id');
+
+        if (!$id) {
+            return $this->failed(ApiStatus::CODE_1001);
+        }
+
+        $path = $request->file('cover')->store(
+            'covers', 'public'
+        );
+
+        $this->model->update(['thumb'=>$path], $id);
+
+        return $this->respond([
+            'path' =>  'http://' . \request()->getHttpHost() . '/storage/' . $path,
+            'params' => $request->input()
+        ]);
+
+    }
 }

@@ -46,9 +46,11 @@ class PicturesController extends FavoriteController
         }
 
 
-        if ($flag = $request->input('flag')) {
-            array_push($where, ['flag', $flag]);
-        }
+//        if ($flag = $request->input('flag')) {
+//            array_push($where, ['flag', $flag]);
+//        }
+
+        array_push($where, ['flag', 0]);
 
         array_push($where, ['type'=>PicturesRepository::TYPE_ALBUM]);
 

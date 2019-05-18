@@ -109,7 +109,7 @@ class FileService
         foreach ($subfolders as $folder) {
 
             # 目录名
-            $ar = explode('_', $folder);
+            $ar = explode('_', $folder, 2);
             if (count($ar) != 2) {
                 return false;
             }
@@ -234,9 +234,6 @@ class FileService
                             "ext" => $arr[1]
                         ];
                     }
-
-
-
                 }
             } else if (count($chartFolders['subfolders']) == 0 && count($chartFolders['files'] > 0)) {
                 $dir = $baseDir . '/' . $name;
@@ -297,7 +294,7 @@ class FileService
         foreach ($data['subfolders'] as $folder) {
 
             # 目录名
-            $ar = explode('_', $folder);
+            $ar = explode('_', $folder, 2);
             if (count($ar) != 2) {
                 throw new \Exception('目录名错误');
             }

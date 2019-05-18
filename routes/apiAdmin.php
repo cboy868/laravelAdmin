@@ -31,6 +31,12 @@ Route::group([
     Route::apiResource('pictures-user', 'Cms\PicturesUserController');
     Route::apiResource('pictures', 'Admin\V1\Cms\PicturesController');
     Route::apiResource('focus', 'Admin\V1\Cms\FocusController');
+    Route::apiResource('pictures-category', 'Cms\PicturesCategoryController');
+    Route::apiResource('pictures-user', 'Cms\PicturesUserController');
+    Route::apiResource('pictures', 'Admin\V1\Cms\PicturesController');
+    Route::apiResource('focus', 'Admin\V1\Cms\FocusController');
+    Route::post('upfocus', 'Admin\V1\Cms\FocusController@upload');
+    Route::post('cover', 'Admin\V1\Cms\PicturesController@cover');
 
     Route::apiResource('cartoons', 'Admin\V1\Cms\CartoonController');
 

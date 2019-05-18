@@ -29,6 +29,8 @@ class FocusItem extends Model
         "sort"
     ];
 
+    public $timestamps = false;
+
     /**
      * 所属图集
      * @return BelongsTo
