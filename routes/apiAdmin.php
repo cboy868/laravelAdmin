@@ -36,6 +36,8 @@ Route::group([
     Route::apiResource('focus', 'Admin\V1\Cms\FocusController');
     Route::post('upfocus', 'Admin\V1\Cms\FocusController@upload');
     Route::post('cover', 'Admin\V1\Cms\PicturesController@cover');
+    Route::post('edit-focus/{id}', 'Admin\V1\Cms\FocusController@updateItem');
+    Route::post('delete-focus/{id}', 'Admin\V1\Cms\FocusController@deleteItem');
 
     Route::apiResource('cartoons', 'Admin\V1\Cms\CartoonController');
 

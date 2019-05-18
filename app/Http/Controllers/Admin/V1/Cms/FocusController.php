@@ -105,7 +105,7 @@ class FocusController extends ApiController
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(FocusRequest $request, $id)
+    public function update(Request $request, $id)
     {
         $params = array_filters($request->input());
         try {
@@ -160,8 +160,41 @@ class FocusController extends ApiController
 
         return $this->respond([
             'model' => $model->toArray(),
-            'path' =>  'http://' . \request()->getHttpHost() . '/storage/' . $path,
+            'path' => 'http://' . \request()->getHttpHost() . '/storage/' . $path,
             'params' => $request->input()
         ]);
+    }
+
+    /**
+     * 更新图片信息
+     * @param Request $request
+     * @return mixed
+     * @throws RepositoryException
+     */
+    public function updateItem($id, Request $request)
+    {
+        $params = array_filters($request->input());
+        try {
+            $this->focusItemRepository->update($params, $id);
+        } catch (RepositoryException $e) {
+            throw new \Exception($e->getMessage(), $e->getCode());
+        }
+        return $this->respond([]);
+    }
+
+    /**
+     * 删除图片信息
+     * @param Request $request
+     * @return mixed
+     * @throws RepositoryException
+     */
+    public function deleteItem($id)
+    {
+        try {
+            $result = $this->focusItemRepository->trash($id);
+        } catch (RepositoryException $e) {
+            throw new \Exception($e->getMessage(), $e->getCode());
+        }
+        return $this->respond($result);
     }
 }
