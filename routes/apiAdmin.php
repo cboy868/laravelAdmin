@@ -26,7 +26,6 @@ Route::group([
     $router->post('/me', 'Admin\AuthController@me');//个人信息
     $router->post('/logout', 'Admin\AuthController@logout');//登出
 
-
     Route::apiResource('pictures-category', 'Cms\PicturesCategoryController');
     Route::apiResource('pictures-user', 'Cms\PicturesUserController');
     Route::apiResource('pictures', 'Admin\V1\Cms\PicturesController');
