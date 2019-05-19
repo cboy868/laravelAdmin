@@ -35,7 +35,7 @@ Route::group([
         Route::get('chapter/{id}', 'Cms\CartoonController@chapter')->middleware('api');
         Route::post('favorite/picture', 'Cms\PicturesController@favorite')->middleware('api');
         Route::post('unfavorite/picture', 'Cms\PicturesController@unFavorite')->middleware('api');
-        Route::get('favorites', 'Cms\PicturesController@favorites')->middleware('api');
+        Route::get('favorites', 'Cms\PicturesController@favorites');//->middleware('api');
         Route::get('mine', 'Cms\PicturesController@mine')->middleware('api');
 
 

@@ -36,12 +36,28 @@ class HomeController extends ApiController
     public function index(PicturesRepository $picturesRepository)
     {
 
+        $baseUrl = 'http://' . \request()->getHttpHost() . '/storage/';
+
         $top_banners = $this->focus->where(['pos'=>'home_top'])
             ->with('items')
             ->first();
+
+        if ($top_banners) {
+            foreach ($top_banners->items as &$item) {
+                $item->path = $baseUrl . $item->path;
+            }unset($item);
+        }
+
+
         $midle_banners = $this->focus->where(['pos'=>'home_middle'])
             ->with('items')
             ->first();
+
+        if ($midle_banners) {
+            foreach ($midle_banners->items as &$item) {
+                $item->path = $baseUrl . $item->path;
+            }unset($item);
+        }
 
         $hot_manhua = $this->pictures->where([['type', 2], ['flag', 1]])
             ->with('cover')
@@ -57,7 +73,7 @@ class HomeController extends ApiController
             ->limit(6)
             ->get();
 
-        $baseUrl = 'http://' . \request()->getHttpHost() . '/storage/';
+
 
         return $this->respond([
             'base_url' =>  $baseUrl,
