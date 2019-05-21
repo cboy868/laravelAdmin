@@ -53,11 +53,6 @@ class PicturesController extends AdminController
             array_push($where, ['flag', $flag]);
         }
 
-
-        if ($except_id = $request->input('except_id')) {
-            array_push($where, ['id','<>', $except_id]);
-        }
-
         $type = $request->input('type', 1);
 
         array_push($where, ['type' => $type]);

@@ -45,10 +45,10 @@ class PicturesController extends FavoriteController
             array_push($where, ['category_id', $cid]);
         }
 
+        if ($except_id = $request->input('except_id')) {
+            array_push($where, ['id','<>', $except_id]);
+        }
 
-//        if ($flag = $request->input('flag')) {
-//            array_push($where, ['flag', $flag]);
-//        }
 
         array_push($where, ['flag', 0]);
 
