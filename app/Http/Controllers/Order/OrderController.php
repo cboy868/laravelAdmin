@@ -122,7 +122,7 @@ class OrderController extends ApiController
         } catch (UnauthorizedException $e) {
             return $this->failed(ApiStatus::CODE_2002);
         } catch (\Exception $e) {
-            return $this->failed(ApiStatus::CODE_4003);
+            return $this->setCodeMsg("请选择正确的商品下单")->failed(ApiStatus::CODE_4003);
         }
 
         return $this->respond($result['order']);
