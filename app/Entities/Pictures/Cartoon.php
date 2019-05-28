@@ -47,7 +47,7 @@ class Cartoon extends Model
     {
         return $this->hasMany(PicturesItem::class, 'cartoon_id')
             ->orderBy('sort', 'ASC')
-            ->orderBy('id', 'DESC');
+            ->orderBy('id', 'ASC');
     }
     /**
      *
