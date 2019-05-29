@@ -111,11 +111,6 @@ class CartoonController extends ApiController
             $rel = $picturesUserRelRepository->where(['user_id' => $user->id, 'pictures_id' => $model->pictures_id])->first();
             $auth = $rel ? 1 : 0;
 
-
-            Log::error('auth_rel', [
-                'rel' => $rel,
-                'auth' => $auth
-            ]);
             if ($auth) {
                 DB::table('pictures_user_rel')
                     ->where(['user_id'=>$user->id,'pictures_id'=>$rel->pictures_id])
