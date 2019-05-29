@@ -150,8 +150,28 @@ class CartoonController extends ApiController
             ->with('cover')
             ->find($id);
 
+        //查找历史记录
+        $nowToRead = 1;
+        if ($auth) {
+            $chapter=0;
+            $chapters = $model->cartoons;
+            $nowToRead = $rel->chapter_id;
+            foreach ($chapters as $c) {
+                if ($c->id == $rel->chapter_id) {
+                    $chapter = $c->chapter;
+                }
+
+                if ($chapter+1 == $c->chapter) {
+                    $nowToRead = $c->id;
+                }
+            }
+        }
+
         if ($model) {
             $result = $model->toArray();
+            if($auth) {
+                $result['read_chapter_history'] = $nowToRead;
+            }
 
             foreach ($result['cartoons'] as $k => &$v) {
                 if ($auth) {
