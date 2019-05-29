@@ -13,6 +13,7 @@ use App\Http\Controllers\ApiController;
 use Illuminate\Http\Request;
 use App\Entities\Pictures\Repository\PicturesRepository;
 use Cboy868\Repositories\Exceptions\RepositoryException;
+use Illuminate\Support\Facades\Log;
 
 class CartoonController extends ApiController
 {
@@ -159,11 +160,21 @@ class CartoonController extends ApiController
             foreach ($chapters as $c) {
                 if ($c->id == $rel->chapter_id) {
                     $chapter = $c->chapter;
+                    Log::error('当前数据', [
+                        'chapter_id' => $rel->chapter_id,
+                        'chapter' => $chapter
+                    ]);
                 }
+
 
                 if ($chapter+1 == $c->chapter) {
                     $nowToRead = $c->id;
+                    Log::error('结果数据', [
+                        'chapter_id' => $nowToRead,
+                        'chapter' => $chapter
+                    ]);
                 }
+
             }
         }
 
