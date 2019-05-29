@@ -102,14 +102,13 @@ class CartoonController extends ApiController
     }
 
 
-    /**
-     * 所有章节
-     */
     public function chapter($id, CartoonRepository $cartoon, PicturesUserRelRepository $picturesUserRelRepository)
     {
+        $model = $cartoon->find($id);
+
         $auth = 0;
         if ($user = auth('member')->user()) {
-            $rel = $picturesUserRelRepository->where(['user_id' => $user->id, 'pictures_id' => $id])->first();
+            $rel = $picturesUserRelRepository->where(['user_id' => $user->id, 'pictures_id' => $model->pictures_id])->first();
             $auth = $rel ? 1 : 0;
 
 
@@ -124,7 +123,7 @@ class CartoonController extends ApiController
             }
         }
 
-        $model = $cartoon->find($id);
+
 
         if (!$model) {
             return $this->failed(ApiStatus::CODE_1021);
