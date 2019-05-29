@@ -177,9 +177,7 @@ class CartoonController extends ApiController
 
         if ($model) {
             $result = $model->toArray();
-            if($auth) {
-                $result['read_chapter_history'] = $nowToRead;
-            }
+            $result['read_chapter_history'] = $nowToRead;
 
             foreach ($result['cartoons'] as $k => &$v) {
                 if ($auth) {
