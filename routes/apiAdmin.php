@@ -35,11 +35,16 @@ Route::group([
     Route::apiResource('pictures', 'Admin\V1\Cms\PicturesController');
     Route::apiResource('focus', 'Admin\V1\Cms\FocusController');
     Route::post('upfocus', 'Admin\V1\Cms\FocusController@upload');
+    Route::post('upimages', 'Admin\V1\Cms\PicturesController@upImages');
     Route::post('cover', 'Admin\V1\Cms\PicturesController@cover');
     Route::post('edit-focus/{id}', 'Admin\V1\Cms\FocusController@updateItem');
     Route::post('delete-focus/{id}', 'Admin\V1\Cms\FocusController@deleteItem');
 
+    Route::post('picture-delete-img/{id}', 'Admin\V1\Cms\PicturesController@deleteImg');
+
     Route::apiResource('cartoons', 'Admin\V1\Cms\CartoonController');
+
+    Route::get('picture_images/{id}', 'Admin\V1\Cms\PicturesController@images');
 
 
     Route::apiResource('brands', 'Goods\BrandController');

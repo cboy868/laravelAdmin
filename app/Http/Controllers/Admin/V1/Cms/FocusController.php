@@ -54,6 +54,13 @@ class FocusController extends ApiController
             ->orderBy('id', 'desc')
             ->paginate($pageSize);
 
+        if (!$result) {
+            return $this->respond([]);
+        }
+        $result = $result->toArray();
+
+        $result['base_url'] = 'http://' . \request()->getHttpHost() . '/storage/';;
+
         return $this->respond($result);
     }
 
@@ -173,7 +180,8 @@ class FocusController extends ApiController
      */
     public function updateItem($id, Request $request)
     {
-        $params = array_filters($request->input());
+        $params = $request->input();
+
         try {
             $this->focusItemRepository->update($params, $id);
         } catch (RepositoryException $e) {

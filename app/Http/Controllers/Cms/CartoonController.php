@@ -128,7 +128,7 @@ class CartoonController extends ApiController
         }
 
         //未购买提示，需要购买
-        return $this->failed(ApiStatus::CODE_4004);
+        return $this->setCodeMsg("您需要先购买此漫画")->failed(ApiStatus::CODE_4004);
     }
 
     /**

@@ -45,10 +45,10 @@ class PicturesController extends FavoriteController
             array_push($where, ['category_id', $cid]);
         }
 
+        if ($except_id = $request->input('except_id')) {
+            array_push($where, ['id','<>', $except_id]);
+        }
 
-//        if ($flag = $request->input('flag')) {
-//            array_push($where, ['flag', $flag]);
-//        }
 
         array_push($where, ['flag', 0]);
 
@@ -58,9 +58,9 @@ class PicturesController extends FavoriteController
             ->withOnly('createdby', ['name', 'email'])
             ->with('cover')
             ->with('category')
-            ->with(['items' => function ($query){
-                return $query->take(3);
-            }])
+//            ->with(['items' => function ($query){
+//                return $query->take(3);
+//            }])
             ->whereHas('category', function ($query) {
                 $query->whereNull('deleted_at');
             })
@@ -71,8 +71,14 @@ class PicturesController extends FavoriteController
             return $this->failed(ApiStatus::CODE_1021);
         }
 
+        foreach ($result as &$item) {
+            $item->images =$item->images ?  json_decode($item->images, true) : [];
+        }unset($item);
 
         $res = $result->toArray();
+
+
+
         $baseUrl = 'http://' . \request()->getHttpHost() . '/storage/';
         $res['base_url'] = $baseUrl;
 

@@ -179,23 +179,113 @@ class PicturesController extends AdminController
      */
     public function cover(Request $request)
     {
-
         $id = $request->input('id');
-
         if (!$id) {
             return $this->failed(ApiStatus::CODE_1001);
         }
-
         $path = $request->file('cover')->store(
             'covers', 'public'
         );
-
         $this->model->update(['thumb'=>$path], $id);
-
         return $this->respond([
             'path' =>  'http://' . \request()->getHttpHost() . '/storage/' . $path,
             'params' => $request->input()
         ]);
+    }
 
+
+    public function edit($id)
+    {
+        $model = $this->model->find($id);
+
+        if ($model) {
+            return $this->respond($model->toArray());
+        }
+
+        return $this->failed(ApiStatus::CODE_1021);
+    }
+
+    /**
+     * 显示图集的三个主图
+     * @param $id
+     */
+    public function images($id)
+    {
+        $model = $this->model->find($id);
+
+        $result = $model->toArray();
+
+        $result['images'] = $result['images'] ? json_decode($result['images'], true) : [];
+        $result['baseUrl'] = 'http://' . \request()->getHttpHost() . '/storage/';
+        if ($model) {
+            return $this->respond($result);
+        }
+
+        return $this->failed(ApiStatus::CODE_1021);
+    }
+
+    /**
+     * 修改展示图片
+     * @param Request $request
+     */
+    public function upImages(Request $request)
+    {
+        $id = $request->input('id');
+        if (!$id) {
+            return $this->failed(ApiStatus::CODE_1001);
+        }
+        $path = $request->file('image')->store(
+            'covers', 'public'
+        );
+
+        if (!$path) {
+            return $this->failed(ApiStatus::CODE_1011);
+        }
+
+        $model = $this->model->find($id);
+        $imgs = [];
+        if ($model->images) {
+            $imgs = json_decode($model->images, true);
+        }
+        array_push($imgs, $path);
+
+        $model->images = json_encode($imgs);
+
+        $model->save();
+
+        return $this->respond([
+            'images' => $imgs
+        ]);
+    }
+
+    /**
+     * 删除图片信息
+     * @param Request $request
+     * @return mixed
+     * @throws RepositoryException
+     */
+    public function deleteImg($id, Request $request)
+    {
+        try {
+            $img = $request->input('img');
+            if (!$id) {
+                return $this->failed(ApiStatus::CODE_1001);
+            }
+            $model = $this->model->find($id);
+            if (!$model->images) {
+                return $this->failed(ApiStatus::CODE_1011);
+            }
+            $imgs = json_decode($model->images, true);
+
+            $key = array_search($img, $imgs);
+            array_splice($imgs, $key, 1);
+
+            $model->images = json_encode($imgs);
+            $model->save();
+
+        } catch (RepositoryException $e) {
+            return $this->failed(ApiStatus::CODE_1011);
+        }
+        return $this->respond(['images'=>$imgs]);
     }
 }

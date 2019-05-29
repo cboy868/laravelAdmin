@@ -38,6 +38,7 @@ class Pictures extends Model
         'author',
         "name",
         "thumb",
+        "images",
         "sort",
         "intro",
         "num",
