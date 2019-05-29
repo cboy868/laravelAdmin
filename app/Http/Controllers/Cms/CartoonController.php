@@ -13,6 +13,7 @@ use App\Http\Controllers\ApiController;
 use Illuminate\Http\Request;
 use App\Entities\Pictures\Repository\PicturesRepository;
 use Cboy868\Repositories\Exceptions\RepositoryException;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class CartoonController extends ApiController
@@ -110,6 +111,12 @@ class CartoonController extends ApiController
         if ($user = auth('member')->user()) {
             $rel = $picturesUserRelRepository->where(['user_id' => $user->id, 'pictures_id' => $id])->first();
             $auth = $rel ? 1 : 0;
+
+            if ($auth) {
+                DB::table('pictures_user_rel')
+                    ->where(['user_id'=>$user->id,'pictures_id'=>$rel->pictures_id])
+                    ->update(['chapter_id' => $id]);
+            }
         }
 
         $model = $cartoon->find($id);
@@ -152,7 +159,7 @@ class CartoonController extends ApiController
             ->find($id);
 
         //查找历史记录
-        $nowToRead = 1;
+        $nowToRead = $model->cartoons[0]->id;
         if ($auth) {
             $chapter=0;
             $chapters = $model->cartoons;
@@ -160,21 +167,11 @@ class CartoonController extends ApiController
             foreach ($chapters as $c) {
                 if ($c->id == $rel->chapter_id) {
                     $chapter = $c->chapter;
-                    Log::error('当前数据', [
-                        'chapter_id' => $rel->chapter_id,
-                        'chapter' => $chapter
-                    ]);
                 }
-
 
                 if ($chapter+1 == $c->chapter) {
                     $nowToRead = $c->id;
-                    Log::error('结果数据', [
-                        'chapter_id' => $nowToRead,
-                        'chapter' => $chapter
-                    ]);
                 }
-
             }
         }
 

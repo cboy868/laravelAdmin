@@ -166,30 +166,6 @@ class PicturesController extends FavoriteController
 
 
     /**
-     * 写阅读记录
-     */
-    public function storeReadRecord($id,PicturesUserRelRepository $picturesUserRelRepository)
-    {
-        if (!($user = auth('member')->user())) {
-            return $this->failed(ApiStatus::CODE_2002);//未登录
-        }
-
-        $model = $picturesUserRelRepository->where([
-            'user_id' => $user->id,
-            'pictures_id' => $id
-        ])->first();
-
-        if ($model) {
-            $model->chapter_id = request()->input('chapter_id');
-            $model->save();
-        }
-
-        return $this->respond();
-
-    }
-
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request $request
