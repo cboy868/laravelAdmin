@@ -89,30 +89,30 @@ function array_index($array, $field)
  * 没有代理，获取客户端ip
  * @return array|false|string
  */
-function get_client_ip()
-{
-    $cip = "unknow";
-    if ($_SERVER['REMOTE_ADDR']) {
-        $cip = $_SERVER['REMOTE_ADDR'];
-    } elseif (getenv("REMOTE_ADDR")) {
-        $cip = getenv("REMOTE_ADDR");
-    }
-
-    return $cip;
-}
+//function get_client_ip()
+//{
+//    $cip = "unknow";
+//    if ($_SERVER['REMOTE_ADDR']) {
+//        $cip = $_SERVER['REMOTE_ADDR'];
+//    } elseif (getenv("REMOTE_ADDR")) {
+//        $cip = getenv("REMOTE_ADDR");
+//    }
+//
+//    return $cip;
+//}
 /**
  * 获取真实client ip
  * @return string
  */
-//function get_client_ip() {
-//    if(getenv('HTTP_CLIENT_IP') && strcasecmp(getenv('HTTP_CLIENT_IP'), 'unknown')) {
-//        $ip = getenv('HTTP_CLIENT_IP');
-//    } elseif(getenv('HTTP_X_FORWARDED_FOR') && strcasecmp(getenv('HTTP_X_FORWARDED_FOR'), 'unknown')) {
-//        $ip = getenv('HTTP_X_FORWARDED_FOR');
-//    } elseif(getenv('REMOTE_ADDR') && strcasecmp(getenv('REMOTE_ADDR'), 'unknown')) {
-//        $ip = getenv('REMOTE_ADDR');
-//    } elseif(isset($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR'] && strcasecmp($_SERVER['REMOTE_ADDR'], 'unknown')) {
-//        $ip = $_SERVER['REMOTE_ADDR'];
-//    }
-//    return preg_match ( '/[\d\.]{7,15}/', $ip, $matches ) ? $matches [0] : '';
-//}
+function get_client_ip() {
+    if(getenv('HTTP_CLIENT_IP') && strcasecmp(getenv('HTTP_CLIENT_IP'), 'unknown')) {
+        $ip = getenv('HTTP_CLIENT_IP');
+    } elseif(getenv('HTTP_X_FORWARDED_FOR') && strcasecmp(getenv('HTTP_X_FORWARDED_FOR'), 'unknown')) {
+        $ip = getenv('HTTP_X_FORWARDED_FOR');
+    } elseif(getenv('REMOTE_ADDR') && strcasecmp(getenv('REMOTE_ADDR'), 'unknown')) {
+        $ip = getenv('REMOTE_ADDR');
+    } elseif(isset($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR'] && strcasecmp($_SERVER['REMOTE_ADDR'], 'unknown')) {
+        $ip = $_SERVER['REMOTE_ADDR'];
+    }
+    return preg_match ( '/[\d\.]{7,15}/', $ip, $matches ) ? $matches [0] : '';
+}
