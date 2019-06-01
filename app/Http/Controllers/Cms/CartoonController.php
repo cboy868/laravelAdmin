@@ -105,17 +105,20 @@ class CartoonController extends ApiController
      */
     public function chapter($id, CartoonRepository $cartoon, PicturesUserRelRepository $picturesUserRelRepository)
     {
-        $auth = 0;
-        if ($user = auth('member')->user()) {
-            $rel = $picturesUserRelRepository->where(['user_id' => $user->id, 'pictures_id' => $id])->first();
-            $auth = $rel ? 1 : 0;
-        }
 
         $model = $cartoon->find($id);
 
         if (!$model) {
             return $this->failed(ApiStatus::CODE_1021);
         }
+
+        $auth = 0;
+        if ($user = auth('member')->user()) {
+            $rel = $picturesUserRelRepository->where(['user_id' => $user->id, 'pictures_id' => $model->id])->first();
+            $auth = $rel ? 1 : 0;
+        }
+
+
 
         $result = $model->toArray();
 
