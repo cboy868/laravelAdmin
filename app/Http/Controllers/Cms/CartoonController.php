@@ -13,6 +13,8 @@ use App\Http\Controllers\ApiController;
 use Illuminate\Http\Request;
 use App\Entities\Pictures\Repository\PicturesRepository;
 use Cboy868\Repositories\Exceptions\RepositoryException;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class CartoonController extends ApiController
 {
@@ -100,12 +102,8 @@ class CartoonController extends ApiController
     }
 
 
-    /**
-     * 所有章节
-     */
     public function chapter($id, CartoonRepository $cartoon, PicturesUserRelRepository $picturesUserRelRepository)
     {
-
         $model = $cartoon->find($id);
 
         if (!$model) {
@@ -114,10 +112,15 @@ class CartoonController extends ApiController
 
         $auth = 0;
         if ($user = auth('member')->user()) {
-            $rel = $picturesUserRelRepository->where(['user_id' => $user->id, 'pictures_id' => $model->id])->first();
+            $rel = $picturesUserRelRepository->where(['user_id' => $user->id, 'pictures_id' => $model->pictures_id])->first();
             $auth = $rel ? 1 : 0;
-        }
 
+            if ($auth) {
+                DB::table('pictures_user_rel')
+                    ->where(['user_id'=>$user->id,'pictures_id'=>$rel->pictures_id])
+                    ->update(['chapter_id' => $id]);
+            }
+        }
 
 
         $result = $model->toArray();
@@ -153,8 +156,26 @@ class CartoonController extends ApiController
             ->with('cover')
             ->find($id);
 
+        //查找历史记录
+        $nowToRead = $model->cartoons[0]->id;
+        if ($auth) {
+            $chapter=0;
+            $chapters = $model->cartoons;
+            $nowToRead = $rel->chapter_id;
+            foreach ($chapters as $c) {
+                if ($c->id == $rel->chapter_id) {
+                    $chapter = $c->chapter;
+                }
+
+                if ($chapter+1 == $c->chapter) {
+                    $nowToRead = $c->id;
+                }
+            }
+        }
+
         if ($model) {
             $result = $model->toArray();
+            $result['read_chapter_history'] = $nowToRead;
 
             foreach ($result['cartoons'] as $k => &$v) {
                 if ($auth) {
