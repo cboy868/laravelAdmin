@@ -106,6 +106,10 @@ class CartoonController extends ApiController
     {
         $model = $cartoon->find($id);
 
+        if (!$model) {
+            return $this->failed(ApiStatus::CODE_1021);
+        }
+
         $auth = 0;
         if ($user = auth('member')->user()) {
             $rel = $picturesUserRelRepository->where(['user_id' => $user->id, 'pictures_id' => $model->pictures_id])->first();
@@ -118,11 +122,6 @@ class CartoonController extends ApiController
             }
         }
 
-
-
-        if (!$model) {
-            return $this->failed(ApiStatus::CODE_1021);
-        }
 
         $result = $model->toArray();
 
