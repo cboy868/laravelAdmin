@@ -12,6 +12,7 @@ namespace App\Http\Controllers\Wechat;
 use App\Common\ApiStatus;
 use App\Entities\Order\Repository\OrderRepository;
 use App\Entities\Pay\Repository\PayRepository;
+use App\Entities\Pictures\Repository\PicturesRepository;
 use App\Entities\Wechat\Repository\WechatUserRepository;
 use App\Entities\Wechat\Services\PayService;
 use Illuminate\Support\Facades\DB;
@@ -30,7 +31,9 @@ class OrderController extends Controller
     public function pay(
         PayRepository $payRepository,
         OrderRepository $orderRepository,
-        PayService $payService,WechatUserRepository $wechatUserRepository
+        PayService $payService,
+        WechatUserRepository $wechatUserRepository,
+        PicturesRepository $picturesRepository
         )
     {
 
@@ -67,12 +70,17 @@ class OrderController extends Controller
         }
 
         $goods = $order->goods[0];
+        $model = $picturesRepository->find($goods->goods_no);
 
-        $url = urlencode('http://h5.douyule.com/html/detailPic.html?id=' . $goods->goods_no . '&ntr=' . uniqid());
+        if ($model->type == 1) {
+            $pre = 'detailPic.html?id='. $goods->goods_no . '&ntr=' . uniqid();
+        } else if ($model->type == 2){
+            $pre = 'detailCommic.html?id='. $goods->goods_no . '&ntr=' . uniqid();
+        }
+
+        $url = urlencode('http://h5.douyule.com/html/' . $pre);
 
         return redirect($result['mweb_url'] . '&redirect_url=' . $url);
-
-//        return $this->respond(['mweb_url'=> $result['mweb_url']]);
     }
 
 
