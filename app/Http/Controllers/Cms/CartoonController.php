@@ -134,6 +134,9 @@ class CartoonController extends ApiController
         $result['next_chapter'] = $nextChapter ? $nextChapter->id : 0;
         $result['pre_chapter'] = $preChapter ? $preChapter->id : 0;
 
+        $max = $cartoon->where(['pictures_id'=> $model->pictures_id])->max('chapter');
+        $result['title_nu'] = $model->chapter . '/' . $max;
+
         if ($auth || $model->chapter < 3) {
             $result['items'] = $model->items;
             return $this->respond($result);
