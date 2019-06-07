@@ -16,7 +16,7 @@ trait ApiResponse
 {
     private $code = ApiStatus::CODE_0; //程序内部码
 
-    private $codeMsg;
+    private $codeMsg='';
 
     private $status = FoundationResponse::HTTP_OK; //http状态码
 
@@ -161,7 +161,8 @@ trait ApiResponse
      * @param string $msg
      * @return mixed
      */
-    public function failed($code){
+    public function failed($code, $msg=''){
+        if ($msg) $this->setCodeMsg($msg);
         return $this->setCode($code)->respond([]);
     }
 
