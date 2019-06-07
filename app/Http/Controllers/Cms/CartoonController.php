@@ -117,16 +117,25 @@ class CartoonController extends ApiController
 
             if ($auth) {
                 DB::table('pictures_user_rel')
-                    ->where(['user_id'=>$user->id,'pictures_id'=>$rel->pictures_id])
+                    ->where(['user_id' => $user->id, 'pictures_id' => $rel->pictures_id])
                     ->update(['chapter_id' => $id]);
             }
         }
-
 
         $result = $model->toArray();
 
         $baseUrl = 'http://' . \request()->getHttpHost() . '/storage/';
         $result['base_url'] = $baseUrl;
+
+
+        $nextChapter = $cartoon->where(['pictures_id' => $model->pictures_id, 'chapter' => $model->chapter + 1])->first();
+        $preChapter = $cartoon->where(['pictures_id' => $model->pictures_id, 'chapter' => $model->chapter - 1])->first();
+
+        $result['next_chapter'] = $nextChapter ? $nextChapter->id : 0;
+        $result['pre_chapter'] = $preChapter ? $preChapter->id : 0;
+
+        $max = $cartoon->where(['pictures_id'=> $model->pictures_id])->max('chapter');
+        $result['title_nu'] = $model->chapter . '/' . $max;
 
         if ($auth || $model->chapter < 3) {
             $result['items'] = $model->items;
@@ -159,7 +168,7 @@ class CartoonController extends ApiController
         //查找历史记录
         $nowToRead = $model->cartoons[0]->id;
         if ($auth) {
-            $chapter=0;
+            $chapter = 0;
             $chapters = $model->cartoons;
             $nowToRead = $rel->chapter_id;
             foreach ($chapters as $c) {
@@ -167,7 +176,7 @@ class CartoonController extends ApiController
                     $chapter = $c->chapter;
                 }
 
-                if ($chapter+1 == $c->chapter) {
+                if ($chapter + 1 == $c->chapter) {
                     $nowToRead = $c->id;
                 }
             }
