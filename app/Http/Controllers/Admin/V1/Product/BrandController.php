@@ -3,11 +3,10 @@
 namespace App\Http\Controllers\Admin\V1\Product;
 
 use App\Entities\Product\Repository\BrandRepository;
-use App\Entities\Product\Repository\ProductRepository;
 use App\Http\Controllers\Admin\AdminController;
 use Illuminate\Http\Request;
 
-class ProductController extends AdminController
+class BrandController extends AdminController
 {
 
     protected $brandRepository;

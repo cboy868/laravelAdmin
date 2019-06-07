@@ -25,7 +25,7 @@ class ProductController extends AdminController
      */
     public function index()
     {
-        //
+        return $this->respond();
     }
 
     /**

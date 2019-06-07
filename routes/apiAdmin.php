@@ -22,6 +22,26 @@ Route::group([
     $router->post('/login', 'Admin\AuthController@login');
 
 
+    /**
+     * 商户
+     */
+    Route::apiResource('store', 'Admin\V1\Store\StoreController');
+    Route::apiResource('store-level', 'Admin\V1\Store\LevelController');
+    Route::apiResource('store-cost', 'Admin\V1\Store\CostController');
+
+    /**
+     * 商品
+     */
+    Route::apiResource('product-brand', 'Admin\V1\Product\BrandController');
+    Route::apiResource('product-category', 'Admin\V1\Product\CategoryController');
+    Route::apiResource('product-sku', 'Admin\V1\Product\SkuController');
+    Route::apiResource('product', 'Admin\V1\Product\ProductController');
+    Route::apiResource('product-attribute-category', 'Admin\V1\Product\AttributeCategoryController');
+    Route::apiResource('product-attribute-key', 'Admin\V1\Product\AttributeKeyController');
+    Route::apiResource('product-attribute-value', 'Admin\V1\Product\AttributeValueController');
+    Route::apiResource('product-attribute-rel', 'Admin\V1\Product\AttributeRelController');
+
+
 //    Route::middleware(['auth:admin', 'auth.token'])->group(function ($router){
     $router->post('/me', 'Admin\AuthController@me');//个人信息
     $router->post('/logout', 'Admin\AuthController@logout');//登出
