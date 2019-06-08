@@ -3,11 +3,25 @@
 namespace App\Entities\Product;
 
 use App\Entities\ActiveRecord;
+use App\Traits\Tree;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class AttributeCategory extends ActiveRecord
 {
+    use Tree;//树状结构
+    use SoftDeletes;
+
     protected $table = 'product_attribute_category';
+
+
+    protected $fillable = [
+        'pid',
+        'name',
+        'level',
+        'code',
+        'intro'
+    ];
 
     /**
      * 获取分类下所有属性

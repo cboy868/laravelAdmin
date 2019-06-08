@@ -18,7 +18,7 @@ class ApiController extends BaseController
 
     const SESSION_ERR_KEY = 'fk.error';
 
-    const DEFAULT_PAGE_SIZE = 25;
+    const DEFAULT_PAGE_SIZE = 20;
 
     const PAGE_SIZE_ONE = 'page_size_one';
     const PAGE_SIZE_TWO = 'page_size_two';

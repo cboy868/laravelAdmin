@@ -3,10 +3,12 @@
 namespace App\Traits;
 
 
-trait Tree {
+trait Tree
+{
 
     /**
-     * @name 取所有父级
+     * 取所有父级
+     * @return mixed
      */
     public function getParents()
     {
@@ -14,7 +16,8 @@ trait Tree {
     }
 
     /**
-     * @name 取直接父级
+     * 取直接父级
+     * @return mixed
      */
     public function getParent()
     {
@@ -22,7 +25,9 @@ trait Tree {
     }
 
     /**
-     * @name 取所有子节点
+     * 取所有子节点
+     * @param bool $includeSelf
+     * @return array
      */
     public function getDescendants($includeSelf = false)
     {
@@ -46,11 +51,12 @@ trait Tree {
         if ($this->isLeaf()) {
             return [];
         }
-        return $this->where('pid', $this->id)->orderBy('id', 'ASC')->get();
+        return $this->where('pid', $this->id)->orderBy('code', 'ASC')->get();
     }
 
     /**
-     * @name 取所有子叶子节点
+     * 取所有子叶子节点
+     * @return array
      */
     public function getSonLeafs()
     {
@@ -58,31 +64,34 @@ trait Tree {
             return [];
         }
 
-        return $this->where(['is_leaf'=>1])
+        return $this->where(['is_leaf' => 1])
             ->where('code', 'like', $this->code . '.%')
             ->orderBy('code', 'ASC')
             ->get();
     }
 
     /**
-     * @name 取兄弟元素
+     * 取同级节点
+     * @param bool $self
+     * @return mixed
      */
-    public function getSibling($self=false)
+    public function getSibling($self = false)
     {
         return $self ?
             $this->where('pid', $this->pid)
-                ->orderBy('sort',  'ASC')
+                ->orderBy('sort', 'ASC')
                 ->get() :
             $this->where('pid', $this->pid)
                 ->where('id', '<>', $this->id)
-                ->orderBy('sort',  'ASC')
+                ->orderBy('sort', 'ASC')
                 ->get();
 
     }
 
 
     /**
-     * @name 判断是否叶子节点
+     * 判断是否叶子节点
+     * @return mixed
      */
     public function isLeaf()
     {
@@ -90,7 +99,8 @@ trait Tree {
     }
 
     /**
-     * @name 判断是否是根
+     * 判断是否是根
+     * @return bool
      */
     public function isRoot()
     {
@@ -98,7 +108,8 @@ trait Tree {
     }
 
     /**
-     * @name 取层级
+     * 取层级
+     * @return mixed
      */
     public function getLevel()
     {
@@ -106,11 +117,12 @@ trait Tree {
     }
 
     /**
-     * $name 是否有有子元素
+     * 是否有有子元素
+     * @return bool
      */
     public function hasChild()
     {
-        return (bool) $this->where(['pid' => $this->id])->first();
+        return (bool)$this->where(['pid' => $this->id])->first();
     }
 
 
@@ -124,12 +136,13 @@ trait Tree {
         $tree = [];
         $records = array_index($records, 'id');
         foreach ($records as &$record) {
-            if ( $record['pid'] != 0 && isset($records[$record['pid']])) {
-                $records[$record['pid']]['children'][] = &$records[$record['id']];
+            if ($record['pid'] != 0 && isset($records[$record['pid']])) {
+                $records[$record['pid']]['sons'][] = &$records[$record['id']];
             } else {
                 $tree[] = &$records[$record['id']];
             }
-        }unset($record);
+        }
+        unset($record);
 
         return $tree;
     }
@@ -137,7 +150,7 @@ trait Tree {
     /**
      * @name 生成树
      */
-    public function genTree($id = 0)
+    public function genTree()
     {
         return self::makeTree($this->getDescendants(1)->toArray());
     }
@@ -150,7 +163,7 @@ trait Tree {
      * @param string $html
      * @return array
      */
-    public function selTree($condition=[], $id=0, $html='--')
+    public function selTree($condition = [], $id = 0, $html = '--')
     {
         if ($id) {
             $items = $this->find($id)->getDescendants(true);
@@ -161,7 +174,8 @@ trait Tree {
         $arr = [];
         foreach ($items as &$item) {
             $arr[$item->id] = str_repeat($html, $item->level - 1) . ' ' . $item->name;
-        }unset($item);
+        }
+        unset($item);
 
         return $arr;
     }

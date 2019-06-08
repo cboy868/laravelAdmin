@@ -17,8 +17,9 @@ class Product extends Migration
         Schema::create('product_attribute_category', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('pid');
-            $table->tinyInteger('level');
-            $table->string('code', 100);
+            $table->unsignedTinyInteger('level')->nullable();
+            $table->unsignedTinyInteger('is_leaf')->default(0);
+            $table->string('code', 100)->nullable();
             $table->string('name', 100);
             $table->text('intro')->nullable();//详细介绍
             $table->timestamps();

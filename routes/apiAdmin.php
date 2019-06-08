@@ -36,7 +36,7 @@ Route::group([
     Route::apiResource('product-category', 'Admin\V1\Product\CategoryController');
     Route::apiResource('product-sku', 'Admin\V1\Product\SkuController');
     Route::apiResource('product', 'Admin\V1\Product\ProductController');
-    Route::apiResource('product-attribute-category', 'Admin\V1\Product\AttributeCategoryController');
+    Route::apiResource('product-attribute-type', 'Admin\V1\Product\AttributeCategoryController');
     Route::apiResource('product-attribute-key', 'Admin\V1\Product\AttributeKeyController');
     Route::apiResource('product-attribute-value', 'Admin\V1\Product\AttributeValueController');
     Route::apiResource('product-attribute-rel', 'Admin\V1\Product\AttributeRelController');

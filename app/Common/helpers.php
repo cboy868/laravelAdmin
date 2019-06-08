@@ -18,6 +18,28 @@ function human_filesize($bytes, $decimals = 2)
     return sprintf("%.{$decimals}f", $bytes / pow(1024, $factor)) . @$size[$factor];
 }
 
+
+/**
+ * 形成树
+ * @param $records
+ * @return array
+ */
+function makeTree($records)
+{
+    $tree = [];
+    $records = array_index($records, 'id');
+    foreach ($records as &$record) {
+        if ($record['pid'] != 0 && isset($records[$record['pid']])) {
+            $records[$record['pid']]['sons'][] = &$records[$record['id']];
+        } else {
+            $tree[] = &$records[$record['id']];
+        }
+    }
+    unset($record);
+
+    return $tree;
+}
+
 /**
  * 判断文件的MIME类型是否为图片
  */
@@ -73,6 +95,7 @@ function array_filters($array, $filters = ['null', ''])
  */
 function array_index($array, $field)
 {
+
     if (!is_array($array)) {
         return false;
     }
@@ -80,6 +103,9 @@ function array_index($array, $field)
     $result = [];
 
     foreach ($array as $item) {
+        if (!is_array($item)) {
+            $item = (array)$item;
+        }
         $result[$item[$field]] = $item;
     }
 
