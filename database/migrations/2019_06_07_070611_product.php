@@ -25,10 +25,25 @@ class Product extends Migration
             $table->softDeletes();//软删除
         });
 
+        //属性分组
+        Schema::create('product_attribute_group', function (Blueprint $table) {
+            $table->increments('id');
+            $table->unsignedInteger('attribute_category_id')->index();
+            $table->string('name', 100);
+            $table->text('intro')->nullable();//详细介绍
+            $table->softDeletes();//软删除
+
+            $table->foreign('attribute_category_id')
+                ->references('id')
+                ->on('product_attribute_category')
+                ->onDelete('cascade');
+        });
+
         //属性key
         Schema::create('product_attribute_key', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('attribute_category_id')->index();
+            $table->unsignedInteger('attribute_group_id')->index();
             $table->string('name', 100);
             $table->unsignedTinyInteger('type')->comment('关键属性、销售属性等');//类型
             $table->text('intro')->nullable();//介绍
@@ -37,6 +52,11 @@ class Product extends Migration
             $table->foreign('attribute_category_id')
                 ->references('id')
                 ->on('product_attribute_category')
+                ->onDelete('cascade');
+
+            $table->foreign('attribute_group_id')
+                ->references('id')
+                ->on('product_attribute_group')
                 ->onDelete('cascade');
         });
 

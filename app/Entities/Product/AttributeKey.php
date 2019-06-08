@@ -10,13 +10,14 @@ class AttributeKey extends ActiveRecord
 {
     protected $table = 'product_attribute_key';
 
-    /**
-     * 所属属性分类
-     * @return BelongsTo
-     */
     public function attributeCategory(): BelongsTo
     {
         return $this->belongsTo(AttributeCategory::class, 'attribute_category_id');
+    }
+
+    public function attributeGroup(): BelongsTo
+    {
+        return $this->belongsTo(AttributeGroup::class, 'attribute_group_id');
     }
 
 
