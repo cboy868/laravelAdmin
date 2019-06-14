@@ -42,6 +42,7 @@ class OrderController extends Controller
         }
 
         $order_no = \request()->input('order_no');
+        $redirect_url = \request()->input('redirect_url');
 
         $order = $orderRepository->where(['order_no'=>$order_no])->first();
 
@@ -69,18 +70,16 @@ class OrderController extends Controller
             return $this->failed(ApiStatus::CODE_4005);
         }
 
-        if($redirect_url = \request()->input('redirect_url')){
-            $url = urlencode(urldecode($redirect_url));
-        } else {
-            $goods = $order->goods[0];
-            $model = $picturesRepository->find($goods->goods_no);
-            if ($model->type == 1) {
-                $pre = 'detailPic.html?id='. $goods->goods_no . '&ntr=' . uniqid();
-            } else if ($model->type == 2){
-                $pre = 'detailCommic.html?id='. $goods->goods_no . '&ntr=' . uniqid();
-            }
-            $url = urlencode('http://h5.douyule.com/html/' . $pre);
-        }
+        $url = urlencode(urldecode($redirect_url));
+
+//            $goods = $order->goods[0];
+//            $model = $picturesRepository->find($goods->goods_no);
+//            if ($model->type == 1) {
+//                $pre = 'detailPic.html?id='. $goods->goods_no . '#&ntr=' . uniqid();
+//            } else if ($model->type == 2){
+//                $pre = 'detailCommic.html?id='. $goods->goods_no . '&ntr=' . uniqid();
+//            }
+//            $url = urlencode('http://h5.douyule.com/html/' . $pre);
 
         return redirect($result['mweb_url'] . '&redirect_url=' . $url);
     }
