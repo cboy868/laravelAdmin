@@ -3,21 +3,24 @@
 namespace App\Http\Controllers\Admin\V1\Permission;
 
 use App\Common\ApiStatus;
-use App\Entities\Permission\Repository\PermissionsRepository;
-use App\Entities\Permission\Requests\PermissionsRequest;
+use App\Entities\Permission\Repository\RolesRepository;
+use App\Entities\Permission\Requests\RoleRequest;
 use App\Entities\Permission\Services\PermissionService;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\ApiController;
 use Cboy868\Repositories\Exceptions\RepositoryException;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
-class PermissionController extends AdminController
+class RoleController extends ApiController
 {
-    public $permissionsRepository;
+    public $rolesRepository;
 
-    public function __construct(PermissionsRepository $permissionsRepository)
+    public function __construct(RolesRepository $rolesRepository)
     {
-        $this->permissionsRepository = $permissionsRepository;
+        $this->rolesRepository = $rolesRepository;
     }
+
 
     /**
      * 列表
@@ -34,27 +37,33 @@ class PermissionController extends AdminController
             array_push($where, ['title', 'like', '%'.$title.'%']);
         }
 
-        if ($name = $request->input('name')) {
-            array_push($where, ['name', 'like', '%'.$name.'%']);
-        }
-
-        $result = $this->permissionsRepository->where($where)
+        $result = $this->rolesRepository->where($where)
             ->orderBy('id', 'ASC')
             ->paginate($pageSize);
 
         return $this->respond($result);
     }
 
+
     /**
-     * 初始化所有权限项
-     * @return mixed
+     * 保存
      */
-    public function store()
+    public function store(RoleRequest $request)
     {
-        if (!PermissionService::syncPermissions()){
-            return $this->failed(ApiStatus::CODE_1011, '权限初始化失败');
+        $params = $request->only([
+            'name',
+            'title',
+        ]);
+        $params['guard_name'] = 'admin';
+        $params['updated_at'] = $params['created_at'] = time();
+
+        try {
+            $model = $this->rolesRepository->create($params);
+        } catch (RepositoryException $e) {
+            throw new \Exception($e->getMessage(), $e->getCode());
         }
-        return $this->respond();
+
+        return $this->respond($model->toArray());
     }
 
     /**
@@ -64,7 +73,7 @@ class PermissionController extends AdminController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(PermissionsRequest $request, $id)
+    public function update(RoleRequest $request, $id)
     {
         $params = $request->only([
             'name',
@@ -72,12 +81,28 @@ class PermissionController extends AdminController
             'guard_name'
         ]);
         try {
-            $this->permissionsRepository->update($params, $id);
+            $this->rolesRepository->update($params, $id);
         } catch (RepositoryException $e) {
             throw new \Exception($e->getMessage(), $e->getCode());
         }
         return $this->respond([]);
     }
+
+
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function show($id) {
+        $model = $this->rolesRepository->find($id);
+
+        if ($model) {
+            return $this->respond($model->toArray());
+        }
+
+        return $this->failed(ApiStatus::CODE_1021);
+    }
+
 
     /**
      * @param $id
@@ -87,11 +112,10 @@ class PermissionController extends AdminController
     public function destroy($id)
     {
         try {
-            $result = $this->permissionsRepository->trash($id);
+            $result = $this->rolesRepository->trash($id);
         } catch (RepositoryException $e) {
             throw new \Exception($e->getMessage(), $e->getCode());
         }
         return $this->respond($result);
     }
-
 }

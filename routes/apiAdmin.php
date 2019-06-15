@@ -26,7 +26,12 @@ Route::group([
     /**
      * permission
      */
-    Route::get('permission-sync', 'Admin\V1\Permission\PermissionController@permissionSync')->name('permission-sync');
+    Route::apiResource('roles', 'Admin\V1\Permission\RoleController');
+    Route::apiResource('permissions', 'Admin\V1\Permission\PermissionController', ['except'=>['show']]);
+    Route::apiResource('role-users', 'Admin\V1\Permission\RoleUsersController', ['except'=>['index','update', 'destroy']]);
+    Route::post('role-users-destroy', 'Admin\V1\Permission\RoleUsersController@destroy')->name('role-users.destroy');
+    Route::apiResource('role-permissions', 'Admin\V1\Permission\RolePermissionsController', ['except'=>['index','update', 'destroy']]);
+    Route::post('role-permissions-destroy', 'Admin\V1\Permission\RolePermissionsController@destroy')->name('role-permissions.destroy');
 
     /**
      * 商户

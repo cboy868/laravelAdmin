@@ -11,6 +11,49 @@ namespace App\Common;
  */
 class ArrayHelper
 {
+
+    /**
+     * Returns the values of a specified column in an array.
+     * The input array should be multidimensional or an array of objects.
+     *
+     * For example,
+     *
+     * ```php
+     * $array = [
+     *     ['id' => '123', 'data' => 'abc'],
+     *     ['id' => '345', 'data' => 'def'],
+     * ];
+     * $result = ArrayHelper::getColumn($array, 'id');
+     * // the result is: ['123', '345']
+     *
+     * // using anonymous function
+     * $result = ArrayHelper::getColumn($array, function ($element) {
+     *     return $element['id'];
+     * });
+     * ```
+     *
+     * @param array $array
+     * @param int|string|\Closure $name
+     * @param bool $keepKeys whether to maintain the array keys. If false, the resulting array
+     * will be re-indexed with integers.
+     * @return array the list of column values
+     */
+    public static function getColumn($array, $name, $keepKeys = true)
+    {
+        $result = [];
+        if ($keepKeys) {
+            foreach ($array as $k => $element) {
+                $result[$k] = static::getValue($element, $name);
+            }
+        } else {
+            foreach ($array as $element) {
+                $result[] = static::getValue($element, $name);
+            }
+        }
+
+        return $result;
+    }
+
     /**
      * Indexes and/or groups the array according to a specified key.
      * The input should be either multidimensional array or an array of objects.

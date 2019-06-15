@@ -12,30 +12,51 @@ namespace App\Entities\Permission\Services;
 
 use App\Common\ArrayHelper;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Spatie\Permission\PermissionRegistrar;
 
 class PermissionService
 {
 
-    static $ignore = ['login'];
+    static $ignore = ['login', 'logout'];
 
     /**
      * 刷权限表，获取所有权限项,加入管理
      */
     public static function syncPermissions()
     {
-        //所有权限项
-        $permissions = self::allPermissions();
 
-        //已经在数据库中的permissions
-        $dbPermissions = DB::table(config('permission.table_names.permissions'))->get();
+        DB::beginTransaction();
+        try {
+            //所有权限项
+            $permissions = self::allPermissions();
 
-        $dbPermissionsKey =  array_keys(ArrayHelper::index($dbPermissions, 'name'));
+            //已经在数据库中的permissions
+            $dbPermissions = DB::table(config('permission.table_names.permissions'))->get();
 
-        $diffPermissions = array_filter($permissions, function ($item) use ($dbPermissionsKey){
-            return in_array($item['name'], $dbPermissionsKey) ? false : true;
-        });
+            $dbPermissionsKey =  array_keys(ArrayHelper::index($dbPermissions, 'name'));
 
-        DB::table('auth_permissions')->insert($diffPermissions);
+            $diffPermissions = array_filter($permissions, function ($item) use ($dbPermissionsKey){
+                return in_array($item['name'], $dbPermissionsKey) ? false : true;
+            });
+
+            if (count($diffPermissions) == 0) {
+                return true;
+            }
+
+            DB::table('auth_permissions')->insert($diffPermissions);
+
+            app(PermissionRegistrar::class)->forgetCachedPermissions();
+            DB::commit();
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            Log::error('sync_permissions_error', [
+                'msg' => $exception->getMessage()
+            ]);
+            return false;
+        }
+
+        return true;
     }
 
 
@@ -60,7 +81,7 @@ class PermissionService
             array_push($permissions, [
                 'title' => $name,
                 'name' => $name,
-                'guard_name' => 'api',
+                'guard_name' => 'admin',
                 'created_at' => $time,
                 'updated_at' => $time
             ]);
