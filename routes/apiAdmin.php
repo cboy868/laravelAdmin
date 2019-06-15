@@ -19,8 +19,14 @@ Route::group([
 ], function ($router) {
 
 
-    $router->post('/login', 'Admin\AuthController@login');
+    $router->post('/login', 'Admin\AuthController@login')->name('login');
+    $router->post('/me', 'Admin\AuthController@me')->name('me');//个人信息
+    $router->post('/logout', 'Admin\AuthController@logout')->name('logout');//登出
 
+    /**
+     * permission
+     */
+    Route::get('permission-sync', 'Admin\V1\Permission\PermissionController@permissionSync')->name('permission-sync');
 
     /**
      * 商户
@@ -43,8 +49,7 @@ Route::group([
 
 
 //    Route::middleware(['auth:admin', 'auth.token'])->group(function ($router){
-    $router->post('/me', 'Admin\AuthController@me');//个人信息
-    $router->post('/logout', 'Admin\AuthController@logout');//登出
+
 
     Route::apiResource('pictures-category', 'Cms\PicturesCategoryController');
     Route::apiResource('pictures-user', 'Cms\PicturesUserController');
@@ -54,21 +59,21 @@ Route::group([
     Route::apiResource('pictures-user', 'Cms\PicturesUserController');
     Route::apiResource('pictures', 'Admin\V1\Cms\PicturesController');
     Route::apiResource('focus', 'Admin\V1\Cms\FocusController');
-    Route::post('upfocus', 'Admin\V1\Cms\FocusController@upload');
-    Route::post('upimages', 'Admin\V1\Cms\PicturesController@upImages');
-    Route::post('cover', 'Admin\V1\Cms\PicturesController@cover');
-    Route::post('edit-focus/{id}', 'Admin\V1\Cms\FocusController@updateItem');
-    Route::post('delete-focus/{id}', 'Admin\V1\Cms\FocusController@deleteItem');
+    Route::post('upfocus', 'Admin\V1\Cms\FocusController@upload')->name('focus.upfocus');
+    Route::post('upimages', 'Admin\V1\Cms\PicturesController@upImages')->name('pictures.upimages');
+    Route::post('cover', 'Admin\V1\Cms\PicturesController@cover')->name('pictures.cover');
+    Route::post('edit-focus/{id}', 'Admin\V1\Cms\FocusController@updateItem')->name('focus.edit-focus');
+    Route::post('delete-focus/{id}', 'Admin\V1\Cms\FocusController@deleteItem')->name('focus.delete-focus');
 
-    Route::post('picture-delete-img/{id}', 'Admin\V1\Cms\PicturesController@deleteImg');
+    Route::post('picture-delete-img/{id}', 'Admin\V1\Cms\PicturesController@deleteImg')->name('pictures.delete_img');
 
     Route::apiResource('cartoons', 'Admin\V1\Cms\CartoonController');
 
-    Route::get('picture_images/{id}', 'Admin\V1\Cms\PicturesController@images');
+    Route::get('picture_images/{id}', 'Admin\V1\Cms\PicturesController@images')->name('pictures.images');
 
 
     Route::apiResource('brands', 'Goods\BrandController');
-    Route::get('cartoon_chapters/{id}', 'Admin\V1\Cms\CartoonController@chapters');
+    Route::get('cartoon_chapters/{id}', 'Admin\V1\Cms\CartoonController@chapters')->name('cartoon.chapters');
 
     //商品
     Route::apiResource('brands', 'Goods\BrandController');
