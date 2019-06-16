@@ -5,7 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 
-class AlterUser extends Migration
+class AlterUsers extends Migration
 {
     /**
      * Run the migrations.

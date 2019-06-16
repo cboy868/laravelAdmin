@@ -23,9 +23,24 @@ class AttributeValueController extends AdminController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $pageSize = $request->input('page_size', self::DEFAULT_PAGE_SIZE);
+
+        //查询条件
+        $where = [];
+        if ($attribute_id = $request->input('attribute_id')) {
+            array_push($where, ['attribute_id'=>$attribute_id]);
+        }
+
+        $result = $this->attributeValueRepository->where($where)
+            ->with(['attributeKey'=>function($query){
+                $query->select('id','name');
+            }])
+            ->orderBy('id', 'DESC')
+            ->paginate($pageSize);
+
+        return $this->respond($result);
     }
 
     /**

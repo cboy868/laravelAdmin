@@ -23,9 +23,27 @@ class ProductController extends AdminController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return $this->respond();
+        $pageSize = $request->input('page_size', self::DEFAULT_PAGE_SIZE);
+
+        //查询条件
+        $where = [];
+        if ($store_id = $request->input('store_id')) {
+            array_push($where, ['store_id'=>$store_id]);
+        }
+
+        $result = $this->productRepository->where($where)
+            ->with(['store'=>function($query){
+                $query->select('id','name');
+            }])
+            ->with(['category'=>function($query){
+                $query->select('id','name');
+            }])
+            ->orderBy('id', 'DESC')
+            ->paginate($pageSize);
+
+        return $this->respond($result);
     }
 
     /**
