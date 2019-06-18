@@ -70,6 +70,8 @@ class OrderController extends Controller
             return $this->failed(ApiStatus::CODE_4005);
         }
 
+
+        $redirect_url = str_replace('#', '&ntr='.uniqid().'#', $redirect_url);
         $url = urlencode(urldecode($redirect_url));
 
 //            $goods = $order->goods[0];
