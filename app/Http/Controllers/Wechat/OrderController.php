@@ -71,7 +71,7 @@ class OrderController extends Controller
         }
 
 
-        $redirect_url = str_replace('#', '&ntr='.uniqid().'#', $redirect_url);
+        $redirect_url = str_replace('?', '?ntr='.uniqid().'&', $redirect_url);
         $url = urlencode(urldecode($redirect_url));
 
 //            $goods = $order->goods[0];
