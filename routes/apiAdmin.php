@@ -71,10 +71,13 @@ Route::group([
     Route::post('delete-focus/{id}', 'Admin\V1\Cms\FocusController@deleteItem')->name('focus.delete-focus');
 
     Route::post('picture-delete-img/{id}', 'Admin\V1\Cms\PicturesController@deleteImg')->name('pictures.delete_img');
+    Route::post('picture-recommend/{id}', 'Admin\V1\Cms\PicturesController@recommend')->name('pictures.recommend');
+    Route::post('picture-unrecommend/{id}', 'Admin\V1\Cms\PicturesController@unrecommend')->name('pictures.unrecommend');
 
     Route::apiResource('cartoons', 'Admin\V1\Cms\CartoonController');
 
     Route::get('picture_images/{id}', 'Admin\V1\Cms\PicturesController@images')->name('pictures.images');
+
 
 
     Route::apiResource('brands', 'Goods\BrandController');

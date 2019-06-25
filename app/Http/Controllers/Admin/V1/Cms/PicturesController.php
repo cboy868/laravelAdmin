@@ -86,7 +86,7 @@ class PicturesController extends AdminController
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(StorePicturesRequest $request)
@@ -106,7 +106,7 @@ class PicturesController extends AdminController
     /**
      * Display the specified resource.
      *
-     * @param  int $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id, CartoonRepository $cartoonRepository)
@@ -118,7 +118,7 @@ class PicturesController extends AdminController
             return $this->respond();
         }
 
-        $chapters = $cartoonRepository->where(['pictures_id'=>$id])
+        $chapters = $cartoonRepository->where(['pictures_id' => $id])
             ->orderBy('chapter', 'ASC')
             ->paginate(20);
 
@@ -137,8 +137,8 @@ class PicturesController extends AdminController
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  int $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(UpdatePicturesRequest $request, $id)
@@ -157,7 +157,7 @@ class PicturesController extends AdminController
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
@@ -186,9 +186,9 @@ class PicturesController extends AdminController
         $path = $request->file('cover')->store(
             'covers', 'public'
         );
-        $this->model->update(['thumb'=>$path], $id);
+        $this->model->update(['thumb' => $path], $id);
         return $this->respond([
-            'path' =>  'http://' . \request()->getHttpHost() . '/storage/' . $path,
+            'path' => 'http://' . \request()->getHttpHost() . '/storage/' . $path,
             'params' => $request->input()
         ]);
     }
@@ -286,6 +286,32 @@ class PicturesController extends AdminController
         } catch (RepositoryException $e) {
             return $this->failed(ApiStatus::CODE_1011);
         }
-        return $this->respond(['images'=>$imgs]);
+        return $this->respond(['images' => $imgs]);
+    }
+
+    /**
+     * 推荐
+     * @param $id
+     */
+    public function recommend($id)
+    {
+        if ($this->model->update(['flag' => 1], $id)) {
+            return $this->respond();
+        }
+
+        return $this->failed(ApiStatus::CODE_1011, '推荐失败');
+    }
+
+    /**
+     * 取消推荐
+     * @param $id
+     */
+    public function unrecommend($id)
+    {
+        if ($this->model->update(['flag' => 0], $id)) {
+            return $this->respond();
+        }
+
+        return $this->failed(ApiStatus::CODE_1011, '取消推荐失败');
     }
 }
