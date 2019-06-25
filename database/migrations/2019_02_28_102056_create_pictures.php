@@ -29,7 +29,8 @@ class CreatePictures extends Migration
             $table->unsignedInteger('category_id');
             $table->string('author')->nullable();//作者
             $table->string('name');//图册名
-            $table->unsignedInteger('thumb')->nullable();//封面
+            $table->string('thumb', 200)->nullable();//封面
+            $table->text('images')->nullable();//主图片
             $table->unsignedSmallInteger('sort')->default(0);//排序
             $table->text('intro')->nullable();//介绍
             $table->unsignedSmallInteger('num')->default(0);//数量
